@@ -1,0 +1,20 @@
+<div>
+    <h1> Student Login Form </h1>
+    <form>
+        <div class="container">
+            <div class="form-group">
+                <label>Username : </label>
+                <input type="text" placeholder="Enter Username" name="username" required #username>
+            </div>
+            <div class="form-group">
+                <label>Password : </label>
+                <input type="password" placeholder="Enter Password" name="password" required #password>
+            </div>
+            <div class="form-group">
+                <a (click)="iniciarSesion(password.value, username.value)" class="btn btn-outline-primary float-end">Login</a>
+            </div>
+            <input type="checkbox" checked="checked"> Remember me
+            Forgot <a href="#"> password? </a>
+        </div>
+    </form>
+</div>
