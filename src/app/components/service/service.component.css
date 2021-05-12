@@ -1,8 +1,24 @@
-.example-card {
-    max-width: 400px;
-  }
-  
   .example-header-image {
     background-image: url('https://material.angular.io/assets/img/examples/shiba1.jpg');
     background-size: cover;
+  }
+
+  .commentForm{
+    display: block;
+  }
+
+  .mat-card-image {
+    width: 500px;
+  }
+
+  .aa {
+    text-align: center;
+  }
+
+  .serviceCard{
+    max-width: 40%;
+  }
+
+  .commentInput{
+    width: 90%;
   }

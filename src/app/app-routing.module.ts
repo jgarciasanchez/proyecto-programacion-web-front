@@ -8,7 +8,6 @@ import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.comp
 import { RegistrationComponent } from './components/registration/registration.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login', component: LoginMenuComponent, children: [
       { path: '', component: LoginComponent },
@@ -16,13 +15,13 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'home', component: MainComponent,
+    path: '', component: MainComponent,
     children: [
       {
-        path: '', component: NavBarMainComponent,
-        children: [
-          { path: '', component: MainContentComponent }
-        ]
+        path: 'Home', component: MainContentComponent
+      },
+      {
+        path: 'admin', component: MainContentComponent
       }
 
     ]

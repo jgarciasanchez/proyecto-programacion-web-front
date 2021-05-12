@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-service',
@@ -6,12 +6,9 @@ import { Component, ElementRef, OnInit } from '@angular/core';
   styleUrls: ['./service.component.css']
 })
 export class ServiceComponent implements OnInit {
-  elRef: ElementRef;
 
-  constructor(elef: ElementRef) {this.elRef = elef }
 
   ngOnInit(): void {
-    return this.elRef.nativeElement.innerHTML;
   }
 
 }

@@ -16,7 +16,7 @@ export class LoginComponent {
   iniciarSesion(password: string, username:string) {
     console.log(password + ' ' + username);
     if(true){
-      this.router.navigate(['/', 'home']);
+      this.router.navigate(['/', 'Home']);
     }
   }
 
