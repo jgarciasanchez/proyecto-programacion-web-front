@@ -10,6 +10,12 @@ import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { LeftOptionsPanelComponent } from './components/left-options-panel/left-options-panel.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
+import { ServiceComponent } from './components/service/service.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import {MatCardModule} from '@angular/material/card';
+import {MatGridListModule} from '@angular/material/grid-list';
+import {MatSidenavModule} from '@angular/material/sidenav';
+import {MatExpansionModule} from '@angular/material/expansion';
 
 @NgModule({
   declarations: [
@@ -20,11 +26,17 @@ import { MainContentComponent } from './components/main-content/main-content.com
     MainComponent,
     NavBarMainComponent,
     LeftOptionsPanelComponent,
-    MainContentComponent
+    MainContentComponent,
+    ServiceComponent
   ],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    BrowserAnimationsModule,
+    MatCardModule,
+    MatGridListModule,
+    MatSidenavModule,
+    MatExpansionModule
   ],
   providers: [],
   bootstrap: [AppComponent]
