@@ -10,10 +10,17 @@ import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 
 const routes: Routes = [
   {
+     path: 'login', component: LoginComponent 
+    /*
     path: 'login', component: LoginMenuComponent, children: [
       { path: '', component: LoginComponent },
       { path: 'register', component: RegistrationComponent }
     ]
+    */
+  },
+  {
+    path: 'register', component: RegistrationComponent 
+
   },
   {
     path: 'home', component: MainComponent,
