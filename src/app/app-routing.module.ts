@@ -6,6 +6,7 @@ import { MainContentComponent } from './components/main-content/main-content.com
 import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 
 const routes: Routes = [
   {
@@ -15,10 +16,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: '', component: MainComponent,
+    path: 'home', component: MainComponent,
+    canActivate: [IsAuthenticatedGuard],
     children: [
       {
-        path: 'Home', component: MainContentComponent
+        path: '', component: MainContentComponent
       },
       {
         path: 'admin', component: MainContentComponent
@@ -26,8 +28,7 @@ const routes: Routes = [
 
     ]
   },
-  // {path: 'main', component: },
-  { path: '', component: LoginMenuComponent }
+  { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
 
 @NgModule({
