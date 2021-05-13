@@ -6,19 +6,25 @@
   </mat-drawer-content>
 
 
-  <mat-drawer mode="side" opened position='end'>
+  <mat-drawer class="rigthPanel"  opened *ngIf="isWideScreen$ | async" mode="side"  position='end' >
     <mat-accordion>
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel hideToggle [expanded]="true">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Friends List
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-card class="friend">
+        <mat-card>
           <mat-card-header >
             <div mat-card-avatar></div>
             <mat-card-title>Shiba Inu</mat-card-title>
-            <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+          </mat-card-header>
+        </mat-card>
+        
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
           </mat-card-header>
         </mat-card>
       </mat-expansion-panel>

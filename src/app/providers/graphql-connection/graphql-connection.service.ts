@@ -9,7 +9,7 @@ import { SessiondataService } from '../sessiondata/sessiondata.service';
 })
 export class GraphqlConnectionService {
 
-  uri = 'http://186.159.231.67:3006/graphQL';
+  uri = 'http://localhost:3006/graphQL';
 
   constructor(private sessiondata: SessiondataService) { 
 
