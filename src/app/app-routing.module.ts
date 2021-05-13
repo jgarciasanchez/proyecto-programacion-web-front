@@ -9,10 +9,17 @@ import { RegistrationComponent } from './components/registration/registration.co
 
 const routes: Routes = [
   {
+     path: 'login', component: LoginComponent 
+    /*
     path: 'login', component: LoginMenuComponent, children: [
       { path: '', component: LoginComponent },
       { path: 'register', component: RegistrationComponent }
     ]
+    */
+  },
+  {
+    path: 'register', component: RegistrationComponent 
+
   },
   {
     path: '', component: MainComponent,
