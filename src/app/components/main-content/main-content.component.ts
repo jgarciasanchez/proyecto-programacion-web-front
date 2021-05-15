@@ -2,7 +2,8 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
-import { Observable } from 'rxjs';
+import { Observable, pipe } from 'rxjs';
+import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/operators';
 import { getAllServices } from 'src/app/conections/services/resolvers';
 import { Service } from 'src/app/models/serviceCreator';
@@ -34,36 +35,16 @@ export class MainContentComponent implements OnInit {
     private route: ActivatedRoute,
     public auth: AuthService) { }
 
-  async resolveTest() {
-    // var s: ServicesResolver;
-    // console.log(resolve());
-
-
-    const query = getAllServices();
-    console.log(query);
-    try {
-      const response = await this.connection.post(query, true);
-      console.log(response);
-      if (response) {
-        const service: any = response;
-        if (service) {
-          return service;
-        } else {
-          console.log("fallo");
-        }
-      } else {
-        console.log("fallo");
-      }
-    } catch (e) {
-      console.log("fallo");
-    }
-  }
-
   ngOnInit(): void {
+
+    const data = this.route.snapshot.data.services;
     this.route.data.subscribe((data: { services: Service[] }) => {
       this.services = data.services;
     });
+    const { getAllServices } : any = data.data;
 
+    this.services = getAllServices;
+    
 
     this.authUser = (this.auth.isAuthenticated() == 'true');
 

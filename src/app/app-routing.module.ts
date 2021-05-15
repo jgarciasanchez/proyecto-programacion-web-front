@@ -6,8 +6,9 @@ import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ReportsContentComponent } from './components/reports-content/reports-content.component';
-import { ServicesResolver } from './conections/services/services.resolver';
+import { ServicesResolver } from './resolvers/services.resolver';
 import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
+import { RegisterServiceComponent } from './components/register-service/register-service.component';
 
 const routes: Routes = [
   {
@@ -17,19 +18,22 @@ const routes: Routes = [
      path: 'login', component: LoginComponent 
   },
   {
-    path: 'register', component: RegistrationComponent 
-
-  },
-  {
-    path: 'home', component: MainComponent,
+    path: '', component: MainComponent,
     // canActivate: [IsAuthenticatedGuard],
     children: [
       {
-        resolve: {services: ServicesResolver},
-        path: '', component: MainContentComponent
+        path: '', component: MainContentComponent,
+        resolve: {services: ServicesResolver}
+      },
+      {
+        path: 'home', component: MainContentComponent,
+        resolve: {services: ServicesResolver}
       },
       {
         path: 'admin', component: MainContentComponent
+      },
+      {
+        path: 'registerService', component: RegisterServiceComponent
       }
 
     ]

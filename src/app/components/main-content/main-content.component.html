@@ -1,13 +1,12 @@
-<button (click)='resolveTest()'>aaaaaa</button>
 <mat-sidenav-container>
   <mat-sidenav-content>
-    <div *ngFor="let service of services">
-      <app-service [service]='service'  class="servicesList"></app-service>
+    <div *ngFor="let service of services; index as i">
+      <app-service [service]='service' class="servicesList"></app-service>
     </div>
   </mat-sidenav-content>
 
 
-  <mat-sidenav class="rigthPanel"  opened  fixedTopGap="69"[fixedInViewport] ='true' *ngIf="(isWideScreen$ | async) && authUser" mode="side"  position='end' >
+  <mat-sidenav class="rigthPanel"  opened  fixedTopGap="69" [fixedInViewport] ='true' *ngIf="(isWideScreen$ | async) && authUser" mode="side"  position='end' >
     <mat-accordion>
       <mat-expansion-panel hideToggle [expanded]="true">
         <mat-expansion-panel-header>

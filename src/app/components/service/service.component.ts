@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { Service } from 'src/app/models/serviceCreator';
@@ -17,12 +17,13 @@ export interface Tile {
 })
 export class ServiceComponent implements OnInit {
 
-  service: Service;
+  @Input()
+  service: any;
   
   isWideScreen: Observable<boolean>;
   max_width: string;
   columns: string;
-  // tiles: Tile[];
+  
   tiles: Tile[] = [
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 2, rows: 2, color: 'lightgreen' },
@@ -65,6 +66,8 @@ export class ServiceComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
+    console.log(this.service);
+
     if (this.breakpointObserver.isMatched('(min-width: 600px)')) {
       this.max_width = '50';
       this.columns = '5';

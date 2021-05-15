@@ -58,6 +58,7 @@ import { OverlayModule } from '@angular/cdk/overlay';
 import { LayoutModule } from '@angular/cdk/layout';
 import { ReportsContentComponent } from './components/reports-content/reports-content.component';
 import { NgxEchartsModule } from 'ngx-echarts';
+import { RegisterServiceComponent } from './components/register-service/register-service.component';
 
 @NgModule({
   declarations: [
@@ -69,7 +70,8 @@ import { NgxEchartsModule } from 'ngx-echarts';
     LeftOptionsPanelComponent,
     MainContentComponent,
     ServiceComponent,
-    ReportsContentComponent
+    ReportsContentComponent,
+    RegisterServiceComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
