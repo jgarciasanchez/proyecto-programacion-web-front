@@ -5,7 +5,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './components/app/app.component';
 import { LoginComponent } from './components/login/login.component';
 import { RegistrationComponent } from './components/registration/registration.component';
-import { LoginMenuComponent } from './components/login-menu/login-menu.component';
 import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { LeftOptionsPanelComponent } from './components/left-options-panel/left-options-panel.component';
@@ -57,20 +56,25 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LayoutModule } from '@angular/cdk/layout';
+import { ReportsContentComponent } from './components/reports-content/reports-content.component';
+import { NgxEchartsModule } from 'ngx-echarts';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     RegistrationComponent,
-    LoginMenuComponent,
     MainComponent,
     NavBarMainComponent,
     LeftOptionsPanelComponent,
     MainContentComponent,
-    ServiceComponent
+    ServiceComponent,
+    ReportsContentComponent
   ],
   imports: [
+    NgxEchartsModule.forRoot({
+      echarts: () => import('echarts')
+    }),
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,

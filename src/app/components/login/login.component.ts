@@ -59,6 +59,7 @@ export class LoginComponent {
         console.log(success);
         if( success ){
           this.authService.setAuthenticated("true");
+          console.log(this.authService.isAuthenticated());
           this.router.navigate(['/', 'home']);
         }else{
             console.log("fallo");

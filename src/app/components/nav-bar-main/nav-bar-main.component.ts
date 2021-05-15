@@ -9,16 +9,25 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class NavBarMainComponent implements OnInit {
 
-  constructor(private router: Router, private isAuthenticated: AuthService) { }
+  authUser: boolean;
+
+  constructor(private router: Router, public auth: AuthService) { }
 
   ngOnInit(): void {
+    this.authUser = (this.auth.isAuthenticated() == 'true');
+    console.log(this.authUser);
   }
 
-  onLogout(){
-    this.isAuthenticated.setAuthenticated("false");
-    if(true){
+  onLogout() {
+    this.auth.setAuthenticated("false");
+    if (true) {
       this.router.navigate(['/', 'login']);
     }
+  }
+
+  onLogin() {
+    console.log(this.auth.Authenticated);
+    this.router.navigate(['/', 'login']);
   }
 
 }

@@ -1,22 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginMenuComponent } from './components/login-menu/login-menu.component';
 import { LoginComponent } from './components/login/login.component';
 import { MainContentComponent } from './components/main-content/main-content.component';
 import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
+import { ReportsContentComponent } from './components/reports-content/reports-content.component';
+import { ServicesResolver } from './conections/services/services.resolver';
 import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 
 const routes: Routes = [
   {
+    path: 'admin', component: ReportsContentComponent
+  }, 
+  {
      path: 'login', component: LoginComponent 
-    /*
-    path: 'login', component: LoginMenuComponent, children: [
-      { path: '', component: LoginComponent },
-      { path: 'register', component: RegistrationComponent }
-    ]
-    */
   },
   {
     path: 'register', component: RegistrationComponent 
@@ -24,9 +22,10 @@ const routes: Routes = [
   },
   {
     path: 'home', component: MainComponent,
-    canActivate: [IsAuthenticatedGuard],
+    // canActivate: [IsAuthenticatedGuard],
     children: [
       {
+        resolve: {services: ServicesResolver},
         path: '', component: MainContentComponent
       },
       {

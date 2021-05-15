@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
+  public Authenticated: string;
 
   constructor() { }
 
@@ -12,6 +13,7 @@ export class AuthService {
   }
 
   public setAuthenticated(state: string) {
+    this.Authenticated = state;
     localStorage.setItem('isAuthenticated', state);
   }
 }

@@ -1,14 +1,18 @@
-<div class="wrap">
+<div class="headerContainer">
     <span class="decor"></span>
-    <mat-toolbar>
+    <mat-toolbar color="#eeeef0">
         <button mat-icon-button>
             <mat-icon>menu</mat-icon>
         </button>
         <span>My App</span>
-        <span></span>
+        <span class="spacer"></span>
         <mat-icon class="homeBadge" matBadge="15" matBadgeColor="warn">home</mat-icon>
-        <a (click)='onLogout()'>
+        <a *ngIf="authUser;" (click)='onLogout()'>
             <button mat-button>Cerrar Sesion</button>
+        </a>
+
+        <a *ngIf="!authUser;" (click)='onLogin()'>
+            <button mat-button>Iniciar Sesion</button>
         </a>
     </mat-toolbar>
 </div>

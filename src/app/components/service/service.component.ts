@@ -2,6 +2,7 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Service } from 'src/app/models/serviceCreator';
 export interface Tile {
   color: string;
   cols: number;
@@ -16,6 +17,8 @@ export interface Tile {
 })
 export class ServiceComponent implements OnInit {
 
+  service: Service;
+  
   isWideScreen: Observable<boolean>;
   max_width: string;
   columns: string;
