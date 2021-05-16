@@ -7,6 +7,8 @@ import {  } from 'src/app/conections/auth/input';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { InputValidators } from '../../providers/validators/inputvalidators';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertsComponent } from '../alerts/alerts.component';
 
 @Component({
   selector: 'app-login',
@@ -29,7 +31,8 @@ export class LoginComponent {
     private router: Router,
     private connection: GraphqlConnectionService,
     public formBuilder: FormBuilder,
-    private authService: AuthService
+    private authService: AuthService,
+    private _snackBar: MatSnackBar
     ) {
     }
 
@@ -69,13 +72,17 @@ export class LoginComponent {
 
           this.router.navigate(['/', 'home']);
         }else{
-            console.log("fallo");
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 2 * 1000,
+          });
         }
       }else{
         console.log("fallo");      
       } 
     }catch(e){
-      console.log("fallo"+e);
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+      });
     }
   }
 

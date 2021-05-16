@@ -12,6 +12,8 @@ import { ServicesResolver } from 'src/app/resolvers/services.resolver';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServiceComponent } from '../service/service.component';
 import { GetUsersAndServiserOutput, UsersAndServicesData } from 'src/app/conections/services/response';
+import { GetUserFriendsOutput } from 'src/app/conections/friends/response';
+import { User } from 'src/app/conections/user/response';
 export interface Tile {
   color: string;
   cols: number;
@@ -29,6 +31,7 @@ export class MainContentComponent implements OnInit {
   tiles: Tile[] = [];
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
+  friends: User[] = [];
 
   constructor(
     private connection: GraphqlConnectionService,
@@ -38,12 +41,24 @@ export class MainContentComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const dataGetFromAsync = this.route.snapshot.data.services;
-    const { getServicesAndUser }: any = dataGetFromAsync.data;
+    const dataGetServiceFromAsync = this.route.snapshot.data.services;
+    if (this.auth.isAuthenticated() == 'true') {
+      console.log(this.auth.isAuthenticated())
+      const dataGetFriendsFromAsync = this.route.snapshot.data.friends;
+      const { getUserFriends }: any = dataGetFriendsFromAsync.data;
+      const friendsList: GetUserFriendsOutput = getUserFriends;
+      if (friendsList.success) {
+        this.friends = friendsList.data
+      } else {
+        console.log("fallo");
+      }
+    }
+
+    const { getServicesAndUser }: any = dataGetServiceFromAsync.data;
     let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
+
     if (success) {
       this.services = data;
-      console.log("");
     } else {
       console.log("fallo");
     }

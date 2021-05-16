@@ -59,6 +59,7 @@ import { LayoutModule } from '@angular/cdk/layout';
 import { ReportsContentComponent } from './components/reports-content/reports-content.component';
 import { NgxEchartsModule } from 'ngx-echarts';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
+import { AlertsComponent } from './components/alerts/alerts.component';
 
 @NgModule({
   declarations: [
@@ -71,7 +72,8 @@ import { RegisterServiceComponent } from './components/register-service/register
     MainContentComponent,
     ServiceComponent,
     ReportsContentComponent,
-    RegisterServiceComponent
+    RegisterServiceComponent,
+    AlertsComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({

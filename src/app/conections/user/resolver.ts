@@ -1,5 +1,5 @@
-export function login(){
-    var result = `query{
+export function login() {
+  var result = `query{
         users{
           id,
           name,
@@ -11,5 +11,21 @@ export function login(){
           status
         }
       }`;
-    return result;
-} 
+  return result;
+}
+
+export function getUserFriends() {
+  var result = `query{
+    getUserFriends{
+    success
+    message
+    data{
+      name
+      email
+      createdAt
+    }
+  }
+  }`;
+  return result;
+}
+

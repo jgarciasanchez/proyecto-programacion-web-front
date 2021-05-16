@@ -9,6 +9,7 @@ import { ReportsContentComponent } from './components/reports-content/reports-co
 import { ServicesResolver } from './resolvers/services.resolver';
 import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
+import { FriendsResolver } from './resolvers/friends.resolver';
 
 const routes: Routes = [
   {
@@ -23,11 +24,11 @@ const routes: Routes = [
     children: [
       {
         path: '', component: MainContentComponent,
-        resolve: {services: ServicesResolver}
+        resolve: {services: ServicesResolver, friends: FriendsResolver}
       },
       {
         path: 'home', component: MainContentComponent,
-        resolve: {services: ServicesResolver}
+        resolve: {services: ServicesResolver, friends: FriendsResolver}
       },
       {
         path: 'admin', component: MainContentComponent

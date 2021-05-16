@@ -6,7 +6,8 @@
   </mat-sidenav-content>
 
 
-  <mat-sidenav class="rigthPanel"  opened  fixedTopGap="69" [fixedInViewport] ='true' *ngIf="(isWideScreen$ | async) && authUser" mode="side"  position='end' >
+  <mat-sidenav class="rigthPanel" opened fixedTopGap="69" [fixedInViewport]='true'
+    *ngIf="(isWideScreen$ | async) && authUser" mode="side" position='end'>
     <mat-accordion>
       <mat-expansion-panel hideToggle [expanded]="true">
         <mat-expansion-panel-header>
@@ -14,17 +15,10 @@
             Friends List
           </mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-card>
-          <mat-card-header >
-            <div mat-card-avatar></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
-          </mat-card-header>
-        </mat-card>
-        
-        <mat-card>
+        <mat-card *ngFor="let friend of friends">
           <mat-card-header>
             <div mat-card-avatar></div>
-            <mat-card-title>Shiba Inu</mat-card-title>
+            <mat-card-title>{{friend.name}}</mat-card-title>
           </mat-card-header>
         </mat-card>
       </mat-expansion-panel>

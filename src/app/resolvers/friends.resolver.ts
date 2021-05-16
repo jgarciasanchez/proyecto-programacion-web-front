@@ -4,17 +4,14 @@ import {
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
-import { empty } from 'rxjs/internal/observable/empty';
-import { catchError } from 'rxjs/operators';
-import { getAllServices, getServicesAndUser } from '../conections/services/resolvers';
-import { Service } from '../models/serviceCreator';
+import { EMPTY } from 'rxjs';
+import { getUserFriends } from '../conections/user/resolver';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServicesResolver implements Resolve<any> {
+export class FriendsResolver implements Resolve<any> {
 
   constructor(
     private router: Router,
@@ -22,11 +19,11 @@ export class ServicesResolver implements Resolve<any> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const query = getServicesAndUser();
+    const query = getUserFriends();
     try {
-      const reponse =  await this.connection.post(query, true);
-      console.log('');
-      return reponse;
+        const reponse =   await this.connection.post(query, true);
+        console.log();
+        return reponse;
     } catch (e) {
       console.log("fallo");
     }

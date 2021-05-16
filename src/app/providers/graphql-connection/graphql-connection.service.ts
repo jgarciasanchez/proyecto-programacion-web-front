@@ -9,7 +9,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class GraphqlConnectionService {
 
-  uri = 'http://localhost:3006/graphQL';
+  uri = 'http://186.159.231.67:3006/graphQL';
 
   constructor(private sessiondata: SessiondataService, private authService: AuthService) {
 
