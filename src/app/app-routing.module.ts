@@ -33,7 +33,8 @@ const routes: Routes = [
         path: 'admin', component: MainContentComponent
       },
       {
-        path: 'registerService', component: RegisterServiceComponent
+        path: 'registerService', component: RegisterServiceComponent,
+        canActivate: [IsAuthenticatedGuard]
       }
 
     ]

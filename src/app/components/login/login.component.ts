@@ -11,7 +11,11 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css','../../../assets/bootstrap/css/bootstrap.min.css','../../../assets/fonts/fontawesome-all.min.css','../../../assets/fonts/font-awesome.min.css','../../../assets/fonts/fontawesome5-overrides.min.css']
+  styleUrls: ['./login.component.css',
+  '../../../assets/bootstrap/css/bootstrap.min.css',
+  '../../../assets/fonts/fontawesome-all.min.css',
+  '../../../assets/fonts/font-awesome.min.css',
+  '../../../assets/fonts/fontawesome5-overrides.min.css']
 })
 export class LoginComponent {
 

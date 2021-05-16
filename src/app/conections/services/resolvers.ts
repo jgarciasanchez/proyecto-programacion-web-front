@@ -8,3 +8,15 @@ export function getAllServices() {
       }`;
     return result;
 }
+
+export function registerService(title: string, description: string) {
+    var result = `mutation{
+        registerService(
+          serviceData:{
+            title:"${title}",
+            description:"${description}",
+          }
+        )
+      }`;
+    return result;
+}
