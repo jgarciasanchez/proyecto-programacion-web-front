@@ -18,5 +18,7 @@ export function registerService(title: string, description: string) {
           }
         )
       }`;
+
+    console.log(result);
     return result;
 }

@@ -16,4 +16,16 @@ export class AuthService {
     this.Authenticated = state;
     localStorage.setItem('isAuthenticated', state);
   }
+
+  public getToken() {
+    return localStorage.getItem('token');
+  }
+
+  public setToken(state: string) {
+    this.Authenticated = state;
+    localStorage.setItem('token', state);
+  }
+
+
+
 }

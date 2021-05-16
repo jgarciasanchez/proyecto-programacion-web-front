@@ -14,5 +14,5 @@ export class LoginUserOutput extends BaseResponse {
   data?: LoginResponseData;
 
   @Field({ nullable: true })
-  token?: String;
+  token?: string;
 }
