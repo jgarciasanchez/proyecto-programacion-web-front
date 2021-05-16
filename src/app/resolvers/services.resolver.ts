@@ -7,7 +7,7 @@ import {
 import { EMPTY, Observable, of } from 'rxjs';
 import { empty } from 'rxjs/internal/observable/empty';
 import { catchError } from 'rxjs/operators';
-import { getAllServices } from '../conections/services/resolvers';
+import { getAllServices, getServicesAndUser } from '../conections/services/resolvers';
 import { Service } from '../models/serviceCreator';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
@@ -23,7 +23,7 @@ export class ServicesResolver implements Resolve<Service[]> {
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    const query = getAllServices();
+    const query = getServicesAndUser();
     console.log(query);
     try {
       return await this.connection.post(query, true);

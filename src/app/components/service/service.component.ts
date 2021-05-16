@@ -61,7 +61,9 @@ export class ServiceComponent implements OnInit {
       // }
   }
   
-  
+  reportService(){
+    console.log('sirvio');
+  }
 
   constructor(private breakpointObserver: BreakpointObserver) { }
 

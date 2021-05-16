@@ -2,8 +2,18 @@
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Johan Garcia</mat-card-title>
+      <mat-card-title>{{service.name + ' ' + service.lastName}}</mat-card-title>
       <mat-card-subtitle>{{service.title}}</mat-card-subtitle>
+      <span class="spacer"></span>
+      <button mat-icon-button [matMenuTriggerFor]="menu" >
+        <mat-icon>more_vert</mat-icon>
+      </button>
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)='reportService()'>
+          <mat-icon>report</mat-icon>
+          <span>Reportar servicio</span>
+        </button>
+      </mat-menu>
     </mat-card-header>
     <mat-card-content>
       <p class="mat-h3">
@@ -11,8 +21,9 @@
       </p>
     </mat-card-content>
     <div class="aa">
-      <mat-grid-list class="imgGrid" cols={{columns}} >
-        <mat-grid-tile class="tile" *ngFor="let tile of tiles; let i = index" [colspan]="tile.cols" [rowspan]="tile.rows">
+      <mat-grid-list class="imgGrid" cols={{columns}}>
+        <mat-grid-tile class="tile" *ngFor="let tile of tiles; let i = index" [colspan]="tile.cols"
+          [rowspan]="tile.rows">
           <img *ngIf='i == 0' class="imgServiceMain" src={{tile.url}}>
           <img *ngIf='i > 0' class="imgService" src={{tile.url}}>
         </mat-grid-tile>

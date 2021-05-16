@@ -1,16 +1,16 @@
 export function getAllServices() {
-    var result = `query{
+  var result = `query{
         getAllServices{
             id,
             title,
             description
           }
       }`;
-    return result;
+  return result;
 }
 
 export function registerService(title: string, description: string) {
-    var result = `mutation{
+  var result = `mutation{
         registerService(
           serviceData:{
             title:"${title}",
@@ -18,5 +18,23 @@ export function registerService(title: string, description: string) {
           }
         )
       }`;
-    return result;
+  return result;
+}
+
+export function getServicesAndUser() {
+  var result = `query{
+    getServicesAndUser{
+    success
+    message
+    success
+    data{
+      name
+      lastName
+      id
+            description
+      title
+    }
+  }
+}`;
+  return result;
 }

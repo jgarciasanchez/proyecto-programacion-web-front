@@ -11,6 +11,7 @@ import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/g
 import { ServicesResolver } from 'src/app/resolvers/services.resolver';
 import { AuthService } from 'src/app/services/auth.service';
 import { ServiceComponent } from '../service/service.component';
+import { GetUsersAndServiserOutput, UsersAndServicesData } from 'src/app/conections/services/response';
 export interface Tile {
   color: string;
   cols: number;
@@ -24,7 +25,7 @@ export interface Tile {
   styleUrls: ['./main-content.component.css']
 })
 export class MainContentComponent implements OnInit {
-  services: Service[] = [];
+  services: UsersAndServicesData[] = [];
   tiles: Tile[] = [];
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
@@ -37,14 +38,16 @@ export class MainContentComponent implements OnInit {
 
   ngOnInit(): void {
 
-    const data = this.route.snapshot.data.services;
-    this.route.data.subscribe((data: { services: Service[] }) => {
-      this.services = data.services;
-    });
-    const { getAllServices } : any = data.data;
+    const dataGetFromAsync = this.route.snapshot.data.services;
+    const { getServicesAndUser }: any = dataGetFromAsync.data;
+    let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
+    if (success) {
+      this.services = data;
+      console.log("");
+    } else {
+      console.log("fallo");
+    }
 
-    this.services = getAllServices;
-    
 
     this.authUser = (this.auth.isAuthenticated() == 'true');
 

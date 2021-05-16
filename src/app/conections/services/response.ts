@@ -1,21 +1,43 @@
 import { Field, Int, ObjectType } from "type-graphql";
 import { Review } from '../reviews/response'
 import { Image } from '../image/response'
+import { BaseResponse } from "../utils/utils";
+@ObjectType()
+export class UsersAndServicesData {
+
+  id: number;
+
+  title: string;
+
+  description: string;
+
+  name: string;
+
+  lastName: string;
+
+}
 
 @ObjectType()
-export class Service{
+export class GetUsersAndServiserOutput extends BaseResponse {
 
-    id:number;
-   
-    title:string;
-    
-    description:string;
+  @Field({ nullable: true })
+  data?: [UsersAndServicesData];
 
-    reviews: Review[];
+}
+@ObjectType()
+export class Service {
 
-    images: Image[];
+  id: number;
 
-    createdAt:string;
+  title: string;
 
-    updatedAt:string;
+  description: string;
+
+  reviews: Review[];
+
+  images: Image[];
+
+  createdAt: string;
+
+  updatedAt: string;
 }
