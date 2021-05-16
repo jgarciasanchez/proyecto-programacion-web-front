@@ -18,15 +18,18 @@
                             <div class="text-center">
                                 <h4 class="text-dark mb-4">Crear una Cuenta</h4>
                             </div>
-                            <form class="user">
+                            <form [formGroup]="formGroup" (ngSubmit)="signUp()" class="user">
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Nombre" name="first_name"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Apellido" name="last_name"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input formControlName="log_name" class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Nombre" name="first_name"></div>
+                                    <div class="col-sm-6"><input formControlName="log_lastName" class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Apellido" name="last_name"></div>
                                 </div>
                                 <div class="form-group"><input class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Correo Electronico" name="email"></div>
+                                <div class="custom-control custom-checkbox small">
+                                    <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Soy Oferente</label></div>
+                                </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
-                                    <div class="col-sm-6"><input class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
+                                    <div class="col-sm-6 mb-3 mb-sm-0"><input formControlName="log_password"  class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
+                                    <div class="col-sm-6"><input formControlName="log_repeatPassword"  class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
                                 </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Registrar Cuenta</button>
                                 <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Registrar con google</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Registrar con Facebook</a>
                                 <hr>
@@ -39,10 +42,5 @@
             </div>
         </div>
     </div>
-    <script src="assets/js/jquery.min.js"></script>
-    <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-    <script src="assets/js/chart.min.js"></script>
-    <script src="assets/js/bs-init.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-easing/1.4.1/jquery.easing.js"></script>
-    <script src="assets/js/theme.js"></script>
+
 </body>

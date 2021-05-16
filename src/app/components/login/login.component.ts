@@ -59,11 +59,14 @@ export class LoginComponent {
       console.log(response);
       if(response){
         const { loginUser } : any = response.data;
-        let { success, data } : LoginUserOutput  = loginUser;
+        let { success, data, token } : LoginUserOutput  = loginUser;
         console.log(success);
         if( success ){
           this.authService.setAuthenticated("true");
+          this.authService.setToken(token);
           console.log(this.authService.isAuthenticated());
+          console.log("token  "+ this.authService.getToken());
+
           this.router.navigate(['/', 'home']);
         }else{
             console.log("fallo");
@@ -72,7 +75,7 @@ export class LoginComponent {
         console.log("fallo");      
       } 
     }catch(e){
-      console.log("fallo");
+      console.log("fallo"+e);
     }
   }
 
