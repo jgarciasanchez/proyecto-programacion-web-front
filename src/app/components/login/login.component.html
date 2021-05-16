@@ -1,32 +1,9 @@
-<!--
-<div>
-    <h1> Student Login Form </h1>
-    <form>
-        <div class="container">
-            <div class="form-group">
-                <label>Username : </label>
-                <input type="text" placeholder="Enter Username" name="username" required #username>
-            </div>
-            <div class="form-group">
-                <label>Password : </label>
-                <input type="password" placeholder="Enter Password" name="password" required #password>
-            </div>
-            <div class="form-group">
-                <a (click)="iniciarSesion(password.value, username.value)" class="btn btn-outline-primary float-end">Login</a>
-            </div>
-            <input type="checkbox" checked="checked"> Remember me
-            Forgot <a href="#"> password? </a>
-        </div>
-    </form>
-</div>
-
--->
-
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Login - Brand</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 </head>
 
 <body class="bg-gradient-primary">
@@ -37,7 +14,8 @@
                     <div class="card-body p-0">
                         <div class="row">
                             <div class="col-lg-6 d-none d-lg-flex">
-                                <div class="flex-grow-1 bg-login-image" style="background-image: url(&quot;assets/img/dogs/image3.jpeg&quot;);"></div>
+                                <div class="flex-grow-1 bg-login-image"
+                                    style="background-image: url(&quot;assets/img/dogs/image3.jpeg&quot;);"></div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="p-5">
@@ -45,18 +23,35 @@
                                         <h4 class="text-dark mb-4">Inicio de Sesion</h4>
                                     </div>
                                     <form [formGroup]="formGroup" (ngSubmit)="signIn()" class="user">
-                                        <div class="form-group"><input formControlName="log_user" class="form-control form-control-user" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Ingrese su correo Electronico" name="email"></div>
-                                        <div class="form-group"><input formControlName="log_password" class="form-control form-control-user" type="password" id="exampleInputPassword" placeholder="Contraseña" name="password"></div>
+                                        <div class="form-group"><input formControlName="log_user"
+                                                class="form-control form-control-user" type="email"
+                                                id="exampleInputEmail" aria-describedby="emailHelp"
+                                                placeholder="Ingrese su correo Electronico" name="email"></div>
+                                        <div class="form-group"><input formControlName="log_password"
+                                                class="form-control form-control-user" type="password"
+                                                id="exampleInputPassword" placeholder="Contraseña" name="password">
+                                        </div>
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
-                                                <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Recordarme</label></div>
+                                                <div class="form-check"><input
+                                                        class="form-check-input custom-control-input" type="checkbox"
+                                                        id="formCheck-1"><label
+                                                        class="form-check-label custom-control-label"
+                                                        for="formCheck-1">Recordarme</label></div>
                                             </div>
-                                        </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Inicia Sesion</button>
-                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Inicia Sesion</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Inicia Sesion con Facebook</a>
+                                        </div><button class="btn btn-primary btn-block text-white btn-user"
+                                            type="submit">Inicia Sesion</button>
+                                        <hr><a class="btn btn-primary btn-block text-white btn-google btn-user"
+                                            role="button"><i class="fab fa-google"></i>&nbsp; Inicia Sesion</a><a
+                                            class="btn btn-primary btn-block text-white btn-facebook btn-user"
+                                            role="button"><i class="fab fa-facebook-f"></i>&nbsp; Inicia Sesion con
+                                            Facebook</a>
                                         <hr>
                                     </form>
-                                    <div class="text-center"><a class="small" href="forgot-password.html">Olvidaste tu Contraseña?</a></div>
-                                    <div class="text-center"><a class="small" href="register.html">Crea una cuenta!</a></div>
+                                    <div class="text-center"><a class="small" href="forgot-password.html">Olvidaste tu
+                                            Contraseña?</a></div>
+                                    <div class="text-center"><a class="small" href="register.html">Crea una cuenta!</a>
+                                    </div>
                                 </div>
                             </div>
                         </div>

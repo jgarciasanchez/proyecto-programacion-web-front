@@ -6,11 +6,16 @@ import { login } from 'src/app/conections/auth/resolver';
 import {  } from 'src/app/conections/auth/input';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
 import { InputValidators } from '../../providers/validators/inputvalidators';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css','../../../assets/bootstrap/css/bootstrap.min.css','../../../assets/fonts/fontawesome-all.min.css','../../../assets/fonts/font-awesome.min.css','../../../assets/fonts/fontawesome5-overrides.min.css']
+  styleUrls: ['./login.component.css',
+  '../../../assets/bootstrap/css/bootstrap.min.css',
+  '../../../assets/fonts/fontawesome-all.min.css',
+  '../../../assets/fonts/font-awesome.min.css',
+  '../../../assets/fonts/fontawesome5-overrides.min.css']
 })
 export class LoginComponent {
 
@@ -23,16 +28,11 @@ export class LoginComponent {
   constructor(
     private router: Router,
     private connection: GraphqlConnectionService,
-    public formBuilder: FormBuilder
+    public formBuilder: FormBuilder,
+    private authService: AuthService
     ) {
     }
 
-  iniciarSesion(password: string, username:string) {
-    console.log(password + ' ' + username);
-    if(true){
-      this.router.navigate(['/', 'Home']);
-    }
-  }
 
   ngOnInit() {
     this.formConstructor();
@@ -62,7 +62,9 @@ export class LoginComponent {
         let { success, data } : LoginUserOutput  = loginUser;
         console.log(success);
         if( success ){
-          this.router.navigate(['/', 'Home']);
+          this.authService.setAuthenticated("true");
+          console.log(this.authService.isAuthenticated());
+          this.router.navigate(['/', 'home']);
         }else{
             console.log("fallo");
         }

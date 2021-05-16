@@ -1,27 +1,18 @@
-<!-- <div class="topnav">
-    <div class="search-container">
-        <form action="/action_page.php">
-            <input type="text" placeholder="Search.." name="search">
-            <button type="submit"><i class="fa fa-search"></i></button>
-        </form>
-    </div>
-    <a href="#contact">Contact</a>
-    <a href="#about">About</a>
-    <a class="active" href="#home">Home</a>
-</div> -->
-
-<head>
-    <meta name="viewport" content="width=device-width">
-</head>
-<div class="wrap">
+<div class="headerContainer">
     <span class="decor"></span>
-    <mat-toolbar>
-        <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+    <mat-toolbar color="#eeeef0">
+        <button mat-icon-button>
             <mat-icon>menu</mat-icon>
         </button>
         <span>My App</span>
-        <span class="example-spacer"></span>
+        <span class="spacer"></span>
         <mat-icon class="homeBadge" matBadge="15" matBadgeColor="warn">home</mat-icon>
+        <a *ngIf="authUser;" (click)='onLogout()'>
+            <button mat-button>Cerrar Sesion</button>
+        </a>
+
+        <a *ngIf="!authUser;" (click)='onLogin()'>
+            <button mat-button>Iniciar Sesion</button>
+        </a>
     </mat-toolbar>
 </div>
-<router-outlet></router-outlet>

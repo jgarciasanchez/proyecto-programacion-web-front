@@ -1,0 +1,45 @@
+<div class="container">
+    <span>Resgistrar Servicio</span>
+    <form [formGroup]="serviceForm" (submit)='registerService()' class="registerService">
+        <mat-form-field appearance="outline">
+            <mat-label>Titulo del servicio</mat-label>
+            <input formControlName="title" #input maxlength="100" matInput placeholder="Titulo">
+            <mat-hint>Max 100 characters</mat-hint>
+            <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+            <mat-label>Descripcion del servicio</mat-label>
+            <textarea formControlName="description" maxlength="450" #inputDesc matInput
+                placeholder="Descripcion"></textarea>
+            <mat-hint>Max 450 characters</mat-hint>
+            <mat-hint align="end">{{inputDesc.value?.length || 0}}/450</mat-hint>
+        </mat-form-field>
+        <mat-form-field>
+            <div>
+                <mat-toolbar>
+                    <input matInput  readonly name="name" />
+
+                    <button mat-flat-button color="primary">
+                        Browse File
+                    </button>
+                </mat-toolbar>
+                <input type="file" #fileInput id="uploadFile" (change)="selectFile($event)" name="uploadFile"
+                    multiple="multiple" accept="image/*" />
+                <hr>
+            </div>
+        </mat-form-field>
+        <button mat-raised-button color="primary" type="submit">Guardar Servicio</button>
+    </form>
+
+    <mat-grid-list class="imgGrid" cols=4>
+        <mat-grid-tile class="imgListUploaded" *ngFor="let urlImage of uploadedImgArray; index as i" [colspan]="1"
+            [rowspan]="1">
+            <mat-card class="example-card">
+                <img mat-card-image [src]="urlImage" *ngIf="url" class="imgUploaded">
+                <mat-card-actions>
+                    <button mat-button>Eliminar</button>
+                </mat-card-actions>
+            </mat-card>
+        </mat-grid-tile>
+    </mat-grid-list>
+</div>

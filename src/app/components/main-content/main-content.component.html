@@ -1,21 +1,33 @@
-<mat-drawer-container>
-  <mat-drawer-content>
-    <div *ngFor="let tile of tiles">
-      <app-service  class="servicesList"></app-service>
+<mat-sidenav-container>
+  <mat-sidenav-content>
+    <div *ngFor="let service of services; index as i">
+      <app-service [service]='service' class="servicesList"></app-service>
     </div>
-  </mat-drawer-content>
+  </mat-sidenav-content>
 
 
-  <mat-drawer mode="side" opened position='end'>
+  <mat-sidenav class="rigthPanel"  opened  fixedTopGap="69" [fixedInViewport] ='true' *ngIf="(isWideScreen$ | async) && authUser" mode="side"  position='end' >
     <mat-accordion>
-      <mat-expansion-panel hideToggle>
+      <mat-expansion-panel hideToggle [expanded]="true">
         <mat-expansion-panel-header>
           <mat-panel-title>
             Friends List
           </mat-panel-title>
         </mat-expansion-panel-header>
-
+        <mat-card>
+          <mat-card-header >
+            <div mat-card-avatar></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+          </mat-card-header>
+        </mat-card>
+        
+        <mat-card>
+          <mat-card-header>
+            <div mat-card-avatar></div>
+            <mat-card-title>Shiba Inu</mat-card-title>
+          </mat-card-header>
+        </mat-card>
       </mat-expansion-panel>
     </mat-accordion>
-  </mat-drawer>
-</mat-drawer-container>
+  </mat-sidenav>
+</mat-sidenav-container>

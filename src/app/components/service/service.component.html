@@ -1,25 +1,24 @@
-<div class="serviceCard">
+<div class="serviceCard" [ngStyle]="{ 'max-width': max_width + '%'}">
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>Shiba Inu</mat-card-title>
-      <mat-card-subtitle>Dog Breed</mat-card-subtitle>
+      <mat-card-title>Johan Garcia</mat-card-title>
+      <mat-card-subtitle>{{service.title}}</mat-card-subtitle>
     </mat-card-header>
     <mat-card-content>
       <p class="mat-h3">
-        The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-        A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-        bred for hunting.
+        {{service.description}}
       </p>
     </mat-card-content>
     <div class="aa">
-      <img mat-card-image src="https://material.angular.io/assets/img/examples/shiba2.jpg" alt="Photo of a Shiba Inu">
+      <mat-grid-list class="imgGrid" cols={{columns}} >
+        <mat-grid-tile class="tile" *ngFor="let tile of tiles; let i = index" [colspan]="tile.cols" [rowspan]="tile.rows">
+          <img *ngIf='i == 0' class="imgServiceMain" src={{tile.url}}>
+          <img *ngIf='i > 0' class="imgService" src={{tile.url}}>
+        </mat-grid-tile>
+      </mat-grid-list>
     </div>
-    <mat-card-actions>
-      <!-- <button mat-button>LIKE</button>
-      <button mat-button>SHARE</button> -->
-    </mat-card-actions>
-    
+
     <mat-expansion-panel hideToggle>
       <mat-expansion-panel-header>
         <mat-panel-title>
@@ -28,18 +27,16 @@
       </mat-expansion-panel-header>
       <div>
         <form class="commentForm">
-          <span class="commentForm">
-            <div mat-card-avatar class="example-header-image"></div>
-            <mat-form-field class="commentInput">
-              <mat-label>Leave a comment</mat-label>
-              <textarea matInput value=""></textarea>
-            </mat-form-field>
-          </span>
+          <div mat-card-avatar></div>
+          <mat-form-field class="commentInput">
+            <mat-label>Leave a comment</mat-label>
+            <textarea matInput value=""></textarea>
+          </mat-form-field>
         </form>
         <div>
           <mat-card>
             <mat-card-header>
-              <div mat-card-avatar class="example-header-image"></div>
+              <div mat-card-avatar></div>
               <mat-card-title>Shiba Inu</mat-card-title>
             </mat-card-header>
             <mat-card-content>
@@ -66,6 +63,6 @@
         </div>
       </div>
     </mat-expansion-panel>
-    
+
   </mat-card>
 </div>
