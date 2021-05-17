@@ -57,8 +57,11 @@ export class ServiceComponent implements OnInit {
   ngOnInit(): void {
     this.serviceForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),
-    })
+    });
+    this.responsiveConfig();
+  }
 
+  responsiveConfig() {
     if (this.breakpointObserver.isMatched('(min-width: 600px)')) {
       this.max_width = '60';
       this.columns = '5';
@@ -70,6 +73,7 @@ export class ServiceComponent implements OnInit {
     this.isWideScreen = this.breakpointObserver
       .observe(['(min-width: 600px)'])
       .pipe(map(({ matches }) => matches));
+
   }
 
   async commentService(id: string) {
@@ -143,7 +147,7 @@ export class ServiceComponent implements OnInit {
     this.rating = rating;
   }
 
-  async loadComments(id: number){
+  async loadComments(id: number) {
     const query = getServiceReviews(id);
     try {
       const reponse = await this.connection.post(query, true);

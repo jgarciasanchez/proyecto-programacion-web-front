@@ -36,6 +36,14 @@ export class AuthService {
     localStorage.setItem('currentUserRole', role);
   }
 
+  public async setCurrentUserName(name: string, lastName: string) {
+    localStorage.setItem('currentUserName', name + " " + lastName);
+  }
+
+  public getCurrentUserName() {
+    return localStorage.getItem('currentUserName');
+  }
+
   public getCurrentUserRole() {
     return localStorage.getItem('currentUserRole');
   }

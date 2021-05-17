@@ -36,8 +36,25 @@ export class MainContentComponent implements OnInit {
     public auth: AuthService,
     private _snackBar: MatSnackBar) { }
 
-  ngOnInit(): void {
 
+
+  ngOnInit(): void {
+    this.loadDataFromResolvers();
+    this.responsiveConfig();
+    this.authUser = (this.auth.isAuthenticated() == 'true');
+    for (let i = 0; i < 9; i++) {
+      this.tiles.push({ cols: 1, rows: 1, color: '#ffff' },)
+    }
+  }
+
+  responsiveConfig() {
+    this.isWideScreen$ = this.breakpointObserver
+      .observe(['(min-width: 600px)'])
+      .pipe(map(({ matches }) => matches));
+  }
+
+
+  loadDataFromResolvers() {
     const dataGetServiceFromAsync = this.route.snapshot.data.services;
     const dataGetAuthFromAsync = this.route.snapshot.data.auth;
     try {
@@ -72,17 +89,5 @@ export class MainContentComponent implements OnInit {
         data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
       });
     }
-
-
-    this.authUser = (this.auth.isAuthenticated() == 'true');
-
-    this.isWideScreen$ = this.breakpointObserver
-      .observe(['(min-width: 600px)'])
-      .pipe(map(({ matches }) => matches));
-
-    for (let i = 0; i < 9; i++) {
-      this.tiles.push({ cols: 1, rows: 1, color: '#ffff' },)
-    }
   }
-
 }

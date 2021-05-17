@@ -11,10 +11,10 @@ export class IsAuthorizeddGuard implements CanActivate {
   canActivate(route: ActivatedRouteSnapshot): boolean {
     const state = this.isAuthenticated.getCurrentUserRole();
 
-    if (state == "admin") {
+    if (state == "ADMIN") {
       return true;
     }
-    this.router.navigate(['/','home']);
+    this.router.navigate(['/','restricted']);
     return false;
   }
 }

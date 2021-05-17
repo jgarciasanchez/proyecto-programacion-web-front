@@ -12,11 +12,14 @@ import { RegisterServiceComponent } from './components/register-service/register
 import { FriendsResolver } from './resolvers/friends.resolver';
 import { AuthResolver } from './resolvers/auth.resolver';
 import { ReportedServicesResolver } from './resolvers/reportedServices.resolver';
+import { IsAuthorizeddGuard } from './guards/is-authorized.guard';
+import { RestrictedComponent } from './components/restricted/restricted.component';
 
 const routes: Routes = [
+  { path: 'restricted', component: RestrictedComponent },
   {
     path: 'admin', component: ReportsContentComponent,
-    canActivate: [IsAuthenticatedGuard],
+    canActivate: [IsAuthorizeddGuard],
     resolve: {services: ReportedServicesResolver}
   }, 
   {

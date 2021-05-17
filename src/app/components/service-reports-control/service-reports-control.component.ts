@@ -43,6 +43,10 @@ export class ServiceReportsControlComponent implements OnInit {
 
   }
   ngOnInit(): void {
+    this.loadDataFromResolvers();
+  }
+
+  loadDataFromResolvers(){
     const dataGetServiceFromAsync = this.route.snapshot.data.services;
     const { getReportedServices }: any = dataGetServiceFromAsync.data;
     let { success, data }: GetReportedServicesOutput = getReportedServices;
@@ -56,7 +60,6 @@ export class ServiceReportsControlComponent implements OnInit {
         data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
       });
     }
-    
   }
 
   ngAfterViewInit() {

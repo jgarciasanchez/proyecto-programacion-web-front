@@ -62,6 +62,7 @@ import { RegisterServiceComponent } from './components/register-service/register
 import { AlertsComponent } from './components/alerts/alerts.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
 import { ServiceReportsControlComponent } from './components/service-reports-control/service-reports-control.component';
+import { RestrictedComponent } from './components/restricted/restricted.component';
 
 @NgModule({
   declarations: [
@@ -77,7 +78,8 @@ import { ServiceReportsControlComponent } from './components/service-reports-con
     RegisterServiceComponent,
     AlertsComponent,
     StarRatingComponent,
-    ServiceReportsControlComponent
+    ServiceReportsControlComponent,
+    RestrictedComponent
   ],
   imports: [
     NgxEchartsModule.forRoot({
