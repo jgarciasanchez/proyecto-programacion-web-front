@@ -14,6 +14,7 @@ import { ServiceComponent } from '../service/service.component';
 import { GetUsersAndServiserOutput, UsersAndServicesData } from 'src/app/conections/services/response';
 import { GetUserFriendsOutput } from 'src/app/conections/friends/response';
 import { User } from 'src/app/conections/user/response';
+import { IsAuthOutput } from 'src/app/conections/auth/response';
 export interface Tile {
   color: string;
   cols: number;
@@ -42,6 +43,14 @@ export class MainContentComponent implements OnInit {
   ngOnInit(): void {
 
     const dataGetServiceFromAsync = this.route.snapshot.data.services;
+    const dataGetAuthFromAsync = this.route.snapshot.data.auth;
+    try {
+      const { isAuth }: any = dataGetAuthFromAsync.data;
+      const auth: IsAuthOutput = isAuth;
+      this.auth.setAuthenticated('true');
+    } catch (error) {
+      this.auth.setAuthenticated('false');
+    }
     if (this.auth.isAuthenticated() == 'true') {
       console.log(this.auth.isAuthenticated())
       const dataGetFriendsFromAsync = this.route.snapshot.data.friends;

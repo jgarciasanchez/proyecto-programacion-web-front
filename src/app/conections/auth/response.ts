@@ -16,3 +16,8 @@ export class LoginUserOutput extends BaseResponse {
   @Field({ nullable: true })
   token?: string;
 }
+
+@ObjectType()
+export class IsAuthOutput extends BaseResponse {
+
+}

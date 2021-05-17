@@ -11,3 +11,14 @@ export function login(email: string,password: string){
       }`;
     return result;
 } 
+
+export function isAuth(){
+  var result = `query{
+    isAuth{
+      success
+      message
+      code
+    }
+  }`;
+  return result;
+} 

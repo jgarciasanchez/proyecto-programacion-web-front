@@ -5,13 +5,13 @@ import {
   ActivatedRouteSnapshot
 } from '@angular/router';
 import { EMPTY } from 'rxjs';
-import { addReview } from '../conections/services/resolvers';
+import { isAuth } from '../conections/auth/resolver';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class CommentResolver implements Resolve<any> {
+export class AuthResolver implements Resolve<any> {
 
   constructor(
     private router: Router,
@@ -19,11 +19,10 @@ export class CommentResolver implements Resolve<any> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // const query = addReview();
+    const query = isAuth();
     try {
-        // const reponse =   await this.connection.post(query, true);
-        console.log();
-        // return reponse;
+        const reponse =   await this.connection.post(query, true);
+        return reponse;
     } catch (e) {
       console.log("fallo");
     }

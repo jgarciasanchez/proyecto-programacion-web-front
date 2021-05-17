@@ -1,11 +1,11 @@
-<div class="serviceCard" [ngStyle]="{ 'max-width': max_width + '%'}">
+<div class="serviceCard" [ngStyle]="{ 'width': max_width + '%'}">
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
       <mat-card-title>{{service.name + ' ' + service.lastName}}</mat-card-title>
       <mat-card-subtitle>{{service.title}}</mat-card-subtitle>
       <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu" >
+      <button mat-icon-button [matMenuTriggerFor]="menu">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -30,46 +30,33 @@
       </mat-grid-list>
     </div>
 
-    <mat-expansion-panel hideToggle>
+    <mat-expansion-panel hideToggle (opened)="loadComments(service.serviceId)">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Comentarios
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div>
-        <form [formGroup]="serviceForm" (submit)='commentService(service.serviceId)'  class="commentForm">
-          <mat-star-rating [rating]="rating"  [starCount]="starCount" [color]="starColor" 
-          (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+        <form [formGroup]="serviceForm" (submit)='commentService(service.serviceId)' class="commentForm">
+          <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor"
+            (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
           <mat-form-field class="commentInput">
             <mat-label>Leave a comment</mat-label>
             <textarea formControlName="comment" color='accent' matInput value=""></textarea>
           </mat-form-field>
           <button mat-stroked-button color="accent">Enviar</button>
         </form>
-        <div>
+        <div *ngFor="let comment of comments">
           <mat-card>
             <mat-card-header>
-              <div mat-card-avatar></div>
-              <mat-card-title>Shiba Inu</mat-card-title>
+              <mat-card-title>{{comment.name }} {{comment.lastName}}</mat-card-title>
+              <mat-card-subtitle>
+                <mat-star-rating [rating]="comment.rating" [starCount]="5" [color]="starColor"></mat-star-rating>
+              </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <p class="mat-h3">
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                bred for hunting.
-              </p>
-            </mat-card-content>
-          </mat-card>
-          <mat-card>
-            <mat-card-header>
-              <div mat-card-avatar class="example-header-image"></div>
-              <mat-card-title>Shiba Inu</mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
-              <p class="mat-h3">
-                The Shiba Inu is the smallest of the six original and distinct spitz breeds of dog from Japan.
-                A small, agile dog that copes very well with mountainous terrain, the Shiba Inu was originally
-                bred for hunting.
+                {{comment.description}}
               </p>
             </mat-card-content>
           </mat-card>

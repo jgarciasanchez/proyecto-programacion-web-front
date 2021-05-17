@@ -4,7 +4,7 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { addReview, reportService } from 'src/app/conections/services/resolvers';
+import { addReview, getServiceReviews, reportService } from 'src/app/conections/services/resolvers';
 import { Service } from 'src/app/models/serviceCreator';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AlertsComponent } from '../alerts/alerts.component';
@@ -35,6 +35,7 @@ export class ServiceComponent implements OnInit {
   max_width: string;
   columns: string;
   serviceForm: FormGroup;
+  comments: [] = [];
 
   tiles: Tile[] = [
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
@@ -60,7 +61,7 @@ export class ServiceComponent implements OnInit {
     })
 
     if (this.breakpointObserver.isMatched('(min-width: 600px)')) {
-      this.max_width = '50';
+      this.max_width = '60';
       this.columns = '5';
     } else {
       this.max_width = '100';
@@ -77,6 +78,7 @@ export class ServiceComponent implements OnInit {
       const query = addReview(parseInt(id), this.serviceForm.controls['comment'].value, this.rating);
       try {
         const response = await this.connection.post(query, true);
+        this.loadComments(parseInt(id));
         this.serviceForm = this.formBuilder.group({
           comment: new FormControl('', [Validators.required]),
         })
@@ -141,6 +143,20 @@ export class ServiceComponent implements OnInit {
 
   onRatingChanged(rating) {
     this.rating = rating;
+  }
+
+  async loadComments(id: number){
+    const query = getServiceReviews(id);
+    try {
+      const reponse = await this.connection.post(query, true);
+      const { getServiceReviews }: any = reponse.data;
+      this.comments = getServiceReviews.data;
+    } catch (e) {
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Error cargando los comentarios Error: ' + e, type: 1 },
+      });
+    }
   }
 
 }

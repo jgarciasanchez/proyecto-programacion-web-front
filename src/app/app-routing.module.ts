@@ -10,6 +10,7 @@ import { ServicesResolver } from './resolvers/services.resolver';
 import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
 import { FriendsResolver } from './resolvers/friends.resolver';
+import { AuthResolver } from './resolvers/auth.resolver';
 
 const routes: Routes = [
   {
@@ -24,11 +25,11 @@ const routes: Routes = [
     children: [
       {
         path: '', component: MainContentComponent,
-        resolve: {services: ServicesResolver, friends: FriendsResolver}
+        resolve: {services: ServicesResolver, friends: FriendsResolver, auth: AuthResolver}
       },
       {
         path: 'home', component: MainContentComponent,
-        resolve: {services: ServicesResolver, friends: FriendsResolver}
+        resolve: {services: ServicesResolver, friends: FriendsResolver, auth: AuthResolver}
       },
       {
         path: 'admin', component: MainContentComponent

@@ -55,7 +55,6 @@ export function reportService(id: number) {
 }
 
 export function addReview(id: number, comment: string, rating: number) {
-  const idAux = id;
   var result = `mutation{
     addReview(serviceData:{
     serviceId:${id}
@@ -71,3 +70,28 @@ export function addReview(id: number, comment: string, rating: number) {
 }`;
   return result;
 }
+
+export function getServiceReviews(id: number) {
+  var result = `query{
+    getServiceReviews(serviceData:{
+    serviceId:${id}
+  }){
+    success
+    message
+    success
+    data{
+      id
+      createdAt
+      description
+      serviceId
+      rating
+      creatorUserId
+      name
+      lastName
+    }
+  }
+}`;
+  return result;
+}
+
+
