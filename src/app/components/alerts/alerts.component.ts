@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Inject, Input, OnInit } from '@angular/core';
+import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-alerts',
@@ -7,7 +8,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AlertsComponent implements OnInit {
 
-  constructor() { }
+  message: string;
+  type: number;
+
+  constructor(@Inject(MAT_SNACK_BAR_DATA) public data: any) {
+    const { message } = data;
+    const { type } = data;
+    this.message = message;
+    this.type = type;
+  }
 
   ngOnInit(): void {
   }

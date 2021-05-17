@@ -74,14 +74,19 @@ export class LoginComponent {
         }else{
           this._snackBar.openFromComponent(AlertsComponent, {
             duration: 2 * 1000,
+            data: {message: 'Fallo', type: 1},
           });
         }
       }else{
-        console.log("fallo");      
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: {message: 'Fallo', type: 1},
+        });     
       } 
     }catch(e){
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
+        data: {message: 'Fallo', type: 1},
       });
     }
   }

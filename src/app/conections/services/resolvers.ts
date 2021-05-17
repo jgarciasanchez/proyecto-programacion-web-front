@@ -31,9 +31,42 @@ export function getServicesAndUser() {
       name
       lastName
       id
+      serviceId
       description
       title
     }
+  }
+}`;
+  return result;
+}
+
+export function reportService(id: number) {
+  var result = `mutation{
+    reportService(serviceData:
+            {
+          serviceId:${id}
+        }
+    ){
+      success
+      message
+    }
+  }`;
+  return result;
+}
+
+export function addReview(id: number, comment: string, rating: number) {
+  const idAux = id;
+  var result = `mutation{
+    addReview(serviceData:{
+    serviceId:${id}
+    description:"${comment}"
+    rating: ${rating}
+
+  }){
+    success
+    message
+    code
+
   }
 }`;
   return result;

@@ -9,7 +9,7 @@
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
-        <button mat-menu-item (click)='reportService()'>
+        <button mat-menu-item (click)='reportService(service.serviceId)'>
           <mat-icon>report</mat-icon>
           <span>Reportar servicio</span>
         </button>
@@ -37,12 +37,14 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <div>
-        <form class="commentForm">
-          <div mat-card-avatar></div>
+        <form [formGroup]="serviceForm" (submit)='commentService(service.serviceId)'  class="commentForm">
+          <mat-star-rating [rating]="rating"  [starCount]="starCount" [color]="starColor" 
+          (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
           <mat-form-field class="commentInput">
             <mat-label>Leave a comment</mat-label>
-            <textarea matInput value=""></textarea>
+            <textarea formControlName="comment" color='accent' matInput value=""></textarea>
           </mat-form-field>
+          <button mat-stroked-button color="accent">Enviar</button>
         </form>
         <div>
           <mat-card>

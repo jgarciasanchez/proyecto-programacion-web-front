@@ -1,3 +1,18 @@
-<span class="example-pizza-party">
-    Pizza party!!! 🍕
-  </span>
+<div *ngIf='type == 1' >
+    <span class="">
+        {{message}}
+    </span>
+    <mat-icon class="icon">error</mat-icon>
+</div>
+<div *ngIf='type == 2' >
+    <span class="">
+        {{message}}
+    </span>
+    <mat-icon class="icon">check icon</mat-icon>
+</div>
+<div *ngIf='type == 3' >
+    <span class="">
+        {{message}}
+    </span>
+    <mat-icon class="icon">error</mat-icon>
+</div>

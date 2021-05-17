@@ -32,14 +32,13 @@ export class RegisterServiceComponent implements OnInit {
 
   async registerService() {
     if (this.serviceForm.valid) {
-      
-    }
-    const query = registerService(this.serviceForm.controls['title'].value, this.serviceForm.controls['description'].value);
-    try {
-      const response = await this.connection.post(query, true);
-      console.log(response);
-    } catch (e) {
-      console.log("fallo");
+      const query = registerService(this.serviceForm.controls['title'].value, this.serviceForm.controls['description'].value);
+      try {
+        const response = await this.connection.post(query, true);
+        console.log(response);
+      } catch (e) {
+        console.log("fallo");
+      }
     }
   }
 
