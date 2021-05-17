@@ -5,7 +5,6 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { addReview, getServiceReviews, reportService } from 'src/app/conections/services/resolvers';
-import { Service } from 'src/app/models/serviceCreator';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { StarRatingColor } from '../star-rating/star-rating.component';
@@ -84,7 +83,10 @@ export class ServiceComponent implements OnInit {
         })
         this.rating = 3;
       } catch (e) {
-        console.log("fallo");
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+        });
       }
     }
   }
@@ -107,13 +109,6 @@ export class ServiceComponent implements OnInit {
       this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
     }
     return this.tiles;
-    // else if (this.images.length == 5 ) {
-    //   this.tiles.push({ url: this.images[0], cols: 3, rows: 4, color: 'lightblue' });
-    //   this.tiles.push({ url: this.images[0], cols: 1, rows: 6, color: 'lightblue' });
-    //   this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-    //   this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-    //   this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-    // }
   }
 
   async reportService(id: number) {
@@ -123,11 +118,14 @@ export class ServiceComponent implements OnInit {
 
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
-        data: { message: 'Se reporto ', type: 1 },
+        data: { message: 'Se reporto de forma correcta', type: 2 },
       });
       return reponse;
     } catch (e) {
-      console.log("fallo");
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Hubo un fallo al reportar el servicio', type: 1 },
+      });
     }
   }
 

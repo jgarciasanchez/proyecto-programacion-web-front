@@ -11,17 +11,22 @@ import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
 import { FriendsResolver } from './resolvers/friends.resolver';
 import { AuthResolver } from './resolvers/auth.resolver';
+import { ReportedServicesResolver } from './resolvers/reportedServices.resolver';
 
 const routes: Routes = [
   {
-    path: 'admin', component: ReportsContentComponent
+    path: 'admin', component: ReportsContentComponent,
+    canActivate: [IsAuthenticatedGuard],
+    resolve: {services: ReportedServicesResolver}
   }, 
   {
      path: 'login', component: LoginComponent 
   },
   {
+    path: 'register', component: RegistrationComponent
+  },
+  {
     path: '', component: MainComponent,
-    // canActivate: [IsAuthenticatedGuard],
     children: [
       {
         path: '', component: MainContentComponent,

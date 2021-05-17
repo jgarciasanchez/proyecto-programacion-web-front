@@ -15,18 +15,15 @@ export class NavBarMainComponent implements OnInit {
 
   ngOnInit(): void {
     this.authUser = (this.auth.isAuthenticated() == 'true');
-    console.log(this.authUser);
   }
 
   onLogout() {
     this.auth.setAuthenticated("false");
-    if (true) {
-      this.router.navigate(['/', 'login']);
-    }
+    this.auth.setToken('')
+    this.router.navigate(['/', 'login']);
   }
 
   onLogin() {
-    console.log(this.auth.Authenticated);
     this.router.navigate(['/', 'login']);
   }
 

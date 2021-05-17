@@ -1,6 +1,7 @@
 import { ObjectType, Field, ID, Authorized, registerEnumType } from "type-graphql";
 import { Service } from '../services/response'
 import { Review } from '../reviews/response'
+import { BaseResponse } from "../utils/utils";
 
 export enum RolesTypes {
     NONE = "NONE",
@@ -35,6 +36,14 @@ registerEnumType(UserStatusTypes, {
         UNVERIFIED: { description: "UNVERIFIED" },
     },
 });
+
+@ObjectType()
+export class GetCurrentUserOutput extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: User;
+
+}
 
 @ObjectType()
 export class User {

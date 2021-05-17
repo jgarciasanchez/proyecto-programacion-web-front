@@ -3,27 +3,28 @@ import { Router } from '@angular/router';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { LoginResponseData, LoginUserOutput } from 'src/app/conections/auth/response';
 import { login } from 'src/app/conections/auth/resolver';
-import {  } from 'src/app/conections/auth/input';
+import { } from 'src/app/conections/auth/input';
 import { Validators, FormBuilder, FormGroup, FormControl } from '@angular/forms';
-import { InputValidators } from '../../providers/validators/inputvalidators';
 import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertsComponent } from '../alerts/alerts.component';
+import { getCurrentUser } from 'src/app/conections/user/resolver';
+import { GetCurrentUserOutput } from 'src/app/conections/user/response';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css',
-  '../../../assets/bootstrap/css/bootstrap.min.css',
-  '../../../assets/fonts/fontawesome-all.min.css',
-  '../../../assets/fonts/font-awesome.min.css',
-  '../../../assets/fonts/fontawesome5-overrides.min.css']
+    '../../../assets/bootstrap/css/bootstrap.min.css',
+    '../../../assets/fonts/fontawesome-all.min.css',
+    '../../../assets/fonts/font-awesome.min.css',
+    '../../../assets/fonts/fontawesome5-overrides.min.css']
 })
 export class LoginComponent {
 
   playerName: string;
-  isloading:boolean;
-  formGroup:FormGroup;
+  isloading: boolean;
+  formGroup: FormGroup;
   log_user: FormControl;
   log_password: FormControl;
 
@@ -33,17 +34,17 @@ export class LoginComponent {
     public formBuilder: FormBuilder,
     private authService: AuthService,
     private _snackBar: MatSnackBar
-    ) {
-    }
+  ) {
+  }
 
 
   ngOnInit() {
     this.formConstructor();
   }
 
-  formConstructor(){
+  formConstructor() {
     this.log_user = new FormControl('', [Validators.required]);
-    this.log_password =  new FormControl('', [
+    this.log_password = new FormControl('', [
       Validators.required,
       Validators.maxLength(16)
     ]);
@@ -54,44 +55,55 @@ export class LoginComponent {
     });
   }
 
-  async signIn(){
-    var user=this.getCurrentUser();
-    const query = login(user.username,user.password);
-    try{
-      const response = await this.connection.post(query, true);
-      console.log(response);
-      if(response){
-        const { loginUser } : any = response.data;
-        let { success, data, token } : LoginUserOutput  = loginUser;
-        console.log(success);
-        if( success ){
+  onRegister(){
+    this.router.navigate(['/', 'register']);
+  }
+
+  async signIn() {
+    var user = this.getCurrentUser();
+    const query = login(user.username, user.password);
+    try {
+      const responseLoginUser = await this.connection.post(query, true);
+      if (responseLoginUser) {
+        const { loginUser }: any = responseLoginUser.data;
+        let { success, data, token }: LoginUserOutput = loginUser;
+        if (success) {
           this.authService.setAuthenticated("true");
           this.authService.setToken(token);
-          console.log(this.authService.isAuthenticated());
-          console.log("token  "+ this.authService.getToken());
-
+          const query = getCurrentUser();
+          try {
+            const responseCurrentUser = await this.connection.post(query, true);
+            const { getCurrentUser }: any = responseCurrentUser.data;
+            let { data }: GetCurrentUserOutput = getCurrentUser;
+            this.authService.setCurrentUserRole(data.role);
+          } catch (e) {
+            this._snackBar.openFromComponent(AlertsComponent, {
+              duration: 2 * 1000,
+              data: { message: 'Error obteniendo el usuario actual', type: 1 },
+            });
+          }
           this.router.navigate(['/', 'home']);
-        }else{
+        } else {
           this._snackBar.openFromComponent(AlertsComponent, {
             duration: 2 * 1000,
-            data: {message: 'Fallo', type: 1},
+            data: { message: 'Fallo el inicio de sesion', type: 1 },
           });
         }
-      }else{
+      } else {
         this._snackBar.openFromComponent(AlertsComponent, {
           duration: 2 * 1000,
-          data: {message: 'Fallo', type: 1},
-        });     
-      } 
-    }catch(e){
+          data: { message: 'Fallo el inicio de sesion', type: 1 },
+        });
+      }
+    } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
-        data: {message: 'Fallo', type: 1},
+        data: { message: 'Fallo el inicio de sesion', type: 1 },
       });
     }
   }
 
-  getCurrentUser(){
+  getCurrentUser() {
     const user = {
       username: this.getType('log_user'),
       password: this.getType('log_password')
@@ -99,7 +111,7 @@ export class LoginComponent {
     return user;
   }
 
-  getType(type){
+  getType(type) {
     return this.formGroup.controls[type].value;
   }
 

@@ -1,20 +1,16 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, pipe } from 'rxjs';
-import { of } from 'rxjs/internal/observable/of';
 import { map } from 'rxjs/operators';
-import { getAllServices } from 'src/app/conections/services/resolvers';
-import { Service } from 'src/app/models/serviceCreator';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
-import { ServicesResolver } from 'src/app/resolvers/services.resolver';
 import { AuthService } from 'src/app/services/auth.service';
-import { ServiceComponent } from '../service/service.component';
 import { GetUsersAndServiserOutput, UsersAndServicesData } from 'src/app/conections/services/response';
 import { GetUserFriendsOutput } from 'src/app/conections/friends/response';
 import { User } from 'src/app/conections/user/response';
 import { IsAuthOutput } from 'src/app/conections/auth/response';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AlertsComponent } from '../alerts/alerts.component';
 export interface Tile {
   color: string;
   cols: number;
@@ -35,10 +31,10 @@ export class MainContentComponent implements OnInit {
   friends: User[] = [];
 
   constructor(
-    private connection: GraphqlConnectionService,
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
-    public auth: AuthService) { }
+    public auth: AuthService,
+    private _snackBar: MatSnackBar) { }
 
   ngOnInit(): void {
 
@@ -52,14 +48,16 @@ export class MainContentComponent implements OnInit {
       this.auth.setAuthenticated('false');
     }
     if (this.auth.isAuthenticated() == 'true') {
-      console.log(this.auth.isAuthenticated())
       const dataGetFriendsFromAsync = this.route.snapshot.data.friends;
       const { getUserFriends }: any = dataGetFriendsFromAsync.data;
       const friendsList: GetUserFriendsOutput = getUserFriends;
       if (friendsList.success) {
         this.friends = friendsList.data
       } else {
-        console.log("fallo");
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Fallo la carga de los amigos ', type: 1 },
+        });
       }
     }
 
@@ -69,7 +67,10 @@ export class MainContentComponent implements OnInit {
     if (success) {
       this.services = data;
     } else {
-      console.log("fallo");
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
+      });
     }
 
 

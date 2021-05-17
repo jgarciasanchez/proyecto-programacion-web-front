@@ -24,6 +24,16 @@ export class GetUsersAndServiserOutput extends BaseResponse {
   data?: [UsersAndServicesData];
 
 }
+
+@ObjectType()
+export class GetReportedServicesOutput  extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: [Service];
+
+}
+
+
 @ObjectType()
 export class Service {
 

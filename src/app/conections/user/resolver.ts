@@ -29,3 +29,19 @@ export function getUserFriends() {
   return result;
 }
 
+export function getCurrentUser() {
+  var result = `query{
+    getCurrentUser{
+    success
+    message
+    data{
+      name
+      email
+      createdAt
+      role
+      status
+    }
+  }
+}`;
+  return result;
+}

@@ -95,3 +95,19 @@ export function getServiceReviews(id: number) {
 }
 
 
+export function getReportedServices() {
+  var result = `query{
+    getReportedServices{
+    success
+    message
+    success
+    data{
+      title
+      createdAt
+      description
+      reportCount
+    }
+  }
+}`;
+  return result;
+}

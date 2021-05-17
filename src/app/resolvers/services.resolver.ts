@@ -1,14 +1,13 @@
 import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   Router, Resolve,
   RouterStateSnapshot,
   ActivatedRouteSnapshot
 } from '@angular/router';
-import { EMPTY, Observable, of } from 'rxjs';
-import { empty } from 'rxjs/internal/observable/empty';
-import { catchError } from 'rxjs/operators';
-import { getAllServices, getServicesAndUser } from '../conections/services/resolvers';
-import { Service } from '../models/serviceCreator';
+import { EMPTY } from 'rxjs';
+import { AlertsComponent } from '../components/alerts/alerts.component';
+import { getServicesAndUser } from '../conections/services/resolvers';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
@@ -17,18 +16,20 @@ import { GraphqlConnectionService } from '../providers/graphql-connection/graphq
 export class ServicesResolver implements Resolve<any> {
 
   constructor(
-    private router: Router,
+    private router: Router, private _snackBar: MatSnackBar,
     private connection: GraphqlConnectionService) {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const query = getServicesAndUser();
     try {
-      const reponse =  await this.connection.post(query, true);
-      console.log('');
+      const reponse = await this.connection.post(query, true);
       return reponse;
     } catch (e) {
-      console.log("fallo");
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Se reporto ', type: 1 },
+      });
     }
     return EMPTY;
   }

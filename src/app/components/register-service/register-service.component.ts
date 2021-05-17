@@ -1,9 +1,9 @@
-import { ViewChild } from '@angular/core';
-import { ElementRef } from '@angular/core';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { registerService } from 'src/app/conections/services/resolvers';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
+import { AlertsComponent } from '../alerts/alerts.component';
 
 @Component({
   selector: 'app-register-service',
@@ -20,7 +20,8 @@ export class RegisterServiceComponent implements OnInit {
 
   constructor(
     private connection: GraphqlConnectionService,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private _snackBar: MatSnackBar
   ) { }
 
   ngOnInit(): void {
@@ -35,9 +36,11 @@ export class RegisterServiceComponent implements OnInit {
       const query = registerService(this.serviceForm.controls['title'].value, this.serviceForm.controls['description'].value);
       try {
         const response = await this.connection.post(query, true);
-        console.log(response);
       } catch (e) {
-        console.log("fallo");
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema registrando el servicio', type: 1 },
+        });
       }
     }
   }
