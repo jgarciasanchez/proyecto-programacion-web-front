@@ -29,30 +29,54 @@
         </mat-grid-tile>
       </mat-grid-list>
     </div>
-
-    <mat-expansion-panel hideToggle (opened)="loadComments(service.serviceId)">
+    <hr>
+    <mat-expansion-panel hideToggle (closed)="closed()" (opened)="loadComments(service.serviceId)"
+      style="background-color:{{colorComments}};">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Comentarios
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <div>
-        <form [formGroup]="serviceForm" (submit)='commentService(service.serviceId)' class="commentForm">
-          <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor"
-            (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+      <form [formGroup]="serviceForm" (submit)='commentService(service.serviceId)' class="commentForm">
+        <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor"
+          (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
+        <mat-form-field class="commentInput">
+          <mat-label>Escriba un comentario</mat-label>
+          <textarea formControlName="comment" color='accent' matInput value=""></textarea>
+        </mat-form-field>
+        <button mat-stroked-button color="accent">Enviar</button>
+      </form>
+      <div *ngFor="let comment of comments">
+        <mat-card class="comment">
+          <mat-card-header>
+            <mat-card-title>{{comment.name }} {{comment.lastName}}</mat-card-title>
+            <mat-card-subtitle>
+              <mat-star-rating [rating]="comment.rating" [starCount]="5" [color]="starColor"></mat-star-rating>
+            </mat-card-subtitle>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="mat-h3">
+              {{comment.description}}
+            </p>
+          </mat-card-content>
+          <mat-card-actions>
+            <button mat-button>Me gusta</button>
+            <button mat-button (click)="test()">Responder</button>
+          </mat-card-actions>
+        </mat-card>
+
+        <form [formGroup]="serviceForm" (submit)='responseComment(service.serviceId)' [ngStyle]="{'display': showResponse}"  class="responseForm">
           <mat-form-field class="commentInput">
-            <mat-label>Leave a comment</mat-label>
+            <mat-label>Escriba un comentario</mat-label>
             <textarea formControlName="comment" color='accent' matInput value=""></textarea>
           </mat-form-field>
           <button mat-stroked-button color="accent">Enviar</button>
         </form>
-        <div *ngFor="let comment of comments">
-          <mat-card>
+
+        <div class="commentResponse" *ngFor="let comment of comments">
+          <mat-card class="comment">
             <mat-card-header>
               <mat-card-title>{{comment.name }} {{comment.lastName}}</mat-card-title>
-              <mat-card-subtitle>
-                <mat-star-rating [rating]="comment.rating" [starCount]="5" [color]="starColor"></mat-star-rating>
-              </mat-card-subtitle>
             </mat-card-header>
             <mat-card-content>
               <p class="mat-h3">
@@ -63,6 +87,5 @@
         </div>
       </div>
     </mat-expansion-panel>
-
   </mat-card>
 </div>

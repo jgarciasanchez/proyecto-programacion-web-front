@@ -35,6 +35,8 @@ export class ServiceComponent implements OnInit {
   columns: string;
   serviceForm: FormGroup;
   comments: [] = [];
+  colorComments: string = "rgb(255, 255, 255)";
+  showResponse: string = 'none';
 
   tiles: Tile[] = [
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
@@ -147,18 +149,31 @@ export class ServiceComponent implements OnInit {
     this.rating = rating;
   }
 
+  closed(){
+    this.colorComments = 'rgb(255, 255, 255)';
+  }
+
   async loadComments(id: number) {
+    this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);
     try {
       const reponse = await this.connection.post(query, true);
       const { getServiceReviews }: any = reponse.data;
       this.comments = getServiceReviews.data;
+      this.comments.forEach(comment => {
+        console.log(comment);
+      });
+      console.log(this.comments);
     } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
         data: { message: 'Error cargando los comentarios Error: ' + e, type: 1 },
       });
     }
+  }
+
+  test(){
+    this.showResponse = "block";
   }
 
 }

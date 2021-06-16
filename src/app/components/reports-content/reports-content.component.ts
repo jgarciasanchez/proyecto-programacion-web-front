@@ -24,8 +24,14 @@ export class ReportsContentComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver) { }
 
   ngOnInit(): void {
+    // var filter = new Filter();
+    var Filter = require('bad-words'), filter = new Filter();
+    var newBadWords = ['carepicha', 'playo', 'malparido'];
+    filter.addWords(...newBadWords);
+    var text = "Don't be an carepicha";
+    console.log(filter.clean(text));
     this.loadDataFirstGraph();
-    this.loadDataSecondGraph();
+    // this.loadDataSecondGraph();
   }
 
   loadDataSecondGraph() {
@@ -81,7 +87,7 @@ export class ReportsContentComponent implements OnInit {
   loadDataFirstGraph() {
 
     this.data = [];
-    this.now = new Date(1997, 9, 3);
+    this.now = new Date(1997, 1, 1);
     this.value = Math.random() * 1000;
 
     this.isWideScreen$ = this.breakpointObserver

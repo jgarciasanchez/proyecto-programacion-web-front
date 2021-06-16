@@ -21,6 +21,7 @@
     "@angular/platform-browser": "~11.2.9",
     "@angular/platform-browser-dynamic": "~11.2.9",
     "@angular/router": "~11.2.9",
+    "bad-words": "^3.0.4",
     "class-validator": "^0.13.1",
     "echarts": "^5.1.1",
     "google-libphonenumber": "^3.2.20",

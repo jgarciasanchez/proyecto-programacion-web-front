@@ -3,12 +3,20 @@
     background-size: cover;
   }
 
-  .serviceCard{
+  .serviceCard {
     max-width: 80%;
   }
 
   .commentForm {
     display: block;
+  }
+
+  .responseForm{
+    padding-left: 5%;
+  }
+
+  .commentResponse{
+    padding-left: 5%;
   }
 
   .aa {
@@ -35,4 +43,9 @@
 
   .spacer {
     flex: 1 1 auto;
-}
+  }
+
+  .comment{
+    padding: 1%;
+    margin-bottom: 1%;;
+  }
