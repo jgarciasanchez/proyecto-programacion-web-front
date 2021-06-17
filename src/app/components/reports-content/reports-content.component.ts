@@ -1,7 +1,9 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { GetAllUsersReportOutput } from 'src/app/conections/user/response';
 
 @Component({
   selector: 'app-reports-content',
@@ -19,40 +21,68 @@ export class ReportsContentComponent implements OnInit {
   private value: number;
   private data: any[];
   private timer: any;
+  usersCountByDate: number[] = [];
+  userGroups = new Map();
+  dates: string[] = [];
   isWideScreen$: Observable<boolean>;
 
-  constructor(private breakpointObserver: BreakpointObserver) { }
+  constructor(private breakpointObserver: BreakpointObserver,
+    private route: ActivatedRoute,) { }
 
   ngOnInit(): void {
-    // var filter = new Filter();
-    var Filter = require('bad-words'), filter = new Filter();
-    var newBadWords = ['carepicha', 'playo', 'malparido'];
-    filter.addWords(...newBadWords);
-    var text = "Don't be an carepicha";
-    console.log(filter.clean(text));
-    this.loadDataFirstGraph();
-    // this.loadDataSecondGraph();
+    // // var filter = new Filter();
+    // var Filter = require('bad-words'), filter = new Filter();
+    // var newBadWords = ['carepicha', 'playo', 'malparido'];
+    // filter.addWords(...newBadWords);
+    // var text = "Don't be an carepicha";
+    // console.log(filter.clean(text));
+    // this.loadDataFirstGraph();
+    this.loadDataSecondGraph();
   }
 
   loadDataSecondGraph() {
-    const xAxisData = [];
-    const data1 = [];
-    const data2 = [];
+    const dataGetServiceFromAsync = this.route.snapshot.data.allUsers;
 
-    for (let i = 0; i < 99; i++) {
-      xAxisData.push('category' + (i + 1));
-      data1.push((Math.sin(i / 5) * (i / 5 - 10) + i / 6) * 5);
-      data2.push((Math.cos(i / 8) * (i / 5 - 10) + i / 5) * 8);
+    const { getAllUsersReport }: any = dataGetServiceFromAsync.data;
+    let { success, data }: GetAllUsersReportOutput = getAllUsersReport;
+    try {
+      data.forEach(user => {
+        var aux = parseInt(user.createdAt);
+        if (aux < 10000000000)
+          aux *= 1000; // convert to milliseconds (Epoch is usually expressed in seconds, but Javascript uses Milliseconds)
+        aux = aux + (new Date().getTimezoneOffset() * -1); //for timeZone   
+             
+        var date = new Date (aux);
+        var newDate = date.getDate() + "/" + date.getMonth() + "/" + date.getFullYear();
+
+        user.createdAt = newDate;
+      });
+      data.forEach((item) => {
+        const key = item.createdAt;
+        const collection = this.userGroups.get(key);
+        if (!collection) {
+          this.userGroups.set(key, [item]);
+        } else {
+          collection.push(item);
+        }
+      });
+      var keys = this.userGroups.keys();
+      this.userGroups.forEach((item) => {
+        this.usersCountByDate.push(item.length);
+        this.dates.push(keys.next().value);
+      })
+    } catch (error) {
+      console.log(error);
     }
 
     this.options = {
       legend: {
-        data: ['bar', 'bar2', 'bar3'],
+        data: ['Usuario'],
         align: 'left',
       },
       tooltip: {},
       xAxis: {
-        data: xAxisData,
+        data: this.dates,
         silent: false,
         splitLine: {
           show: false,
@@ -61,22 +91,10 @@ export class ReportsContentComponent implements OnInit {
       yAxis: {},
       series: [
         {
-          name: 'bar',
+          name: 'Usuario',
           type: 'bar',
-          data: data1,
+          data: this.usersCountByDate,
           animationDelay: (idx) => idx * 10,
-        },
-        {
-          name: 'bar2',
-          type: 'bar',
-          data: data2,
-          animationDelay: (idx) => idx * 10 + 100,
-        },
-        {
-          name: 'bar3',
-          type: 'bar',
-          data: data2,
-          animationDelay: (idx) => idx * 10 + 100,
         },
       ],
       animationEasing: 'elasticOut',

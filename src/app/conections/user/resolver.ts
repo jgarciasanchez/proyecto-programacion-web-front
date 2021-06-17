@@ -45,3 +45,23 @@ export function getCurrentUser() {
 }`;
   return result;
 }
+
+export function getAllUsers() {
+  return `query{
+    getAllUsersReport{
+      message
+      description
+      data{
+        id,
+        name,
+        email,
+        expirationDate
+        password,
+        role,
+        status,
+        createdAt,
+        lastName, 
+      }
+    }
+  }`;
+}

@@ -42,6 +42,13 @@ export class GetCurrentUserOutput extends BaseResponse {
 
   @Field({ nullable: true })
   data?: User;
+}
+
+@ObjectType()
+export class GetAllUsersReportOutput  extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: [User];
 
 }
 

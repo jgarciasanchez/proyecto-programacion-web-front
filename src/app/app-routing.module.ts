@@ -14,13 +14,14 @@ import { AuthResolver } from './resolvers/auth.resolver';
 import { ReportedServicesResolver } from './resolvers/reportedServices.resolver';
 import { IsAuthorizeddGuard } from './guards/is-authorized.guard';
 import { RestrictedComponent } from './components/restricted/restricted.component';
+import { UsersResolver } from './resolvers/users.resolver';
 
 const routes: Routes = [
   { path: 'restricted', component: RestrictedComponent },
   {
     path: 'admin', component: ReportsContentComponent,
     canActivate: [IsAuthorizeddGuard],
-    resolve: {services: ReportedServicesResolver}
+    resolve: {services: ReportedServicesResolver, allUsers: UsersResolver}
   }, 
   {
      path: 'login', component: LoginComponent 
@@ -38,9 +39,6 @@ const routes: Routes = [
       {
         path: 'home', component: MainContentComponent,
         resolve: {services: ServicesResolver, friends: FriendsResolver, auth: AuthResolver}
-      },
-      {
-        path: 'admin', component: MainContentComponent
       },
       {
         path: 'registerService', component: RegisterServiceComponent,

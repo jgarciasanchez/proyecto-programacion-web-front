@@ -6,6 +6,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { addReview, getServiceReviews, reportService } from 'src/app/conections/services/resolvers';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
+import { AuthService } from 'src/app/services/auth.service';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { StarRatingColor } from '../star-rating/star-rating.component';
 export interface Tile {
@@ -13,6 +14,11 @@ export interface Tile {
   cols: number;
   rows: number;
   url: string;
+}
+
+class viewComment {
+  comment: any;
+  state: string;
 }
 
 @Component({
@@ -34,9 +40,10 @@ export class ServiceComponent implements OnInit {
   max_width: string;
   columns: string;
   serviceForm: FormGroup;
-  comments: [] = [];
+  comments: viewComment[] = [];
   colorComments: string = "rgb(255, 255, 255)";
   showResponse: string = 'none';
+  authUser: boolean;
 
   tiles: Tile[] = [
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
@@ -52,11 +59,13 @@ export class ServiceComponent implements OnInit {
   constructor(private breakpointObserver: BreakpointObserver,
     private connection: GraphqlConnectionService,
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    public auth: AuthService) { }
 
 
 
   ngOnInit(): void {
+    this.authUser = this.auth.isAuthenticated() == 'true';
     this.serviceForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),
     });
@@ -159,11 +168,10 @@ export class ServiceComponent implements OnInit {
     try {
       const reponse = await this.connection.post(query, true);
       const { getServiceReviews }: any = reponse.data;
-      this.comments = getServiceReviews.data;
-      this.comments.forEach(comment => {
-        console.log(comment);
+
+      getServiceReviews.data.forEach(comment => {
+        this.comments.push({comment: comment, state: "none"});
       });
-      console.log(this.comments);
     } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
@@ -172,8 +180,10 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  test(){
-    this.showResponse = "block";
+  test(comment: HTMLElement){
+    comment.hidden = true;
+    console.log("");
+    // this.showResponse = "block";
   }
 
 }
