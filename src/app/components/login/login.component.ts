@@ -77,6 +77,7 @@ export class LoginComponent {
             let { data }: GetCurrentUserOutput = getCurrentUser;
             this.authService.setCurrentUserRole(data.role);
             this.authService.setCurrentUserName(data.name, data.lastName);
+            this.authService.setCurrentId(data.id.toString());
           } catch (e) {
             this._snackBar.openFromComponent(AlertsComponent, {
               duration: 2 * 1000,

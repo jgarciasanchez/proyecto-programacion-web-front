@@ -1,5 +1,27 @@
 <mat-sidenav-container>
   <mat-sidenav-content>
+    <div class="aaaaa">
+      <form class="d-inline-flex">
+        <mat-form-field class="flex-fill inputSearchBar" appearance="fill">
+          <mat-label>Categoría</mat-label>
+          <input type="text" placeholder="Categoría" aria-label="Categoría" matInput [formControl]="myControl"
+            [matAutocomplete]="auto">
+          <mat-autocomplete #auto="matAutocomplete">
+            <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+              {{option}}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+        <mat-form-field class="flex-fill inputSearchBar" appearance="fill">
+          <mat-label>Palabras Clave</mat-label>
+          <input formControlName="title" #input maxlength="50" matInput placeholder="Keywords">
+        </mat-form-field>
+        <button mat-button color="primary" type="submit">
+          <mat-icon>search</mat-icon>
+        </button>
+      </form>
+    </div>
+
     <div *ngFor="let service of services; index as i">
       <app-service [service]='service' class="servicesList"></app-service>
     </div>

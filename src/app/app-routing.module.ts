@@ -17,6 +17,7 @@ import { UsersResolver } from './resolvers/users.resolver';
 import { ServicesUserResolver } from './resolvers/servicesUser.resolver';
 import { ServicesResolver } from './resolvers/services.resolver';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
+import { UserEditComponent } from './components/user-edit/user-edit.component';
 
 const routes: Routes = [
   { path: 'restricted', component: RestrictedComponent },
@@ -44,10 +45,13 @@ const routes: Routes = [
       },
       {
         path: 'home/service/:userId', component: ServiceInfoComponent,
-        resolve: {}
       },
       {
         path: 'registerService', component: RegisterServiceComponent,
+        canActivate: [IsAuthenticatedGuard]
+      },
+      {
+        path: 'user/edit/:userId', component: UserEditComponent,
         canActivate: [IsAuthenticatedGuard]
       }
     ]

@@ -9,3 +9,15 @@
   .rigthPanel{
     max-width: 40%;
   }
+  
+  .aaaaa{
+    margin-bottom: 2%;
+    margin-top: 2%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .inputSearchBar{
+    width: 100%;
+    height: 100%;
+  }

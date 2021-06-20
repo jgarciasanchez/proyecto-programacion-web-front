@@ -1,5 +1,5 @@
 export function login() {
-  var result = `query{
+  return `query{
         users{
           id,
           name,
@@ -12,11 +12,10 @@ export function login() {
           status
         }
       }`;
-  return result;
 }
 
 export function getUserFriends() {
-  var result = `query{
+  return `query{
     getUserFriends{
     success
     message
@@ -27,11 +26,10 @@ export function getUserFriends() {
     }
   }
   }`;
-  return result;
 }
 
 export function getUserById(id: number) {
-  var result = `query{
+  return `query{
     getUserById(InputData:{
       idUser:${id}
     }){
@@ -46,25 +44,83 @@ export function getUserById(id: number) {
     }
   
   }`;
-  return result;
 }
 
 export function getCurrentUser() {
-  var result = `query{
+  return `query{
     getCurrentUser{
     success
     message
     data{
-      name
-      lastName
-      email
-      createdAt
-      role
-      status
+      name,
+      id,
+      lastName,
+      email,
+      createdAt,
+      role,
+      status,
     }
   }
 }`;
-  return result;
+}
+
+export function getUserProfile(id) {
+  return `query{
+    getUserProfile(serviceData:{
+      idUser:${id}
+    }){
+      data{
+        name,
+        lastName,
+        id,
+        email,
+        serviceId,
+        title,
+        description,
+        reviews{
+        description,
+        rating,
+        createdAt,
+        responses{
+        description,
+        createdAt,
+        createdAt,
+          }
+        }
+      }
+    }
+  }`;
+}
+
+export function isFriend(id: number) {
+  return `query{
+    isFriend(InputData:{
+      idUser: ${id}
+    }){
+      data
+    }
+  }`;
+}
+
+export function deleteFriend(id: number) {
+  return `mutation{
+          deleteFriend(InputData:{
+              idUser:${id}
+            }){
+              data
+            }
+          }`;
+}
+
+export function addFriend(id: number){
+  return `mutation{
+    addUserFriend(InputData:{
+    idFriend:${id}
+  }){
+    success
+    message
+  }
+}`;
 }
 
 export function getAllUsers() {

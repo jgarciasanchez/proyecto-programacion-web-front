@@ -5,7 +5,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { addReview, getServiceReviews, reportService } from 'src/app/conections/services/resolvers';
+import { addReview, getServiceReviews, reportService, responseReview } from 'src/app/conections/services/resolvers';
 import { GetResponseCommentOutput } from 'src/app/conections/services/response';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AuthService } from 'src/app/services/auth.service';
@@ -41,7 +41,8 @@ export class ServiceComponent implements OnInit {
   isWideScreen: Observable<boolean>;
   max_width: string;
   columns: string;
-  serviceForm: FormGroup;
+  commentForm: FormGroup;
+  responseForm: FormGroup;
   comments: viewComment[] = [];
   colorComments: string = "rgb(255, 255, 255)";
   showResponse: string = 'none';
@@ -64,8 +65,11 @@ export class ServiceComponent implements OnInit {
 
   ngOnInit(): void {
     this.authUser = this.auth.isLogged() == 'true';
-    this.serviceForm = this.formBuilder.group({
+    this.commentForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),
+    });
+    this.responseForm = this.formBuilder.group({
+      commentResponse: new FormControl('', [Validators.required]),
     });
     this.responsiveConfig();
   }
@@ -86,15 +90,35 @@ export class ServiceComponent implements OnInit {
   }
 
   async commentService(id: string) {
-    if (this.serviceForm.valid) {
-      const query = addReview(parseInt(id), this.serviceForm.controls['comment'].value, this.rating);
+    if (this.commentForm.valid) {
+      const query = addReview(parseInt(id), this.commentForm.controls['comment'].value, this.rating);
       try {
         const response = await this.connection.post(query, true);
         this.loadComments(parseInt(id));
-        this.serviceForm = this.formBuilder.group({
-          comment: new FormControl('', [Validators.required]),
-        })
+        this.commentForm.controls['comment'].setValue("");
         this.rating = 3;
+      } catch (e) {
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+        });
+      }
+    }
+  }
+
+  responseComment(commentId, serviceId) {
+    if (this.responseForm.valid) {
+      const query = responseReview(parseInt(commentId), this.responseForm.controls['commentResponse'].value);
+      try {
+        this.connection.postHttp(query, true).subscribe(req => {
+          console.log(req);
+
+        }, err => {
+          console.log(err);
+
+        });
+        this.loadComments(parseInt(serviceId));
+        this.responseForm.controls['commentResponse'].setValue("");
       } catch (e) {
         this._snackBar.openFromComponent(AlertsComponent, {
           duration: 2 * 1000,
@@ -124,7 +148,7 @@ export class ServiceComponent implements OnInit {
   }
 
   showProfile(id) {
-    this.router.navigate(['/', 'home/service/' + id]);
+    this.router.navigate(['home', 'service', id]);
   }
 
   onRatingChanged(rating) {
@@ -136,7 +160,9 @@ export class ServiceComponent implements OnInit {
   }
 
   async loadComments(id: number) {
-    console.log(id);
+    console.log(this.service);
+    
+    this.comments = [];
     this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);
     try {
@@ -145,9 +171,6 @@ export class ServiceComponent implements OnInit {
 
       getServiceReviews.data.forEach(comment => {
         this.comments.push({ comment: comment, state: "none" });
-      });
-      this.comments.forEach(comment => {
-        console.log(comment)
       });
     } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {

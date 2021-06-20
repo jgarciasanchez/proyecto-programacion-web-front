@@ -41,7 +41,7 @@
           Comentarios
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <form *ngIf="authUser;" [formGroup]="serviceForm" (submit)='commentService(service.serviceId)'
+      <form *ngIf="authUser;" [formGroup]="commentForm" (submit)='commentService(service.serviceId)'
         class="commentForm">
         <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor"
           (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
@@ -70,11 +70,11 @@
           </mat-card-actions>
         </mat-card>
 
-        <form [formGroup]="serviceForm" (submit)='responseComment(service.serviceId, comment.id)'
+        <form [formGroup]="responseForm" (submit)='responseComment(comment.comment.id, service.serviceId)'
           [ngStyle]="{display: comment.state}" class="responseForm">
           <mat-form-field class="commentInput">
             <mat-label>Escriba un comentario</mat-label>
-            <textarea formControlName="comment" color='accent' matInput value=""></textarea>
+            <textarea formControlName="commentResponse" color='accent' matInput value=""></textarea>
           </mat-form-field>
           <button mat-stroked-button color="accent">Enviar</button>
         </form>

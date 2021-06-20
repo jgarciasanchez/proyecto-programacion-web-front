@@ -2,13 +2,13 @@
     <div class="row">
         <div class="col">
             <img src="" alt="">
-            <h2>{{userInfo.name}} {{userInfo.lastName}}</h2>
-            <h2>{{userInfo.email}}</h2>
-            <button>Agregar amigo</button>
-            <button>Eliminar amigo</button>
+            <h2>{{profile.name}} {{profile.lastName}}</h2>
+            <h2>{{profile.email}}</h2>
+            <button *ngIf="!isFriend && !isHimself" (click)="follow(profile.id)">Agregar amigo</button>
+            <button *ngIf="isFriend && !isHimself" (click)="unFollow(profile.id)">Eliminar amigo</button>
         </div>
         <div class="col">
-            <app-service [service]='service' class="servicesList"></app-service>
+            <app-service [service]='profile' class="servicesList"></app-service>
         </div>
     </div>
 </div>

@@ -2,7 +2,7 @@ import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Observable, pipe } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, startWith } from 'rxjs/operators';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { GetUsersAndServiserOutput, UsersAndServicesData } from 'src/app/conections/services/response';
@@ -12,6 +12,7 @@ import { IsAuthOutput } from 'src/app/conections/auth/response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { getServicesAndUser } from 'src/app/conections/services/resolvers';
+import { FormControl } from '@angular/forms';
 export interface Tile {
   color: string;
   cols: number;
@@ -30,6 +31,9 @@ export class MainContentComponent implements OnInit {
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
   friends: User[] = [];
+  myControl = new FormControl();
+  options: string[] = ['Música', 'Electrodomesticos', 'Cocina', 'Gaming', 'Limpieza', 'Viajes', 'Transporte', 'Entretenimiento', 'Mecánica'];
+  filteredOptions: Observable<string[]>;
 
   constructor(
     private breakpointObserver: BreakpointObserver,
@@ -41,12 +45,23 @@ export class MainContentComponent implements OnInit {
 
 
   ngOnInit(): void {
+    this.filteredOptions = this.myControl.valueChanges
+      .pipe(
+        startWith(''),
+        map(value => this._filter(value))
+      );
     this.loadDataFromResolvers();
     this.responsiveConfig();
     this.authUser = (this.auth.isLogged() == 'true');
     for (let i = 0; i < 9; i++) {
       this.tiles.push({ cols: 1, rows: 1, color: '#ffff' },)
     }
+  }
+  
+  private _filter(value: string): string[] {
+    const filterValue = value.toLowerCase();
+
+    return this.options.filter(option => option.toLowerCase().includes(filterValue));
   }
 
   responsiveConfig() {
@@ -59,16 +74,16 @@ export class MainContentComponent implements OnInit {
   loadDataFromResolvers() {
     const query = getServicesAndUser();
     this.connection.postHttp(query, true).subscribe(req => {
-    const { getServicesAndUser }: any = req.data;
-    let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
-    if (success) {
-      this.services = data;
-    } else {
-      this._snackBar.openFromComponent(AlertsComponent, {
-        duration: 2 * 1000,
-        data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
-      });
-    }
+      const { getServicesAndUser }: any = req.data;
+      let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
+      if (success) {
+        this.services = data;
+      } else {
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
+        });
+      }
     }, errr => {
       console.log(errr);
     });

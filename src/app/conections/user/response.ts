@@ -61,6 +61,14 @@ export class GetUserByIdOutput  extends BaseResponse {
 }
 
 @ObjectType()
+export class GetUserProfileOutput extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: UsersProfileData;
+  
+}
+
+@ObjectType()
 export class User {
   
     id: number;
@@ -93,3 +101,32 @@ export class User {
 
     status!: UserStatusTypes;
 }
+
+
+@ObjectType()
+export class UsersProfileData {
+  
+    id: number;
+
+    name: string;
+
+    lastName: string;
+
+    email: string;
+
+    title: string;
+
+    description: string;
+
+    password: string;
+
+    reviews?: Review[];
+
+    serviceId?: number;
+
+    createdAt?: string;
+
+    updateAt?: string;
+
+}
+

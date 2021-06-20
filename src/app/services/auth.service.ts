@@ -40,6 +40,14 @@ export class AuthService {
     localStorage.setItem('currentUserName', name + " " + lastName);
   }
 
+  public async setCurrentId(id: string) {
+    localStorage.setItem('currentId', id);
+  }
+
+  public getCurrentId() {
+    return localStorage.getItem('currentId');
+  }
+
   public getCurrentUserName() {
     return localStorage.getItem('currentUserName');
   }

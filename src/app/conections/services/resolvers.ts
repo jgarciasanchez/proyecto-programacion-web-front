@@ -24,23 +24,33 @@ export function registerService(title: string, description: string) {
   return result;
 }
 
-export function getServicesAndUser() {
-  var result = `query{
-    getServicesAndUser{
+export function getServicesAndUser(keywords: string = null, tag: string = null, dateFile: string = null, onlyFriends: boolean = null) {
+  return `query{
+    getServicesAndUser(serviceData:{
+      wordFilter:${keywords}
+    categoria:${tag}
+    dateFilter:${dateFile}
+    onlyFriends:${onlyFriends}
+    }){
     success
     message
     success
     data{
-      name
-      lastName
-      id
-      serviceId
-      description
-      title
+      name,
+      lastName,
+      id,
+      serviceId,
+      description,
+      title,
+      createdAt,
+      images{
+        url,
+        createdAt,
+
+      }
     }
   }
 }`;
-  return result;
 }
 
 export function reportService(id: number) {
@@ -117,5 +127,20 @@ export function getReportedServices() {
     }
   }
 }`;
+  return result;
+}
+
+
+export function responseReview(id: number, description: string) {
+  var result = `mutation{
+    responseReview(responseData:{
+      reviewId:${id}
+      description:"${description}"
+      rating:1
+    }){
+  message
+    }
+  
+  }`;
   return result;
 }

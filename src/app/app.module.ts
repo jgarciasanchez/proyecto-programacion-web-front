@@ -39,6 +39,7 @@ import { RestrictedComponent } from './components/restricted/restricted.componen
 import { HttpClientModule } from '@angular/common/http';
 import { ExportToCsv } from 'export-to-csv';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
 
 @NgModule({
@@ -88,7 +89,8 @@ import { ServiceInfoComponent } from './components/service-info/service-info.com
     MatTableModule,
     MatToolbarModule,
     MatButtonModule,
-    HttpClientModule
+    HttpClientModule,
+    MatAutocompleteModule
   ],
   providers: [],
   bootstrap: [AppComponent]
