@@ -7,14 +7,13 @@ import {
 } from '@angular/router';
 import { EMPTY } from 'rxjs';
 import { AlertsComponent } from '../components/alerts/alerts.component';
-import { getAllServices } from '../conections/services/resolvers';
-import { getAllUsers } from '../conections/user/resolver';
+import { getServicesAndUser } from '../conections/services/resolvers';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServicesResolver implements Resolve<any> {
+export class ServicesUserResolver implements Resolve<any> {
 
   constructor(
     private router: Router, private _snackBar: MatSnackBar,
@@ -22,14 +21,14 @@ export class ServicesResolver implements Resolve<any> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const query = getAllServices();
+    const query = getServicesAndUser();
     try {
       const reponse = await this.connection.post(query, true);
       return reponse;
     } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,
-        data: { message: 'Error obteniendo los datos de usuarios ', type: 1 },
+        data: { message: 'Se reporto ', type: 1 },
       });
     }
     return EMPTY;

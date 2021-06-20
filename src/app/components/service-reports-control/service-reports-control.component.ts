@@ -7,23 +7,6 @@ import { ActivatedRoute } from '@angular/router';
 import { GetReportedServicesOutput, Service } from 'src/app/conections/services/response';
 import { AlertsComponent } from '../alerts/alerts.component';
 
-export interface UserData {
-  id: string;
-  name: string;
-  progress: string;
-  color: string;
-}
-
-/** Constants used to fill up our data base. */
-const COLORS: string[] = [
-  'maroon', 'red', 'orange', 'yellow', 'olive', 'green', 'purple', 'fuchsia', 'lime', 'teal',
-  'aqua', 'blue', 'navy', 'black', 'gray'
-];
-const NAMES: string[] = [
-  'Maia', 'Asher', 'Olivia', 'Atticus', 'Amelia', 'Jack', 'Charlotte', 'Theodore', 'Isla', 'Oliver',
-  'Isabella', 'Jasper', 'Cora', 'Levi', 'Violet', 'Arthur', 'Mia', 'Thomas', 'Elizabeth'
-];
-
 @Component({
   selector: 'app-service-reports-control',
   templateUrl: './service-reports-control.component.html',
@@ -31,7 +14,7 @@ const NAMES: string[] = [
 })
 export class ServiceReportsControlComponent implements OnInit {
   reportedServices: Service[] = [];
-  displayedColumns: string[] = ['title', 'description', 'createdAt', 'reportCount'];
+  displayedColumns: string[] = ['title', 'description', 'createdAt', 'reportCount', 'actions'];
   dataSource: MatTableDataSource<Service>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -46,14 +29,29 @@ export class ServiceReportsControlComponent implements OnInit {
     this.loadDataFromResolvers();
   }
 
-  loadDataFromResolvers(){
-    const dataGetServiceFromAsync = this.route.snapshot.data.services;
+  loadDataFromResolvers() {
+    const dataGetServiceFromAsync = this.route.snapshot.data.reportedServices;
     const { getReportedServices }: any = dataGetServiceFromAsync.data;
     let { success, data }: GetReportedServicesOutput = getReportedServices;
 
     if (success) {
       this.reportedServices = data;
+
+      this.reportedServices.sort(function (a, b) {
+        if (a.reportCount < b.reportCount) {
+          return 1;
+        }
+        if (a.reportCount > b.reportCount) {
+          return -1;
+        }
+        return 0;
+      });
+
+
       this.dataSource = new MatTableDataSource(this.reportedServices);
+
+
+
     } else {
       this._snackBar.openFromComponent(AlertsComponent, {
         duration: 2 * 1000,

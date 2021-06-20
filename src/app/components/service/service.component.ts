@@ -2,9 +2,11 @@ import { BreakpointObserver } from '@angular/cdk/layout';
 import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { addReview, getServiceReviews, reportService } from 'src/app/conections/services/resolvers';
+import { GetResponseCommentOutput } from 'src/app/conections/services/response';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { AlertsComponent } from '../alerts/alerts.component';
@@ -51,21 +53,17 @@ export class ServiceComponent implements OnInit {
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 2, rows: 2, color: 'lightpink' },
   ];
 
-  images = ['https://material.angular.io/assets/img/examples/shiba2.jpg',
-    'https://material.angular.io/assets/img/examples/shiba2.jpg',
-    'https://material.angular.io/assets/img/examples/shiba2.jpg']
-
-
   constructor(private breakpointObserver: BreakpointObserver,
     private connection: GraphqlConnectionService,
     private formBuilder: FormBuilder,
+    private router: Router,
     private _snackBar: MatSnackBar,
     public auth: AuthService) { }
 
 
 
   ngOnInit(): void {
-    this.authUser = this.auth.isAuthenticated() == 'true';
+    this.authUser = this.auth.isLogged() == 'true';
     this.serviceForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),
     });
@@ -106,25 +104,6 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  getImageArray() {
-    const a = 3;
-    if (this.images.length == 1) {
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 6, color: 'lightblue' });
-    } else if (this.images.length == 2) {
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 6, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 6, color: 'lightblue' });
-    } else if (this.images.length == 3) {
-      this.tiles.push({ url: this.images[0], cols: 2, rows: 4, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 2, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 2, color: 'lightblue' });
-    } else if (this.images.length > 4) {
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-      this.tiles.push({ url: this.images[0], cols: 1, rows: 3, color: 'lightblue' });
-    }
-    return this.tiles;
-  }
 
   async reportService(id: number) {
     const query = reportService(id);
@@ -144,25 +123,20 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  getColums() {
-    if (this.images.length == 1) {
-      this.columns = '1';
-    } else if (this.images.length == 2 || this.tiles.length == 3 || this.tiles.length == 4) {
-      this.columns = '2';
-    } else if (this.images.length >= 5) {
-      this.columns = '3';
-    }
+  showProfile(id) {
+    this.router.navigate(['/', 'home/service/' + id]);
   }
 
   onRatingChanged(rating) {
     this.rating = rating;
   }
 
-  closed(){
+  closed() {
     this.colorComments = 'rgb(255, 255, 255)';
   }
 
   async loadComments(id: number) {
+    console.log(id);
     this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);
     try {
@@ -170,7 +144,10 @@ export class ServiceComponent implements OnInit {
       const { getServiceReviews }: any = reponse.data;
 
       getServiceReviews.data.forEach(comment => {
-        this.comments.push({comment: comment, state: "none"});
+        this.comments.push({ comment: comment, state: "none" });
+      });
+      this.comments.forEach(comment => {
+        console.log(comment)
       });
     } catch (e) {
       this._snackBar.openFromComponent(AlertsComponent, {
@@ -180,7 +157,7 @@ export class ServiceComponent implements OnInit {
     }
   }
 
-  test(comment: HTMLElement){
+  test(comment: HTMLElement) {
     comment.hidden = true;
     console.log("");
     // this.showResponse = "block";

@@ -11,6 +11,11 @@
     display: block;
   }
 
+  .profileLink :hover{
+    color: blue;
+    cursor: pointer;
+  }
+
   .responseForm{
     padding-left: 5%;
   }

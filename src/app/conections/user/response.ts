@@ -53,6 +53,14 @@ export class GetAllUsersReportOutput  extends BaseResponse {
 }
 
 @ObjectType()
+export class GetUserByIdOutput  extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: User;
+
+}
+
+@ObjectType()
 export class User {
   
     id: number;

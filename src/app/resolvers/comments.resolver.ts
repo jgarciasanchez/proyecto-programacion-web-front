@@ -11,7 +11,7 @@ import { GraphqlConnectionService } from '../providers/graphql-connection/graphq
 @Injectable({
   providedIn: 'root'
 })
-export class CommentResolver implements Resolve<any> {
+export class CommentsResolver implements Resolve<any> {
 
   constructor(
     private router: Router,
@@ -19,13 +19,15 @@ export class CommentResolver implements Resolve<any> {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    // const query = addReview();
+    const query = getServiceReviews();
     try {
-        // const reponse =   await this.connection.post(query, true);
-        console.log();
-        // return reponse;
+      const reponse = await this.connection.post(query, true);
+      return reponse;
     } catch (e) {
-      console.log("fallo");
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Error obteniendo los datos de usuarios ', type: 1 },
+      });
     }
     return EMPTY;
   }

@@ -11,6 +11,7 @@ import { User } from 'src/app/conections/user/response';
 import { IsAuthOutput } from 'src/app/conections/auth/response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertsComponent } from '../alerts/alerts.component';
+import { getServicesAndUser } from 'src/app/conections/services/resolvers';
 export interface Tile {
   color: string;
   cols: number;
@@ -34,14 +35,15 @@ export class MainContentComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     public auth: AuthService,
-    private _snackBar: MatSnackBar) { }
+    private _snackBar: MatSnackBar,
+    private connection: GraphqlConnectionService,) { }
 
 
 
   ngOnInit(): void {
     this.loadDataFromResolvers();
     this.responsiveConfig();
-    this.authUser = (this.auth.isAuthenticated() == 'true');
+    this.authUser = (this.auth.isLogged() == 'true');
     for (let i = 0; i < 9; i++) {
       this.tiles.push({ cols: 1, rows: 1, color: '#ffff' },)
     }
@@ -55,6 +57,24 @@ export class MainContentComponent implements OnInit {
 
 
   loadDataFromResolvers() {
+    const query = getServicesAndUser();
+    this.connection.postHttp(query, true).subscribe(req => {
+    const { getServicesAndUser }: any = req.data;
+    let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
+    if (success) {
+      this.services = data;
+    } else {
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
+      });
+    }
+    }, errr => {
+      console.log(errr);
+    });
+
+
+
     const dataGetServiceFromAsync = this.route.snapshot.data.services;
     const dataGetAuthFromAsync = this.route.snapshot.data.auth;
     try {
@@ -64,7 +84,7 @@ export class MainContentComponent implements OnInit {
     } catch (error) {
       this.auth.setAuthenticated('false');
     }
-    if (this.auth.isAuthenticated() == 'true') {
+    if (this.auth.isLogged() == 'true') {
       const dataGetFriendsFromAsync = this.route.snapshot.data.friends;
       const { getUserFriends }: any = dataGetFriendsFromAsync.data;
       const friendsList: GetUserFriendsOutput = getUserFriends;
@@ -78,16 +98,6 @@ export class MainContentComponent implements OnInit {
       }
     }
 
-    const { getServicesAndUser }: any = dataGetServiceFromAsync.data;
-    let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
 
-    if (success) {
-      this.services = data;
-    } else {
-      this._snackBar.openFromComponent(AlertsComponent, {
-        duration: 2 * 1000,
-        data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
-      });
-    }
   }
 }

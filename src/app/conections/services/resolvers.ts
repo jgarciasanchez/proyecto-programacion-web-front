@@ -3,7 +3,10 @@ export function getAllServices() {
         getAllServices{
             id,
             title,
-            description
+            description,
+            createdAt,
+            reportCount,
+            createdAt
           }
       }`;
   return result;
@@ -80,14 +83,19 @@ export function getServiceReviews(id: number) {
     message
     success
     data{
-      id
-      createdAt
-      description
-      serviceId
-      rating
-      creatorUserId
-      name
-      lastName
+      id,
+      createdAt,
+      description,
+      serviceId,
+      rating,
+      creatorUserId,
+      name,
+      lastName,
+      responses{
+        id,
+        description,
+        createdAt,
+      }
     }
   }
 }`;

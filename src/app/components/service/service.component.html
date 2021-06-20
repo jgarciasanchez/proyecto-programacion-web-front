@@ -2,10 +2,14 @@
   <mat-card>
     <mat-card-header>
       <div mat-card-avatar class="example-header-image"></div>
-      <mat-card-title>{{service.name + ' ' + service.lastName}}</mat-card-title>
+      <mat-card-title class="profileLink">
+        <span (click)="showProfile(service.id)">
+          {{service.name + ' ' + service.lastName}}
+        </span>
+      </mat-card-title>
       <mat-card-subtitle>{{service.title}}</mat-card-subtitle>
       <span class="spacer"></span>
-      <button mat-icon-button [matMenuTriggerFor]="menu">
+      <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="authUser;">
         <mat-icon>more_vert</mat-icon>
       </button>
       <mat-menu #menu="matMenu">
@@ -37,7 +41,8 @@
           Comentarios
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <form *ngIf="authUser;" [formGroup]="serviceForm" (submit)='commentService(service.serviceId)' class="commentForm">
+      <form *ngIf="authUser;" [formGroup]="serviceForm" (submit)='commentService(service.serviceId)'
+        class="commentForm">
         <mat-star-rating [rating]="rating" [starCount]="starCount" [color]="starColor"
           (ratingUpdated)="onRatingChanged($event)"></mat-star-rating>
         <mat-form-field class="commentInput">
@@ -65,7 +70,8 @@
           </mat-card-actions>
         </mat-card>
 
-        <form [formGroup]="serviceForm" (submit)='responseComment(service.serviceId, comment.id)' [ngStyle]="{display: comment.state}" class="responseForm">
+        <form [formGroup]="serviceForm" (submit)='responseComment(service.serviceId, comment.id)'
+          [ngStyle]="{display: comment.state}" class="responseForm">
           <mat-form-field class="commentInput">
             <mat-label>Escriba un comentario</mat-label>
             <textarea formControlName="comment" color='accent' matInput value=""></textarea>
@@ -73,14 +79,14 @@
           <button mat-stroked-button color="accent">Enviar</button>
         </form>
 
-        <div class="commentResponse" *ngFor="let comment of comments">
-          <mat-card class="comment">
+        <div class="commentResponse" *ngFor="let commentResponse of comment.comment.responses">
+          <mat-card class="">
             <mat-card-header>
-              <mat-card-title>{{comment.comment.name}} {{comment.comment.lastName}}</mat-card-title>
+              <mat-card-title></mat-card-title>
             </mat-card-header>
             <mat-card-content>
               <p class="mat-h3">
-                {{comment.comment.description}}
+                {{commentResponse.description}}
               </p>
             </mat-card-content>
           </mat-card>

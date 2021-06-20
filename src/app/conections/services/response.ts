@@ -6,15 +6,11 @@ import { BaseResponse } from "../utils/utils";
 export class UsersAndServicesData {
 
   id: number;
-
-  title: string;
-
-  description: string;
-
   name: string;
-
   lastName: string;
-
+  serviceId: number;
+  description: string;
+  title: string;
 }
 
 @ObjectType()
@@ -26,13 +22,28 @@ export class GetUsersAndServiserOutput extends BaseResponse {
 }
 
 @ObjectType()
-export class GetReportedServicesOutput  extends BaseResponse {
+export class GetReportedServicesOutput extends BaseResponse {
 
   @Field({ nullable: true })
   data?: [Service];
 
 }
 
+@ObjectType()
+export class GetAllServicesOutput extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: [Service];
+
+}
+
+@ObjectType()
+export class GetResponseCommentOutput extends BaseResponse {
+
+  @Field({ nullable: true })
+  data?: [ResponseComment];
+
+}
 
 @ObjectType()
 export class Service {
@@ -50,4 +61,20 @@ export class Service {
   createdAt: string;
 
   updatedAt: string;
+
+  reportCount?: number;
 }
+
+@ObjectType()
+export class ResponseComment {
+
+  id: number;
+
+  description: string;
+
+  createdAt: string;
+
+  updatedAt: string;
+}
+
+

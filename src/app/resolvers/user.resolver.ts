@@ -3,26 +3,32 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import {
   Router, Resolve,
   RouterStateSnapshot,
-  ActivatedRouteSnapshot
+  ActivatedRouteSnapshot,
+  ActivatedRoute
 } from '@angular/router';
 import { EMPTY } from 'rxjs';
 import { AlertsComponent } from '../components/alerts/alerts.component';
-import { getAllServices } from '../conections/services/resolvers';
-import { getAllUsers } from '../conections/user/resolver';
+import { getAllUsers, getUserById } from '../conections/user/resolver';
 import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class ServicesResolver implements Resolve<any> {
+export class UserResolver implements Resolve<any> {
+
+  userId: number;
 
   constructor(
     private router: Router, private _snackBar: MatSnackBar,
-    private connection: GraphqlConnectionService) {
+    private connection: GraphqlConnectionService,
+    private activeRoute: ActivatedRoute) {
   }
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-    const query = getAllServices();
+
+    this.userId = this.activeRoute.snapshot.params['userId'];
+
+    const query = getUserById(this.userId);
     try {
       const reponse = await this.connection.post(query, true);
       return reponse;

@@ -1,0 +1,14 @@
+<div class="container">
+    <div class="row">
+        <div class="col">
+            <img src="" alt="">
+            <h2>{{userInfo.name}} {{userInfo.lastName}}</h2>
+            <h2>{{userInfo.email}}</h2>
+            <button>Agregar amigo</button>
+            <button>Eliminar amigo</button>
+        </div>
+        <div class="col">
+            <app-service [service]='service' class="servicesList"></app-service>
+        </div>
+    </div>
+</div>

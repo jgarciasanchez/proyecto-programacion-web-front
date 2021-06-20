@@ -3,6 +3,7 @@ export function login() {
         users{
           id,
           name,
+          lastName,
           email,
           expirationDate,
           serviceId,
@@ -29,6 +30,25 @@ export function getUserFriends() {
   return result;
 }
 
+export function getUserById(id: number) {
+  var result = `query{
+    getUserById(InputData:{
+      idUser:${id}
+    }){
+      message
+      data{
+        name,
+        lastName,
+        email,
+        role,
+        status
+      }
+    }
+  
+  }`;
+  return result;
+}
+
 export function getCurrentUser() {
   var result = `query{
     getCurrentUser{
@@ -36,6 +56,7 @@ export function getCurrentUser() {
     message
     data{
       name
+      lastName
       email
       createdAt
       role
@@ -51,6 +72,7 @@ export function getAllUsers() {
     getAllUsersReport{
       message
       description
+      success
       data{
         id,
         name,

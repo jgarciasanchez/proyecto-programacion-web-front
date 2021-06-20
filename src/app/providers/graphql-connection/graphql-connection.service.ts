@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { SessiondataService } from '../sessiondata/sessiondata.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 
 
@@ -9,10 +10,25 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class GraphqlConnectionService {
 
-  uri = 'http://186.159.231.67:3006/graphQL';
+  uri = 'http://152.231.166.95:3006/graphQL';
 
-  constructor(private sessiondata: SessiondataService, private authService: AuthService) {
+  constructor(private authService: AuthService, private http: HttpClient) {
 
+  }
+
+  postHttp(query, needsToken: boolean = false): Observable<any> {
+    try {
+      let headers: any = { 'content-type': 'application/json', "Access-Control-Allow-Origin": "*" };
+      if (needsToken) {
+        const token = "Bearer " + this.authService.getToken();
+        if (token) {
+          headers = { ...headers, 'authorization': token };
+        }
+      }
+      return this.http.post<any>(this.uri, JSON.stringify({ query }), {headers: headers});
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   async post(query, needsToken: boolean = false) {

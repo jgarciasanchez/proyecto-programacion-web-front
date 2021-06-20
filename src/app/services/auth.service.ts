@@ -14,7 +14,7 @@ export class AuthService {
   constructor(
     private _snackBar: MatSnackBar) { }
 
-  public isAuthenticated() {
+  public isLogged() {
     return localStorage.getItem('isAuthenticated');
   }
 

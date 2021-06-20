@@ -15,7 +15,7 @@ export class NavBarMainComponent implements OnInit {
   constructor(private router: Router, public auth: AuthService) { }
 
   ngOnInit(): void {
-    this.authUser = this.auth.isAuthenticated() == 'true';
+    this.authUser = this.auth.isLogged() == 'true';
     this.userName = this.auth.getCurrentUserName();
     console.log();
   }

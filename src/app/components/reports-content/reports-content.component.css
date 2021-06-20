@@ -1,11 +1,20 @@
-.contentAdmin{
+.contentAdmin {
     background-color: #eeeef0;
 }
 
-body{
+body {
     background-color: #eeeef0;
 }
 
-.col{
+.col {
     margin: 1%;
+}
+
+.reportedServicesTable {
+    margin-top: 5%;
+    /* margin-right: 7%; */
+}
+
+table {
+    width: 100%;
 }
