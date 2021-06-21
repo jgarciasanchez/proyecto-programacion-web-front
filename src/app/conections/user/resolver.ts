@@ -92,6 +92,24 @@ export function getUserProfile(id) {
   }`;
 }
 
+export function updateUser(id: number, name: string, lastName: string, email: string) {
+  return `mutation{
+    updateUser(dataInput:{
+      idUser:${id}
+      userData:{
+        name:"${name}",
+        lastName:"${lastName}",
+        email:"${email}",
+      }
+    }){
+  
+      data{
+      name
+    }
+    }
+  }`;
+}
+
 export function isFriend(id: number) {
   return `query{
     isFriend(InputData:{
@@ -112,7 +130,7 @@ export function deleteFriend(id: number) {
           }`;
 }
 
-export function addFriend(id: number){
+export function addFriend(id: number) {
   return `mutation{
     addUserFriend(InputData:{
     idFriend:${id}

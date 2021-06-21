@@ -21,7 +21,7 @@ export class RegisterServiceComponent implements OnInit {
   constructor(
     private connection: GraphqlConnectionService,
     private formBuilder: FormBuilder,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
   ) { }
 
   ngOnInit(): void {
