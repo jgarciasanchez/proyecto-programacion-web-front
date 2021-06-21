@@ -4,6 +4,10 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { registerService } from 'src/app/conections/services/resolvers';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
 import { AlertsComponent } from '../alerts/alerts.component';
+import firebase from 'firebase';
+import { AngularFireStorage } from '@angular/fire/storage';
+import { finalize } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-register-service',
@@ -16,11 +20,14 @@ export class RegisterServiceComponent implements OnInit {
   uploadedImgArray = [];
   url: any;
   serviceForm: FormGroup;
+  downloadURL: Observable<string>;
+  fb;
 
 
   constructor(
     private connection: GraphqlConnectionService,
     private formBuilder: FormBuilder,
+    private firebase: AngularFireStorage,
     private _snackBar: MatSnackBar,
   ) { }
 
@@ -28,7 +35,7 @@ export class RegisterServiceComponent implements OnInit {
     this.serviceForm = this.formBuilder.group({
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
-    })
+    });
   }
 
   async registerService() {
@@ -47,13 +54,44 @@ export class RegisterServiceComponent implements OnInit {
   }
 
   selectFile(event: any) {
+    // this.firebase.upload()
+
     var mimeType = event.target.files[0].type;
+    var path = event.target.files[0];
 
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
+    // var urlFirebase = this.firebase.upload("/files" + Date.now() + path, path);
+    // console.log(urlFirebase);
+
+    var n = Date.now();
+    const file = event.target.files[0];
+    const filePath = `RoomsImages/${n}`;
+    const fileRef = this.firebase.ref(filePath);
+    const task = this.firebase.upload(`RoomsImages/${n}`, file);
+    task
+      .snapshotChanges()
+      .pipe(
+        finalize(() => {
+          this.downloadURL = fileRef.getDownloadURL();
+          this.downloadURL.subscribe(url => {
+            if (url) {
+              this.fb = url;
+            }
+            console.log(this.fb);
+          });
+        })
+      )
+      .subscribe(url => {
+        if (url) {
+          console.log(url);
+        }
+      });
+
 
     reader.onload = (_event) => {
       this.url = reader.result;
+
       this.uploadedImgArray.push(this.url);
     }
   }

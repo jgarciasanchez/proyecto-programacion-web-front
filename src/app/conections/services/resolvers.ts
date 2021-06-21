@@ -25,10 +25,19 @@ export function registerService(title: string, description: string) {
 }
 
 export function getServicesAndUser(keywords: string = null, tag: string = null, dateFile: string = null, onlyFriends: boolean = null) {
-  return `query{
-    getServicesAndUser(serviceData:{
-      wordFilter:${keywords}
-    categoria:${tag}
+  var query = `query{
+    getServicesAndUser(serviceData:{`
+  if (keywords == null) {
+    query = query + `wordFilter:${keywords} \n`;
+  } else {
+    query = query + `wordFilter:"${keywords}" \n`;
+  }
+  if (tag == null) {
+    query = query + `categoria:${tag} \n`;
+  } else {
+    query = query + `categoria:"${tag}" \n`;
+  }
+  return query + `
     dateFilter:${dateFile}
     onlyFriends:${onlyFriends}
     }){
@@ -46,7 +55,6 @@ export function getServicesAndUser(keywords: string = null, tag: string = null, 
       images{
         url,
         createdAt,
-
       }
     }
   }

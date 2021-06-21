@@ -12,7 +12,8 @@ import { IsAuthOutput } from 'src/app/conections/auth/response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertsComponent } from '../alerts/alerts.component';
 import { getServicesAndUser } from 'src/app/conections/services/resolvers';
-import { FormControl } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import firebase from 'firebase';
 export interface Tile {
   color: string;
   cols: number;
@@ -31,7 +32,7 @@ export class MainContentComponent implements OnInit {
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
   friends: User[] = [];
-  myControl = new FormControl();
+  searchForm: FormGroup;
   options: string[] = ['Música', 'Electrodomesticos', 'Cocina', 'Gaming', 'Limpieza', 'Viajes', 'Transporte', 'Entretenimiento', 'Mecánica'];
   filteredOptions: Observable<string[]>;
 
@@ -39,25 +40,32 @@ export class MainContentComponent implements OnInit {
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     public auth: AuthService,
+    private formBuilder: FormBuilder,
     private _snackBar: MatSnackBar,
     private connection: GraphqlConnectionService,) { }
 
 
 
   ngOnInit(): void {
-    this.filteredOptions = this.myControl.valueChanges
+    this.searchForm = this.formBuilder.group({
+      category: new FormControl(''),
+      keywords: new FormControl(''),
+    });
+
+    this.filteredOptions = this.searchForm.controls['category'].valueChanges
       .pipe(
         startWith(''),
         map(value => this._filter(value))
       );
-    this.loadDataFromResolvers();
+    this.loadServicesInfo();
+    this.loadFriendsInfo();
     this.responsiveConfig();
     this.authUser = (this.auth.isLogged() == 'true');
     for (let i = 0; i < 9; i++) {
       this.tiles.push({ cols: 1, rows: 1, color: '#ffff' },)
     }
   }
-  
+
   private _filter(value: string): string[] {
     const filterValue = value.toLowerCase();
 
@@ -70,9 +78,10 @@ export class MainContentComponent implements OnInit {
       .pipe(map(({ matches }) => matches));
   }
 
-
-  loadDataFromResolvers() {
+  loadServicesInfo() {
     const query = getServicesAndUser();
+    console.log(query);
+
     this.connection.postHttp(query, true).subscribe(req => {
       const { getServicesAndUser }: any = req.data;
       let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
@@ -87,10 +96,9 @@ export class MainContentComponent implements OnInit {
     }, errr => {
       console.log(errr);
     });
+  }
 
-
-
-    const dataGetServiceFromAsync = this.route.snapshot.data.services;
+  loadFriendsInfo() {
     const dataGetAuthFromAsync = this.route.snapshot.data.auth;
     try {
       const { isAuth }: any = dataGetAuthFromAsync.data;
@@ -114,5 +122,38 @@ export class MainContentComponent implements OnInit {
     }
 
 
+  }
+
+  filter() {
+    console.log(this.searchForm.controls['category'].value);
+    var category: string = null;
+    var keywords: string = null;
+
+    if (this.searchForm.controls['category'].value != "") {
+      category = this.searchForm.controls['category'].value;
+    }
+    if (this.searchForm.controls['keywords'].value != "") {
+      keywords = this.searchForm.controls['keywords'].value;
+    }
+
+
+    const query = getServicesAndUser(keywords, category);
+
+    console.log(query);
+
+    this.connection.postHttp(query, true).subscribe(req => {
+      const { getServicesAndUser }: any = req.data;
+      let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
+      if (success) {
+        this.services = data;
+      } else {
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema con la carga de servicios', type: 1 },
+        });
+      }
+    }, errr => {
+      console.log(errr);
+    });
   }
 }

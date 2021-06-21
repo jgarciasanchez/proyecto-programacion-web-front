@@ -39,9 +39,10 @@ import { RestrictedComponent } from './components/restricted/restricted.componen
 import { HttpClientModule } from '@angular/common/http';
 import { ExportToCsv } from 'export-to-csv';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
-import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
-
+import { AngularFireStorageModule } from '@angular/fire/storage'
+import { AngularFireModule } from '@angular/fire'
 @NgModule({
   declarations: [
     AppComponent,
@@ -66,7 +67,7 @@ import { ServiceInfoComponent } from './components/service-info/service-info.com
       echarts: () => import('echarts')
     }),
 
-    
+
     FormsModule,
     ReactiveFormsModule,
     BrowserModule,
@@ -90,7 +91,17 @@ import { ServiceInfoComponent } from './components/service-info/service-info.com
     MatToolbarModule,
     MatButtonModule,
     HttpClientModule,
-    MatAutocompleteModule
+    MatAutocompleteModule,
+    AngularFireStorageModule,
+    AngularFireModule.initializeApp({
+      apiKey: "AIzaSyBNxhZXKCR-ylgFjJ4gXwa5tpwptzGNSCQ",
+      authDomain: "network-services-una.firebaseapp.com",
+      projectId: "network-services-una",
+      databaseURL: 'gs://network-services-una.appspot.com',
+      storageBucket: "network-services-una.appspot.com",
+      messagingSenderId: "606485274886",
+      appId: "1:606485274886:web:70b85ffd73b11eb9bffe87"
+    }),
   ],
   providers: [],
   bootstrap: [AppComponent]
