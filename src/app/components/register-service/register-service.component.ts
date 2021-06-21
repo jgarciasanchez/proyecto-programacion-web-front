@@ -39,30 +39,49 @@ export class RegisterServiceComponent implements OnInit {
   }
 
   async registerService() {
+    var Filter = require('bad-words'), filter = new Filter();
+    var filter = new Filter();
+    var newBadWords = ['carepicha', 'playo', 'malparido', 'muerase'];
+    filter.addWords(...newBadWords);
+
     if (this.serviceForm.valid) {
-      const query = registerService(this.serviceForm.controls['title'].value, this.serviceForm.controls['description'].value);
-      try {
-        const response = await this.connection.post(query, true);
-        console.log(response);
-      } catch (e) {
+      if (this.serviceForm.controls['title'].value == filter.clean(this.serviceForm.controls['title'].value)) {
+        if (this.serviceForm.controls['description'].value == filter.clean(this.serviceForm.controls['description'].value)) {
+          const query = registerService(this.serviceForm.controls['title'].value, this.serviceForm.controls['description'].value);
+          try {
+            const response = await this.connection.post(query, true);
+            console.log(response);
+          } catch (e) {
+            this._snackBar.openFromComponent(AlertsComponent, {
+              duration: 2 * 1000,
+              data: { message: 'Hubo un problema registrando el servicio', type: 1 },
+            });
+          }
+        } else {
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 4 * 1000,
+            data: { message: 'No se publico el servicio ya que la descripcion incumple nuestras politicas de lenguaje apropiado', type: 1 },
+          });
+        }
+      } else {
         this._snackBar.openFromComponent(AlertsComponent, {
-          duration: 2 * 1000,
-          data: { message: 'Hubo un problema registrando el servicio', type: 1 },
+          duration: 4 * 1000,
+          data: { message: 'No se publico el servicio ya que el titulo incumple nuestras politicas de lenguaje apropiado', type: 1 },
         });
       }
+
+
+
     }
   }
 
   selectFile(event: any) {
-    // this.firebase.upload()
 
     var mimeType = event.target.files[0].type;
     var path = event.target.files[0];
 
     var reader = new FileReader();
     reader.readAsDataURL(event.target.files[0]);
-    // var urlFirebase = this.firebase.upload("/files" + Date.now() + path, path);
-    // console.log(urlFirebase);
 
     var n = Date.now();
     const file = event.target.files[0];
@@ -95,5 +114,7 @@ export class RegisterServiceComponent implements OnInit {
       this.uploadedImgArray.push(this.url);
     }
   }
+
+
 
 }

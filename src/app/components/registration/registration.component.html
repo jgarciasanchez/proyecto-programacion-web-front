@@ -2,7 +2,8 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <title>Registrarse - Brand</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
+    <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i">
 </head>
 
 <body class="bg-gradient-primary">
@@ -11,7 +12,8 @@
             <div class="card-body p-0">
                 <div class="row">
                     <div class="col-lg-5 d-none d-lg-flex">
-                        <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
+                        <div class="flex-grow-1 bg-register-image"
+                            style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
                     </div>
                     <div class="col-lg-7">
                         <div class="p-5">
@@ -20,22 +22,80 @@
                             </div>
                             <form [formGroup]="formGroup" (ngSubmit)="signUp()" class="user">
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input formControlName="log_name" class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Nombre" name="first_name"></div>
-                                    <div class="col-sm-6"><input formControlName="log_lastName" class="form-control form-control-user" type="text" id="exampleFirstName" placeholder="Apellido" name="last_name"></div>
+                                    <mat-form-field class="col-sm-6 mb-3 mb-sm-0">
+                                        <mat-label>Nombre</mat-label>
+                                        <input formControlName="log_name" type="text" matInput placeholder="Nombre">
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6">
+                                        <mat-label>Apellidos</mat-label>
+                                        <input formControlName="log_lastName" type="text" matInput
+                                            placeholder="Apellidos">
+                                    </mat-form-field>
                                 </div>
-                                <div class="form-group"><input class="form-control form-control-user" formControlName="log_email" type="email" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Correo Electronico" name="email"></div>
+                                <mat-form-field class="example-chip-list">
+                                    <mat-label>Correo Electronico</mat-label>
+                                    <input formControlName="log_email" type="email" matInput
+                                        placeholder="Ex. pat@example.com">
+                                </mat-form-field>
+                                <mat-form-field class="example-chip-list">
+                                    <mat-label>Intereses</mat-label>
+                                    <mat-chip-list #chipList aria-label="Seleccion de intereses">
+                                        <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                                            [removable]="removable" (removed)="remove(tag)">
+                                            {{tag}}
+                                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                        </mat-chip>
+                                        <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags"
+                                            [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                            (matChipInputTokenEnd)="add($event)">
+                                    </mat-chip-list>
+                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                                            {{tag}}
+                                        </mat-option>
+                                    </mat-autocomplete>
+                                </mat-form-field>
+
                                 <div class="custom-control custom-checkbox small">
-                                    <div class="form-check"><input class="form-check-input custom-control-input" type="checkbox" id="formCheck-1"><label class="form-check-label custom-control-label" for="formCheck-1">Soy Oferente</label></div>
+                                    <div class="form-check"><input class="form-check-input custom-control-input"
+                                            type="checkbox" id="formCheck-1"><label
+                                            class="form-check-label custom-control-label" for="formCheck-1">Soy
+                                            Oferente</label></div>
                                 </div>
                                 <div class="form-group row">
-                                    <div class="col-sm-6 mb-3 mb-sm-0"><input formControlName="log_password"  class="form-control form-control-user" type="password" id="examplePasswordInput" placeholder="Password" name="password"></div>
-                                    <div class="col-sm-6"><input formControlName="log_repeatPassword"  class="form-control form-control-user" type="password" id="exampleRepeatPasswordInput" placeholder="Repeat Password" name="password_repeat"></div>
-                                </div><button class="btn btn-primary btn-block text-white btn-user" type="submit">Registrar Cuenta</button>
-                                <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i class="fab fa-google"></i>&nbsp; Registrar con google</a><a class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i class="fab fa-facebook-f"></i>&nbsp; Registrar con Facebook</a>
+
+                                    <mat-form-field class="col-sm-6 mb-3 mb-sm-0">
+                                        <mat-label>Contraseña</mat-label>
+                                        <input formControlName="log_password" type="password" matInput
+                                            placeholder="Contraseña">
+                                        <mat-error *ngIf="this.formGroup.hasError('required', 'log_password')">
+                                            Porfavor ingresar una Contraseña
+                                        </mat-error>
+                                    </mat-form-field>
+
+                                    <mat-form-field class="col-sm-6">
+                                        <mat-label>Repetir Contraseña</mat-label>
+                                        <input formControlName="log_repeatPassword" type="password" matInput
+                                            [errorStateMatcher]="matcher" placeholder="Repetir Contraseña">
+                                        <mat-error *ngIf="this.formGroup.hasError('notSame')">
+                                            Passwords do not match
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <button class="btn btn-primary btn-block text-white btn-user" type="submit">Registrar
+                                    Cuenta</button>
+                                <hr><a class="btn btn-primary btn-block text-white btn-google btn-user" role="button"><i
+                                        class="fab fa-google"></i>&nbsp; Registrar con google</a><a
+                                    class="btn btn-primary btn-block text-white btn-facebook btn-user" role="button"><i
+                                        class="fab fa-facebook-f"></i>&nbsp; Registrar con Facebook</a>
                                 <hr>
                             </form>
-                            <div class="text-center"><a class="small" href="forgot-password.html">Olvidaste la Contraseña?</a></div>
-                            <div class="text-center"><a class="small" href="login.html">Ya tienes una cuenta? Inicia Sesion!</a></div>
+                            <div class="text-center"><a class="small" href="forgot-password.html">Olvidaste la
+                                    Contraseña?</a></div>
+                            <div class="text-center"><a class="small" href="login.html">Ya tienes una cuenta? Inicia
+                                    Sesion!</a></div>
                         </div>
                     </div>
                 </div>

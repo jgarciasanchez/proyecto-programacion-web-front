@@ -90,39 +90,64 @@ export class ServiceComponent implements OnInit {
   }
 
   async commentService(id: string) {
+    var Filter = require('bad-words'), filter = new Filter();
+    var filter = new Filter();
+    var newBadWords = ['carepicha', 'playo', 'malparido', 'muerase'];
+    filter.addWords(...newBadWords);
+
     if (this.commentForm.valid) {
-      const query = addReview(parseInt(id), this.commentForm.controls['comment'].value, this.rating);
-      try {
-        const response = await this.connection.post(query, true);
-        this.loadComments(parseInt(id));
-        this.commentForm.controls['comment'].setValue("");
-        this.rating = 3;
-      } catch (e) {
+      if (this.commentForm.controls['comment'].value == filter.clean(this.commentForm.controls['comment'].value)) {
+        const query = addReview(parseInt(id), this.commentForm.controls['comment'].value, this.rating);
+        try {
+          const response = await this.connection.post(query, true);
+          this.loadComments(parseInt(id));
+          this.commentForm.controls['comment'].setValue("");
+          this.rating = 3;
+        } catch (e) {
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 2 * 1000,
+            data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+          });
+        }
+      } else {
         this._snackBar.openFromComponent(AlertsComponent, {
-          duration: 2 * 1000,
-          data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+          duration: 4 * 1000,
+          data: { message: 'No se publico el servicio ya que tu comentario incumple nuestras politicas de lenguaje apropiado', type: 1 },
         });
       }
+
     }
   }
 
   responseComment(commentId, serviceId) {
+    var Filter = require('bad-words'), filter = new Filter();
+    var filter = new Filter();
+    var newBadWords = ['carepicha', 'playo', 'malparido', 'muerase'];
+    filter.addWords(...newBadWords);
+
     if (this.responseForm.valid) {
-      const query = responseReview(parseInt(commentId), this.responseForm.controls['commentResponse'].value);
-      try {
-        this.connection.postHttp(query, true).subscribe(req => {
-          console.log(req);
+      if (this.responseForm.controls['commentResponse'].value == filter.clean(this.responseForm.controls['commentResponse'].value)) {
+        const query = responseReview(parseInt(commentId), this.responseForm.controls['commentResponse'].value);
+        try {
+          this.connection.postHttp(query, true).subscribe(req => {
+            console.log(req);
 
-        }, err => {
-          console.log(err);
+          }, err => {
+            console.log(err);
 
-        });
-        this.loadComments(parseInt(serviceId));
-        this.responseForm.controls['commentResponse'].setValue("");
-      } catch (e) {
+          });
+          this.loadComments(parseInt(serviceId));
+          this.responseForm.controls['commentResponse'].setValue("");
+        } catch (e) {
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 2 * 1000,
+            data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+          });
+        }
+      } else {
         this._snackBar.openFromComponent(AlertsComponent, {
-          duration: 2 * 1000,
-          data: { message: 'Hubo un problema obteniendo los comentarios', type: 1 },
+          duration: 4 * 1000,
+          data: { message: 'No se publico el servicio ya que tu comentario incumple nuestras politicas de lenguaje apropiado', type: 1 },
         });
       }
     }
@@ -161,7 +186,7 @@ export class ServiceComponent implements OnInit {
 
   async loadComments(id: number) {
     console.log(this.service);
-    
+
     this.comments = [];
     this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);

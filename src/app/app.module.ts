@@ -43,6 +43,7 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
 import { AngularFireStorageModule } from '@angular/fire/storage'
 import { AngularFireModule } from '@angular/fire'
+import { MatChipsModule } from '@angular/material/chips'
 @NgModule({
   declarations: [
     AppComponent,
@@ -93,6 +94,7 @@ import { AngularFireModule } from '@angular/fire'
     HttpClientModule,
     MatAutocompleteModule,
     AngularFireStorageModule,
+    MatChipsModule,
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyBNxhZXKCR-ylgFjJ4gXwa5tpwptzGNSCQ",
       authDomain: "network-services-una.firebaseapp.com",
