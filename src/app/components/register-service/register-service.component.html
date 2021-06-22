@@ -14,10 +14,28 @@
             <mat-hint>Max 450 characters</mat-hint>
             <mat-hint align="end">{{inputDesc.value?.length || 0}}/450</mat-hint>
         </mat-form-field>
+        <mat-form-field class="example-chip-list">
+            <mat-label>Intereses</mat-label>
+            <mat-chip-list #chipList aria-label="Seleccion de intereses">
+                <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable"
+                    (removed)="remove(tag)">
+                    {{tag}}
+                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags" [matAutocomplete]="auto"
+                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                    (matChipInputTokenEnd)="add($event)">
+            </mat-chip-list>
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                    {{tag}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
         <mat-form-field>
             <div>
                 <mat-toolbar>
-                    <input matInput  readonly name="name" />
+                    <input matInput readonly name="name" />
 
                     <button mat-flat-button color="primary">
                         Browse File
@@ -35,7 +53,7 @@
         <mat-grid-tile class="imgListUploaded" *ngFor="let urlImage of uploadedImgArray; index as i" [colspan]="1"
             [rowspan]="1">
             <mat-card class="example-card">
-                <img mat-card-image [src]="urlImage" *ngIf="url" class="imgUploaded">
+                <img mat-card-image [src]="urlImage" class="imgUploaded">
                 <mat-card-actions>
                     <button mat-button>Eliminar</button>
                 </mat-card-actions>

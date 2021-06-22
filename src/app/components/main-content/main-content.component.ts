@@ -139,7 +139,6 @@ export class MainContentComponent implements OnInit {
 
     const query = getServicesAndUser(keywords, category);
 
-    console.log(query);
 
     this.connection.postHttp(query, true).subscribe(req => {
       const { getServicesAndUser }: any = req.data;

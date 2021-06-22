@@ -25,13 +25,17 @@
       </p>
     </mat-card-content>
     <div class="aa">
-      <mat-grid-list class="imgGrid" cols={{columns}}>
-        <mat-grid-tile class="tile" *ngFor="let tile of tiles; let i = index" [colspan]="tile.cols"
-          [rowspan]="tile.rows">
-          <img *ngIf='i == 0' class="imgServiceMain" src={{tile.url}}>
-          <img *ngIf='i > 0' class="imgService" src={{tile.url}}>
-        </mat-grid-tile>
-      </mat-grid-list>
+      <!-- <ngb-carousel *ngFor="let image of service.images; index as i">
+        <ng-template ngbSlide>
+          <div class="picsum-img-wrapper">
+            <img [src]='image.url' alt="Random first slide">
+          </div>
+        </ng-template>
+      </ngb-carousel> -->
+
+      <div *ngFor="let image of service.images; index as i">
+        <img [src]='image.url' alt="Random first slide">
+      </div>
     </div>
     <hr>
     <mat-expansion-panel hideToggle (closed)="closed()" (opened)="loadComments(service.serviceId)"

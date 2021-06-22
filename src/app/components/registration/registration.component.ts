@@ -57,7 +57,6 @@ export class RegistrationComponent implements OnInit {
     this.formGroup.controls['log_tags'].statusChanges.subscribe(
       status => this.chipList.errorState = status === 'INVALID'
     );
-    // this.formGroup.setValidators(this.checkPasswords);
   }
 
   formConstructor() {
@@ -79,7 +78,7 @@ export class RegistrationComponent implements OnInit {
   }
   matcher = new MyErrorStateMatcher();
 
-  async signUp() {
+  signUp() {
     if (this.formGroup.valid) {
 
       var user: RegisterUserInput = this.getCurrentUser();

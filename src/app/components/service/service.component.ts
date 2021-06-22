@@ -64,6 +64,8 @@ export class ServiceComponent implements OnInit {
 
 
   ngOnInit(): void {
+    console.log(this.service);
+    
     this.authUser = this.auth.isLogged() == 'true';
     this.commentForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),

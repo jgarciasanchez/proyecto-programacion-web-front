@@ -12,15 +12,33 @@ export function getAllServices() {
   return result;
 }
 
-export function registerService(title: string, description: string) {
+export function registerService(title: string, description: string, tags: string[], urls: string[]) {
+  var auxTags: { tag: string }[] = [];
+  tags.forEach(tagToPush => {
+    auxTags.push({ tag: tagToPush })
+  });
+
+  var auxUrls: { url: string }[] = [];
+  urls.forEach(urlToPush => {
+    auxUrls.push({ url: urlToPush })
+  });
+
   var result = `mutation{
-        registerService(
-          serviceData:{
-            title:"${title}",
-            description:"${description}",
-          }
-        )
-      }`;
+    registerService(serviceData:{
+      title:"${title}"
+      description:"${title}"
+      likesList:[`;
+  auxTags.forEach(tag => {
+    result += `{tag:"` + tag.tag + `"}`, tag;
+  });
+  result += `],
+          imagesArray:[`;
+          auxUrls.forEach(url => {
+    result += `{url:"` + url.url + `"}`, url;
+  });
+  result += `]
+    })
+  }`;
   return result;
 }
 
