@@ -14,11 +14,7 @@ import { GetCurrentUserOutput } from 'src/app/conections/user/response';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css',
-    '../../../assets/bootstrap/css/bootstrap.min.css',
-    '../../../assets/fonts/fontawesome-all.min.css',
-    '../../../assets/fonts/font-awesome.min.css',
-    '../../../assets/fonts/fontawesome5-overrides.min.css']
+  styleUrls: ['./login.component.css',]
 })
 export class LoginComponent {
 
