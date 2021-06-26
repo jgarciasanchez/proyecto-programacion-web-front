@@ -41,9 +41,12 @@ import { ExportToCsv } from 'export-to-csv';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
-import { AngularFireStorageModule } from '@angular/fire/storage'
-import { AngularFireModule } from '@angular/fire'
-import { MatChipsModule } from '@angular/material/chips'
+import { AngularFireStorageModule } from '@angular/fire/storage';
+import { AngularFireModule } from '@angular/fire';
+import { MatChipsModule } from '@angular/material/chips';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
+import {MatRadioModule} from '@angular/material/radio';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 @NgModule({
   declarations: [
     AppComponent,
@@ -95,6 +98,8 @@ import { MatChipsModule } from '@angular/material/chips'
     MatAutocompleteModule,
     AngularFireStorageModule,
     MatChipsModule,
+    MatSlideToggleModule,
+    MatRadioModule,
     AngularFireModule.initializeApp({
       apiKey: "AIzaSyBNxhZXKCR-ylgFjJ4gXwa5tpwptzGNSCQ",
       authDomain: "network-services-una.firebaseapp.com",
@@ -104,6 +109,7 @@ import { MatChipsModule } from '@angular/material/chips'
       messagingSenderId: "606485274886",
       appId: "1:606485274886:web:70b85ffd73b11eb9bffe87"
     }),
+    NgbModule,
   ],
   providers: [],
   bootstrap: [AppComponent]

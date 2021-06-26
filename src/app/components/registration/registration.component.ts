@@ -25,7 +25,7 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 @Component({
   selector: 'app-registration',
   templateUrl: './registration.component.html',
-  styleUrls: ['./registration.component.css', '../../../assets/bootstrap/css/bootstrap.min.css', '../../../assets/fonts/fontawesome-all.min.css', '../../../assets/fonts/font-awesome.min.css', '../../../assets/fonts/fontawesome5-overrides.min.css']
+  styleUrls: ['./registration.component.scss', ]
 })
 export class RegistrationComponent implements OnInit {
 

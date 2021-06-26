@@ -1,6 +1,6 @@
 import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Observable, pipe } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { GraphqlConnectionService } from 'src/app/providers/graphql-connection/graphql-connection.service';
@@ -14,6 +14,7 @@ import { AlertsComponent } from '../alerts/alerts.component';
 import { getServicesAndUser } from 'src/app/conections/services/resolvers';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import firebase from 'firebase';
+import { isAuth } from 'src/app/conections/auth/resolver';
 export interface Tile {
   color: string;
   cols: number;
@@ -24,7 +25,7 @@ export interface Tile {
 @Component({
   selector: 'app-main-content',
   templateUrl: './main-content.component.html',
-  styleUrls: ['./main-content.component.css']
+  styleUrls: ['./main-content.component.scss']
 })
 export class MainContentComponent implements OnInit {
   services: UsersAndServicesData[] = [];
@@ -36,7 +37,7 @@ export class MainContentComponent implements OnInit {
   options: string[] = ['Música', 'Electrodomesticos', 'Cocina', 'Gaming', 'Limpieza', 'Viajes', 'Transporte', 'Entretenimiento', 'Mecánica'];
   filteredOptions: Observable<string[]>;
 
-  constructor(
+  constructor(private router: Router,
     private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     public auth: AuthService,
@@ -80,8 +81,6 @@ export class MainContentComponent implements OnInit {
 
   loadServicesInfo() {
     const query = getServicesAndUser();
-    console.log(query);
-
     this.connection.postHttp(query, true).subscribe(req => {
       const { getServicesAndUser }: any = req.data;
       let { success, data }: GetUsersAndServiserOutput = getServicesAndUser;
@@ -99,14 +98,22 @@ export class MainContentComponent implements OnInit {
   }
 
   loadFriendsInfo() {
-    const dataGetAuthFromAsync = this.route.snapshot.data.auth;
-    try {
-      const { isAuth }: any = dataGetAuthFromAsync.data;
-      const auth: IsAuthOutput = isAuth;
-      this.auth.setAuthenticated('true');
-    } catch (error) {
-      this.auth.setAuthenticated('false');
-    }
+
+    const query = isAuth();
+    this.connection.postHttp(query, true).subscribe(req => {
+      if (req.data.isAuth.success) {
+        this.auth.setAuthenticated('true');
+      } else {
+        this.auth.setAuthenticated('false');
+        this.auth.setToken('')
+        this.auth.setCurrentId('');
+        this.auth.setCurrentUserName('', '');
+        this.auth.setCurrentUserRole('');
+      }
+    }, err => {
+      console.log(err);
+    });
+
     if (this.auth.isLogged() == 'true') {
       const dataGetFriendsFromAsync = this.route.snapshot.data.friends;
       const { getUserFriends }: any = dataGetFriendsFromAsync.data;
@@ -135,10 +142,7 @@ export class MainContentComponent implements OnInit {
     if (this.searchForm.controls['keywords'].value != "") {
       keywords = this.searchForm.controls['keywords'].value;
     }
-
-
     const query = getServicesAndUser(keywords, category);
-
 
     this.connection.postHttp(query, true).subscribe(req => {
       const { getServicesAndUser }: any = req.data;
@@ -154,5 +158,9 @@ export class MainContentComponent implements OnInit {
     }, errr => {
       console.log(errr);
     });
+  }
+
+  friendProfile(friendId) {
+    this.router.navigate(['home/service/' + friendId]);
   }
 }

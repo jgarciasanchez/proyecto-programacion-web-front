@@ -20,6 +20,7 @@ export function getUserFriends() {
     success
     message
     data{
+      id
       name
       email
       createdAt

@@ -25,21 +25,17 @@
       </p>
     </mat-card-content>
     <div class="aa">
-      <!-- <ngb-carousel *ngFor="let image of service.images; index as i">
-        <ng-template ngbSlide>
+
+      <ngb-carousel >
+        <ng-template *ngFor="let image of service.images; index as i" ngbSlide>
           <div class="picsum-img-wrapper">
-            <img [src]='image.url' alt="Random first slide">
+            <img [src]="image.url" class="imgService">
           </div>
         </ng-template>
-      </ngb-carousel> -->
-
-      <div *ngFor="let image of service.images; index as i">
-        <img [src]='image.url' alt="Random first slide">
-      </div>
+      </ngb-carousel>
     </div>
     <hr>
-    <mat-expansion-panel hideToggle (closed)="closed()" (opened)="loadComments(service.serviceId)"
-      style="background-color:{{colorComments}};">
+    <mat-expansion-panel hideToggle (closed)="closed()" (opened)="loadComments(service.serviceId)">
       <mat-expansion-panel-header>
         <mat-panel-title>
           Comentarios
@@ -53,7 +49,7 @@
           <mat-label>Escriba un comentario</mat-label>
           <textarea formControlName="comment" color='accent' matInput value=""></textarea>
         </mat-form-field>
-        <button mat-stroked-button color="accent">Enviar</button>
+        <button mat-stroked-button color="">Enviar</button>
       </form>
       <div *ngFor="let comment of comments">
         <mat-card class="comment">

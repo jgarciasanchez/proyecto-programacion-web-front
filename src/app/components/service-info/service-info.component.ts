@@ -10,7 +10,7 @@ import { AuthService } from 'src/app/services/auth.service';
 @Component({
   selector: 'app-service-info',
   templateUrl: './service-info.component.html',
-  styleUrls: ['./service-info.component.css']
+  styleUrls: ['./service-info.component.scss']
 })
 export class ServiceInfoComponent implements OnInit {
 

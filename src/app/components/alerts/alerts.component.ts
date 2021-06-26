@@ -4,7 +4,7 @@ import { MAT_SNACK_BAR_DATA } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-alerts',
   templateUrl: './alerts.component.html',
-  styleUrls: ['./alerts.component.css']
+  styleUrls: ['./alerts.component.scss']
 })
 export class AlertsComponent implements OnInit {
 

@@ -1,9 +1,5 @@
 import { Injectable } from '@angular/core';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { AlertsComponent } from '../components/alerts/alerts.component';
-import { getCurrentUser } from '../conections/user/resolver';
-import { User } from '../conections/user/response';
-import { GraphqlConnectionService } from '../providers/graphql-connection/graphql-connection.service';
 
 @Injectable({
   providedIn: 'root'

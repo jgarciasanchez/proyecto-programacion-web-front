@@ -14,7 +14,7 @@ import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
 @Component({
   selector: 'app-register-service',
   templateUrl: './register-service.component.html',
-  styleUrls: ['./register-service.component.css']
+  styleUrls: ['./register-service.component.scss']
 })
 export class RegisterServiceComponent implements OnInit {
 
@@ -77,6 +77,10 @@ export class RegisterServiceComponent implements OnInit {
             
           this.connection.postHttp(query, true).subscribe(req => {
             console.log("");
+            this._snackBar.openFromComponent(AlertsComponent, {
+              duration: 2 * 1000,
+              data: { message: 'Servicio registrado correctamente', type: 1 },
+            });
           }, err => {
             this._snackBar.openFromComponent(AlertsComponent, {
               duration: 2 * 1000,

@@ -22,6 +22,8 @@ export class UsersResolver implements Resolve<any> {
 
   async resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
     const query = getAllUsers();
+    console.log(query);
+    
     try {
       const reponse = await this.connection.post(query, true);
       return reponse;

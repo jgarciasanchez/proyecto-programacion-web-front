@@ -1,14 +1,33 @@
-<div class="container">
-    <div class="row">
-        <div class="col">
-            <img src="" alt="">
-            <h2>{{profile.name}} {{profile.lastName}}</h2>
-            <h2>{{profile.email}}</h2>
-            <button *ngIf="!isFriend && !isHimself" (click)="follow(profile.id)">Agregar amigo</button>
-            <button *ngIf="isFriend && !isHimself" (click)="unFollow(profile.id)">Eliminar amigo</button>
-        </div>
-        <div class="col">
-            <app-service [service]='profile' class="servicesList"></app-service>
+<div class="mat-app-background">
+    <div class="container ">
+        <br>
+        <br>
+        <div class="row">
+            <div class="col">
+                <img src="" alt="">
+                <label>
+                    <h1>Nombre</h1>
+                </label>
+                <h2>{{profile.name}} {{profile.lastName}}</h2>
+                <label>
+                    <h1>Correo Electrónico</h1>
+                </label>
+                <h2>{{profile.email}}</h2>
+                <button mat-flat-button *ngIf="!isFriend && !isHimself" (click)="follow(profile.id)">Agregar
+                    amigo</button>
+                <button mat-flat-button *ngIf="isFriend && !isHimself" (click)="unFollow(profile.id)">Eliminar
+                    amigo</button>
+            </div>
+            <div class="col" *ngIf="profile.serviceId != null">
+                <app-service [service]='profile' class="servicesList"></app-service>
+            </div>
+            <div class="col" *ngIf="profile.serviceId == null">
+                <span>
+                    <h1>
+                        Este usuario no cuenta con un servicio para ofrecer
+                    </h1>
+                </span>
+            </div>
         </div>
     </div>
 </div>

@@ -1,0 +1,95 @@
+@import "~@angular/material/theming";
+@include mat-core();
+
+$md-blue: (
+  50: #e0f6ff,
+  100: #b3e8ff,
+  200: #80d9ff,
+  300: #4dcaff,
+  400: #26beff,
+  500: #00b3ff,
+  600: #00acff,
+  700: #00a3ff,
+  800: #009aff,
+  900: #008bff,
+  A100: #ffffff,
+  A200: #f2f9ff,
+  A400: #bfdeff,
+  A700: #a6d1ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$md-cyan: (
+  50: #eafcf8,
+  100: #cbf7ec,
+  200: #a9f2e0,
+  300: #86ecd4,
+  400: #6ce8ca,
+  500: #52e4c1,
+  600: #4be1bb,
+  700: #41ddb3,
+  800: #38d9ab,
+  900: #28d19e,
+  A100: #ffffff,
+  A200: #dcfff4,
+  A400: #a9ffe3,
+  A700: #90ffdb,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #000000,
+    600: #000000,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  ),
+);
+
+$angular-primary: mat-palette($md-blue, 500, 100, 900);
+$angular-accent: mat-palette($md-cyan, 600, 700, 800);
+$angular-warn: mat-palette($mat-red);
+
+$angular-default-theme: mat-light-theme($angular-primary, $angular-accent, $angular-warn);
+$angular-dark-theme: mat-dark-theme($angular-primary, $angular-accent, $angular-warn);
+
+.theme-default {
+  @include angular-material-theme($angular-default-theme);
+}
+
+.theme-dark {
+  @include angular-material-color($angular-dark-theme);
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';

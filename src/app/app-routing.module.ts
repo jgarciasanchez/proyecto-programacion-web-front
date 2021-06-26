@@ -6,7 +6,7 @@ import { MainComponent } from './components/main/main.component';
 import { NavBarMainComponent } from './components/nav-bar-main/nav-bar-main.component';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ReportsContentComponent } from './components/reports-content/reports-content.component';
-import { IsAuthenticatedGuard } from './guards/is-authenticated.guard';
+import { IsLoggedGuard } from './guards/is-logged.guard';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
 import { FriendsResolver } from './resolvers/friends.resolver';
 import { AuthResolver } from './resolvers/auth.resolver';
@@ -24,35 +24,37 @@ const routes: Routes = [
   {
     path: 'admin', component: ReportsContentComponent,
     canActivate: [IsAuthorizeddGuard],
-    resolve: {reportedServices: ReportedServicesResolver, allUsers: UsersResolver, allServices: ServicesResolver}
-  }, 
-  {
-     path: 'login', component: LoginComponent 
+    resolve: { reportedServices: ReportedServicesResolver, allUsers: UsersResolver, allServices: ServicesResolver }
   },
   {
-    path: 'register', component: RegistrationComponent
+    path: 'login', component: LoginComponent,
+    canActivate: [IsLoggedGuard]
+  },
+  {
+    path: 'register', component: RegistrationComponent,
+    canActivate: [IsLoggedGuard]
   },
   {
     path: '', component: MainComponent,
     children: [
       {
         path: '', component: MainContentComponent,
-        resolve: {services: ServicesUserResolver, friends: FriendsResolver, auth: AuthResolver}
+        resolve: { friends: FriendsResolver }
       },
       {
         path: 'home', component: MainContentComponent,
-        resolve: {services: ServicesUserResolver, friends: FriendsResolver, auth: AuthResolver}
+        resolve: { friends: FriendsResolver }
       },
       {
         path: 'home/service/:userId', component: ServiceInfoComponent,
       },
       {
         path: 'registerService', component: RegisterServiceComponent,
-        canActivate: [IsAuthenticatedGuard]
+        canActivate: [IsLoggedGuard]
       },
       {
         path: 'user/edit/:userId', component: UserEditComponent,
-        canActivate: [IsAuthenticatedGuard]
+        canActivate: [IsLoggedGuard]
       }
     ]
   },

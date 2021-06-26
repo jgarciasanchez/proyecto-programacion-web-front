@@ -14,7 +14,7 @@ import { GetCurrentUserOutput } from 'src/app/conections/user/response';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css',]
+  styleUrls: ['./login.component.scss',]
 })
 export class LoginComponent {
 
@@ -51,54 +51,36 @@ export class LoginComponent {
     });
   }
 
-  onRegister(){
+  onRegister() {
     this.router.navigate(['/', 'register']);
   }
 
   async signIn() {
     var user = this.getCurrentUser();
     const query = login(user.username, user.password);
-    try {
-      const responseLoginUser = await this.connection.post(query, true);
-      if (responseLoginUser) {
-        const { loginUser }: any = responseLoginUser.data;
-        let { success, data, token }: LoginUserOutput = loginUser;
-        if (success) {
-          this.authService.setAuthenticated("true");
-          this.authService.setToken(token);
-          const query = getCurrentUser();
-          try {
-            const responseCurrentUser = await this.connection.post(query, true);
-            const { getCurrentUser }: any = responseCurrentUser.data;
-            let { data }: GetCurrentUserOutput = getCurrentUser;
-            this.authService.setCurrentUserRole(data.role);
-            this.authService.setCurrentUserName(data.name, data.lastName);
-            this.authService.setCurrentId(data.id.toString());
-          } catch (e) {
-            this._snackBar.openFromComponent(AlertsComponent, {
-              duration: 2 * 1000,
-              data: { message: 'Error obteniendo el usuario actual', type: 1 },
-            });
-          }
-          this.router.navigate(['/', 'home']);
-        } else {
-          this._snackBar.openFromComponent(AlertsComponent, {
-            duration: 2 * 1000,
-            data: { message: 'Fallo el inicio de sesion', type: 1 },
-          });
-        }
+
+    this.connection.postHttp(query, true).subscribe(req => {
+      var success: LoginUserOutput = req.data.loginUser.success;
+      const token =req.data.loginUser.token;
+      if (success) {
+        this.authService.setAuthenticated("true");
+        this.authService.setToken(token);
+        const query = getCurrentUser();
+        this.connection.postHttp(query, true).subscribe(req => {
+          const { getCurrentUser }: any = req.data;
+          let { data }: GetCurrentUserOutput = getCurrentUser;
+          this.authService.setCurrentUserRole(data.role);
+          this.authService.setCurrentUserName(data.name, data.lastName);
+          this.authService.setCurrentId(data.id.toString());
+        });
+        this.router.navigate(['/', 'home']);
       } else {
         this._snackBar.openFromComponent(AlertsComponent, {
           duration: 2 * 1000,
           data: { message: 'Fallo el inicio de sesion', type: 1 },
         });
       }
-    } catch (e) {
-      this._snackBar.openFromComponent(AlertsComponent, {
-        duration: 2 * 1000,
-        data: { message: 'Fallo el inicio de sesion', type: 1 },
-      });
-    }
+    })
   }
 
   getCurrentUser() {

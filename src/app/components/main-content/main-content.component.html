@@ -40,7 +40,11 @@
         <mat-card *ngFor="let friend of friends">
           <mat-card-header>
             <div mat-card-avatar></div>
-            <mat-card-title>{{friend.name}}</mat-card-title>
+            <mat-card-title>
+              <span (click)="friendProfile(friend.id)">
+                {{friend.name}}
+              </span>
+            </mat-card-title>
           </mat-card-header>
         </mat-card>
       </mat-expansion-panel>

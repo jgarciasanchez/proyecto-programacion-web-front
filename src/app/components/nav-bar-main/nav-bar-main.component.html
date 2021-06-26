@@ -1,16 +1,38 @@
 <div class="headerContainer">
     <span class="decor"></span>
     <mat-toolbar color="#eeeef0">
-        <button mat-icon-button>
-            <mat-icon>menu</mat-icon>
-        </button>
-        <span>My App</span>
-        <span class="spacer"></span>
         <mat-icon class="homeBadge" matBadge="15" matBadgeColor="warn">home</mat-icon>
-        <span>{{userName}}</span>
-        <a *ngIf="authUser;" (click)='onLogout()'>
-            <button mat-button>Cerrar Sesion</button>
-        </a>
+        <span (click)="home()">Serbook</span>
+        <span class="spacer"></span>
+        <span [matMenuTriggerFor]="menu" color="primary">{{userName}}</span>
+
+        <mat-menu #menu="matMenu">
+            <button mat-menu-item (click)="editProfile()">
+                <mat-icon>edit</mat-icon>
+                Editar Perfil
+            </button>
+            <button mat-menu-item [matMenuTriggerFor]="theme">
+                <mat-icon>wb_sunny</mat-icon>
+                Modo Oscuro
+            </button>
+            <button mat-menu-item (click)="dashboard()">
+                <mat-icon>settings</mat-icon>
+                Dashboard
+            </button>
+            <button *ngIf="authUser;" mat-menu-item (click)='onLogout()'>
+                <mat-icon>exit_to_app</mat-icon>
+                Cerrar Sesion
+            </button>
+        </mat-menu>
+
+        <mat-menu #theme="matMenu">
+            <button mat-menu-item (click)='darkTheme(true)'>
+                <mat-icon>bedtime</mat-icon>Activado
+            </button>
+            <button mat-menu-item (click)='darkTheme(false)'>
+                <mat-icon>wb_sunny</mat-icon>Desactivado
+            </button>
+        </mat-menu>
 
 
         <a *ngIf="!authUser;" (click)='onLogin()'>

@@ -1,63 +1,68 @@
-<div class="container">
-    <span>Resgistrar Servicio</span>
-    <form [formGroup]="serviceForm" (submit)='registerService()' class="registerService">
-        <mat-form-field appearance="outline">
-            <mat-label>Titulo del servicio</mat-label>
-            <input formControlName="title" #input maxlength="100" matInput placeholder="Titulo">
-            <mat-hint>Max 100 characters</mat-hint>
-            <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
-        </mat-form-field>
-        <mat-form-field appearance="outline">
-            <mat-label>Descripcion del servicio</mat-label>
-            <textarea formControlName="description" maxlength="450" #inputDesc matInput
-                placeholder="Descripcion"></textarea>
-            <mat-hint>Max 450 characters</mat-hint>
-            <mat-hint align="end">{{inputDesc.value?.length || 0}}/450</mat-hint>
-        </mat-form-field>
-        <mat-form-field class="example-chip-list">
-            <mat-label>Intereses</mat-label>
-            <mat-chip-list #chipList aria-label="Seleccion de intereses">
-                <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable"
-                    (removed)="remove(tag)">
-                    {{tag}}
-                    <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                </mat-chip>
-                <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags" [matAutocomplete]="auto"
-                    [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                    (matChipInputTokenEnd)="add($event)">
-            </mat-chip-list>
-            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-                    {{tag}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
-        <mat-form-field>
-            <div>
-                <mat-toolbar>
-                    <input matInput readonly name="name" />
+<div class="mat-app-background">
+    <div class="container">
+        <br>
+        <br>
+        <span>
+            <h1>Registrar Servicio</h1>
+        </span>
+        <form [formGroup]="serviceForm" (submit)='registerService()' class="registerService">
+            <mat-form-field appearance="outline">
+                <mat-label>Titulo del servicio</mat-label>
+                <input formControlName="title" #input maxlength="100" matInput placeholder="Titulo">
+                <mat-hint>Max 100 characters</mat-hint>
+                <mat-hint align="end">{{input.value?.length || 0}}/100</mat-hint>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+                <mat-label>Descripcion del servicio</mat-label>
+                <textarea formControlName="description" maxlength="450" #inputDesc matInput
+                    placeholder="Descripcion"></textarea>
+                <mat-hint>Max 450 characters</mat-hint>
+                <mat-hint align="end">{{inputDesc.value?.length || 0}}/450</mat-hint>
+            </mat-form-field>
+            <mat-form-field class="example-chip-list">
+                <mat-label>Intereses</mat-label>
+                <mat-chip-list #chipList aria-label="Seleccion de intereses">
+                    <mat-chip *ngFor="let tag of tags" [selectable]="selectable" [removable]="removable"
+                        (removed)="remove(tag)">
+                        {{tag}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                    </mat-chip>
+                    <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags" [matAutocomplete]="auto"
+                        [matChipInputFor]="chipList" [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                        (matChipInputTokenEnd)="add($event)">
+                </mat-chip-list>
+                <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                    <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                        {{tag}}
+                    </mat-option>
+                </mat-autocomplete>
+            </mat-form-field>
+            <mat-form-field>
+                <div>
+                    <mat-toolbar>
+                        <input matInput readonly name="name" />
+                        <button mat-flat-button color="primary">
+                            Browse File
+                        </button>
+                    </mat-toolbar>
+                    <input type="file" #fileInput id="uploadFile" (change)="selectFile($event)" name="uploadFile"
+                        multiple="multiple" accept="image/*" />
+                    <hr>
+                </div>
+            </mat-form-field>
+            <button mat-raised-button color="primary" type="submit">Guardar Servicio</button>
+        </form>
 
-                    <button mat-flat-button color="primary">
-                        Browse File
-                    </button>
-                </mat-toolbar>
-                <input type="file" #fileInput id="uploadFile" (change)="selectFile($event)" name="uploadFile"
-                    multiple="multiple" accept="image/*" />
-                <hr>
-            </div>
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit">Guardar Servicio</button>
-    </form>
-
-    <mat-grid-list class="imgGrid" cols=4>
-        <mat-grid-tile class="imgListUploaded" *ngFor="let urlImage of uploadedImgArray; index as i" [colspan]="1"
-            [rowspan]="1">
-            <mat-card class="example-card">
-                <img mat-card-image [src]="urlImage" class="imgUploaded">
-                <mat-card-actions>
-                    <button mat-button>Eliminar</button>
-                </mat-card-actions>
-            </mat-card>
-        </mat-grid-tile>
-    </mat-grid-list>
+        <mat-grid-list class="imgGrid" cols=4>
+            <mat-grid-tile class="imgListUploaded" *ngFor="let urlImage of uploadedImgArray; index as i" [colspan]="1"
+                [rowspan]="1">
+                <mat-card class="example-card">
+                    <img mat-card-image [src]="urlImage" class="imgUploaded">
+                    <mat-card-actions>
+                        <button mat-button>Eliminar</button>
+                    </mat-card-actions>
+                </mat-card>
+            </mat-grid-tile>
+        </mat-grid-list>
+    </div>
 </div>

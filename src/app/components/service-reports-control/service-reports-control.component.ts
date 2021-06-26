@@ -10,7 +10,7 @@ import { AlertsComponent } from '../alerts/alerts.component';
 @Component({
   selector: 'app-service-reports-control',
   templateUrl: './service-reports-control.component.html',
-  styleUrls: ['./service-reports-control.component.css']
+  styleUrls: ['./service-reports-control.component.scss']
 })
 export class ServiceReportsControlComponent implements OnInit {
   reportedServices: Service[] = [];

@@ -9,21 +9,22 @@ import { ExportToCsv } from 'export-to-csv';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
-
+import { ThemeService } from 'src/app/services/theme.service';
 @Component({
   selector: 'app-reports-content',
   templateUrl: './reports-content.component.html',
-  styleUrls: ['./reports-content.component.css']
+  styleUrls: ['./reports-content.component.scss']
 })
 export class ReportsContentComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-  
+
   showFiller = false;
   options: any;
   optionsUpdate: any;
   updateOptions: any;
+  theme: string = this._themeService.getCurrentTheme();
 
   usersCountByDate: number[] = [];
   serviceCountByDate: number[] = [];
@@ -37,7 +38,8 @@ export class ReportsContentComponent implements OnInit {
   dataSource: MatTableDataSource<Service>;
 
   constructor(private breakpointObserver: BreakpointObserver,
-    private route: ActivatedRoute,) { }
+    private route: ActivatedRoute,
+    private _themeService: ThemeService) { }
 
   ngOnInit(): void {
     this.loadDataSecondGraph();
@@ -87,10 +89,12 @@ export class ReportsContentComponent implements OnInit {
           collection.push(user);
         }
       });
+
       var keys = this.userGroupByDate.keys();
       this.userGroupByDate.forEach((item) => {
         this.usersCountByDate.push(item.length);
         this.dates.push(keys.next().value);
+
       })
 
       dataServices.forEach(service => {
@@ -121,24 +125,6 @@ export class ReportsContentComponent implements OnInit {
       console.log(error);
     }
 
-    var test: string[] = [];
-    for (let month = 1; month <= 12; month++) {
-      for (let day = 1; day <= 30; day++) {
-        test.push(day + "/" + month + "/" + '2021');
-      }
-    }
-
-    for (let a = 0; a < 363; a++) {
-      var ran = Math.random() * 1000 + 1;
-      var ran2 = Math.random() * 500 + 1;
-      this.usersCountByDate.push(ran);
-      if (ran2 < ran) {
-        this.serviceCountByDate.push(ran2);
-      } else {
-        this.serviceCountByDate.push(ran / 2);
-      }
-    }
-
     this.options = {
       toolbox: {
         feature: {
@@ -160,7 +146,7 @@ export class ReportsContentComponent implements OnInit {
         }
       },
       xAxis: {
-        data: test,
+        data: this.dates,
         silent: false,
         splitLine: {
           show: false,
