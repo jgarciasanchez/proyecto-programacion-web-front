@@ -61,7 +61,7 @@ export class LoginComponent {
 
     this.connection.postHttp(query, true).subscribe(req => {
       var success: LoginUserOutput = req.data.loginUser.success;
-      const token =req.data.loginUser.token;
+      const token = req.data.loginUser.token;
       if (success) {
         this.authService.setAuthenticated("true");
         this.authService.setToken(token);
@@ -75,11 +75,24 @@ export class LoginComponent {
         });
         this.router.navigate(['/', 'home']);
       } else {
-        this._snackBar.openFromComponent(AlertsComponent, {
-          duration: 2 * 1000,
-          data: { message: 'Fallo el inicio de sesion', type: 1 },
-        });
+        if (req.data.loginUser.code == 1) {
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 2 * 1000,
+            data: { message: 'No se encontro informacion del usuario', type: 1 },
+          });
+        } else if (req.data.loginUser.code == 2) {
+          this._snackBar.openFromComponent(AlertsComponent, {
+            duration: 2 * 1000,
+            data: { message: 'Contraseña erronea', type: 1 },
+          });
+        }
+
       }
+    }, err => {
+      this._snackBar.openFromComponent(AlertsComponent, {
+        duration: 2 * 1000,
+        data: { message: 'Hubo un error al consultar la informacion, intentar mas tarde', type: 1 },
+      });
     })
   }
 

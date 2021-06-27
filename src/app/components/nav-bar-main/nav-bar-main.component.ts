@@ -2,8 +2,10 @@ import { OverlayContainer } from '@angular/cdk/overlay';
 import { Component, EventEmitter, HostBinding, OnInit, Output } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from 'src/app/services/auth.service';
 import { ThemeService } from 'src/app/services/theme.service';
+import { UserEditComponent } from '../user-edit/user-edit.component';
 
 @Component({
   selector: 'app-nav-bar-main',
@@ -21,7 +23,7 @@ export class NavBarMainComponent implements OnInit {
 
 
 
-  constructor(private router: Router, public auth: AuthService,
+  constructor(private router: Router, public auth: AuthService, private modalService: NgbModal,
     private overlay: OverlayContainer, private _currentTheme: ThemeService) { }
 
   ngOnInit(): void {
@@ -50,15 +52,24 @@ export class NavBarMainComponent implements OnInit {
     }
   }
 
-  editProfile(){
+  editProfile() {
+    const userId = this.auth.getCurrentId();
+    const theme = this._currentTheme.getCurrentTheme();
+    var modalRef: NgbModalRef;
+    if (theme == 'dark') {
+      modalRef = this.modalService.open(UserEditComponent, { size: 'lg', centered: true, windowClass: 'dark-modal' });
+    } else {
+      modalRef = this.modalService.open(UserEditComponent, { size: 'lg', centered: true });
+    }
+    modalRef.componentInstance.activeModal = modalRef;
+    modalRef.componentInstance.userId = userId;
+  }
+
+  home() {
     this.router.navigate(['/', 'home']);
   }
 
-  home(){
-    this.router.navigate(['/', 'home']);
-  }
-
-  dashboard(){
+  dashboard() {
     this.router.navigate(['admin']);
   }
 

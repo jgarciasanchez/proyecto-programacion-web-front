@@ -1,46 +1,38 @@
-<body class="bg-gradient-primary">
+<div class="mat-app-background">
     <div class="container">
-        <div class="card shadow-lg o-hidden border-0 my-5">
-            <div class="card-body p-0">
-                <div class="row">
-                    <div class="col-lg-5 d-none d-lg-flex">
-                        <div class="flex-grow-1 bg-register-image" style="background-image: url(&quot;assets/img/dogs/image2.jpeg&quot;);"></div>
-                    </div>
-                    <div class="col-lg-7">
-                        <div class="p-5">
-                            <div class="text-center">
-                                <h4 class="text-dark mb-4">Editar Información</h4>
-                            </div>
-                            <form [formGroup]="serviceForm" (ngSubmit)="editUser()" class="userInfo">
-                                <div class="row">
-                                    <mat-form-field class="col-sm-6 mb-3 mb-sm-0" appearance="outline">
-                                        <mat-label>Nombre</mat-label>
-                                        <input formControlName="name" #input maxlength="50" matInput
-                                            placeholder="Keywords">
-                                    </mat-form-field>
-                                    <mat-form-field class="col-sm-6 mb-3 mb-sm-0" appearance="outline">
-                                        <mat-label>Apellidos</mat-label>
-                                        <input formControlName="lastName" #input maxlength="50" matInput
-                                            placeholder="Keywords">
-                                    </mat-form-field>
-                                </div>
-                                <mat-form-field class="col-12" appearance="outline">
-                                    <mat-label>Correo Electronico</mat-label>
-                                    <input formControlName="email" #input maxlength="50" matInput placeholder="Keywords">
-                                </mat-form-field>
-                                <mat-form-field class="col-12" appearance="outline">
-                                    <mat-label>Contraseña</mat-label>
-                                    <input formControlName="password" #input maxlength="50" matInput placeholder="Keywords">
-                                </mat-form-field>
-                                <div class="col-12">
-                                    <button class="btnSave" mat-raised-button color="primary">Guardar Información</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+        <form [formGroup]="userForm" class="userInfo">
+            <span>
+                <h1 class="titleText">Editar Información de Usuario</h1>
+            </span>
+            <div class="row">
+                <mat-form-field class="col-sm-6 mb-3 mb-sm-0" appearance="outline">
+                    <mat-label>Nombre</mat-label>
+                    <input formControlName="name" #input maxlength="50" matInput placeholder="Nombre">
+                </mat-form-field>
+                <mat-form-field class="col-sm-6 mb-3 mb-sm-0" appearance="outline">
+                    <mat-label>Apellidos</mat-label>
+                    <input formControlName="lastName" #input maxlength="50" matInput placeholder="Apellidos">
+                </mat-form-field>
             </div>
-        </div>
-    </div>
+            <div class="row">
+                <mat-form-field class="col-12" appearance="outline">
+                    <mat-label>Contraseña Actual</mat-label>
+                    <input formControlName="confirmPassword" #input maxlength="50" matInput placeholder="Contraseña">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <mat-form-field class="col-12" appearance="outline">
+                    <mat-label>Nueva Contraseña</mat-label>
+                    <input formControlName="password" #input maxlength="50" matInput placeholder="Nueva Contraseña">
+                </mat-form-field>
+            </div>
+            <div class="row">
+                <button class="btnSave col-6" (click)="activeModal.dismiss('Cross click')" mat-raised-button
+                    color="primary">Cancelar</button>
+                <button class="btnSave col-6" (click)="editUser()" mat-raised-button color="primary">Guardar
+                    Información</button>
+            </div>
 
-</body>
+        </form>
+    </div>
+</div>

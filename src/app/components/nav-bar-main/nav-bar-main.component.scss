@@ -8,6 +8,11 @@
     display: block;
 }
 
+.navText:hover {
+    color: #00b3ff;
+    cursor: pointer;
+}
+
 .spacer {
     flex: 1 1 auto;
 }
@@ -21,3 +26,12 @@
     top: 0;
     z-index: 1000;
 }
+
+.dark-modal  .modal-content {
+    background-color: #292b2c;
+    color: white;
+}
+
+.dark-modal .close {
+    color: white;
+  }

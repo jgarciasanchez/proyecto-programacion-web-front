@@ -18,6 +18,7 @@ import { ThemeService } from 'src/app/services/theme.service';
 export class ReportsContentComponent implements OnInit {
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  @ViewChild(MatPaginator) userPaginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
   showFiller = false;
@@ -35,29 +36,34 @@ export class ReportsContentComponent implements OnInit {
   reportedServices: Service[] = [];
   isWideScreen$: Observable<boolean>;
   displayedColumns: string[] = ['title', 'description', 'createdAt', 'reportCount', 'actions'];
+  userDisplayedColumns: string[] = ['name', 'lastName', 'createdAt', 'rol'];
   dataSource: MatTableDataSource<Service>;
+  usersDataSource: MatTableDataSource<User>;
 
   constructor(private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
     private _themeService: ThemeService) { }
 
   ngOnInit(): void {
-    this.loadDataSecondGraph();
+    this.loadAllData();
+    this.loadDataServicesTable();
+    this.loadDataGraph();
+    this.loadDataUsersTable();
   }
 
-  loadDataSecondGraph() {
+  loadAllData(){
+    const dataGetAllServicesFromAsync = this.route.snapshot.data.allServices;
+    const { getAllServices }: any = dataGetAllServicesFromAsync.data;
+    let dataServices: Service[] = getAllServices;
+    this.reportedServices = dataServices;
+
     const dataGetAllUsersFromAsync = this.route.snapshot.data.allUsers;
     const { getAllUsersReport }: any = dataGetAllUsersFromAsync.data;
     let { success, data }: GetAllUsersReportOutput = getAllUsersReport;
     this.allUsers = data;
+  }
 
-
-    const dataGetAllServicesFromAsync = this.route.snapshot.data.allServices;
-    const { getAllServices }: any = dataGetAllServicesFromAsync.data;
-    let dataServices: Service[] = getAllServices;
-
-    this.reportedServices = dataServices;
-
+  loadDataServicesTable(){
     this.reportedServices.sort(function (a, b) {
       if (a.reportCount < b.reportCount) {
         return 1;
@@ -68,9 +74,11 @@ export class ReportsContentComponent implements OnInit {
       return 0;
     });
     this.dataSource = new MatTableDataSource(this.reportedServices);
+  }
 
+  loadDataGraph() {
     try {
-      data.forEach(user => {
+      this.allUsers.forEach(user => {
         var userRegisterDate = parseInt(user.createdAt);
         if (userRegisterDate < 10000000000)
           userRegisterDate *= 1000;
@@ -97,7 +105,7 @@ export class ReportsContentComponent implements OnInit {
 
       })
 
-      dataServices.forEach(service => {
+      this.reportedServices.forEach(service => {
         var serviceRegisterDate = parseInt(service.createdAt);
         if (serviceRegisterDate < 10000000000)
           serviceRegisterDate *= 1000;
@@ -201,7 +209,19 @@ export class ReportsContentComponent implements OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
+    this.usersDataSource.paginator = this.userPaginator;
+    // this.dataSource.sort = this.sort;
     this.dataSource.sort = this.sort;
+  }
+
+  loadDataUsersTable(){
+    this.usersDataSource = new MatTableDataSource(this.allUsers);
+    console.log("");
+  }
+
+  applyFilter(event: Event) {
+    const filterValue = (event.target as HTMLInputElement).value;
+    this.usersDataSource.filter = filterValue.trim().toLowerCase();
   }
 
 }

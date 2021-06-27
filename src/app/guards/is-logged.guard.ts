@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
   providedIn: 'root'
 })
 export class IsLoggedGuard implements CanActivate {
-  constructor(private router: Router, private isAuthenticated: AuthService, ) {}
+  constructor(private router: Router, private isAuthenticated: AuthService,) { }
 
 
   canActivate(route: ActivatedRouteSnapshot): boolean {
@@ -15,9 +15,18 @@ export class IsLoggedGuard implements CanActivate {
     if (state == "true") {
 
       if (route.routeConfig.path === 'login' || route.routeConfig.path === 'register') {
-        this.router.navigate(['/','home']);
+        this.router.navigate(['/', 'home']);
       } else {
         return true;
+      }
+    } else {
+      if (route.routeConfig.path === 'login' || route.routeConfig.path === 'register') {
+        return true;
+      } else if (route.routeConfig.path) {
+        console.log("");
+        
+      } else {
+        return false;
       }
     }
     return false;

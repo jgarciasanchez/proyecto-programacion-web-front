@@ -93,14 +93,14 @@ export function getUserProfile(id) {
   }`;
 }
 
-export function updateUser(id: number, name: string, lastName: string, email: string) {
+export function updateUser(id: number, name: string, lastName: string, password: string) {
   return `mutation{
     updateUser(dataInput:{
       idUser:${id}
       userData:{
         name:"${name}",
         lastName:"${lastName}",
-        email:"${email}",
+        password:"${password}",
       }
     }){
   

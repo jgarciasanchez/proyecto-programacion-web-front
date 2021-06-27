@@ -34,7 +34,6 @@ import { NgxEchartsModule } from 'ngx-echarts';
 import { RegisterServiceComponent } from './components/register-service/register-service.component';
 import { AlertsComponent } from './components/alerts/alerts.component';
 import { StarRatingComponent } from './components/star-rating/star-rating.component';
-import { ServiceReportsControlComponent } from './components/service-reports-control/service-reports-control.component';
 import { RestrictedComponent } from './components/restricted/restricted.component';
 import { HttpClientModule } from '@angular/common/http';
 import { ExportToCsv } from 'export-to-csv';
@@ -61,7 +60,6 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     RegisterServiceComponent,
     AlertsComponent,
     StarRatingComponent,
-    ServiceReportsControlComponent,
     RestrictedComponent,
     UserEditComponent,
     ServiceInfoComponent

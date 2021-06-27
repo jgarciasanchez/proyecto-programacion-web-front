@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ActivatedRoute } from '@angular/router';
@@ -9,13 +9,23 @@ import { AlertsComponent } from '../alerts/alerts.component';
 @Component({
   selector: 'app-user-edit',
   templateUrl: './user-edit.component.html',
-  styleUrls: ['./user-edit.component.scss']
+  styleUrls: ['./user-edit.component.scss'],
+  styles: [`
+  .mat-app-background{
+    background-color: #424242;
+    color: white;
+}`]
 })
 export class UserEditComponent implements OnInit {
 
-  serviceForm: FormGroup;
-  formGroup: FormGroup;
-  userId: string;
+  userForm: FormGroup;
+  @Input()
+  public userId: string;
+  @Input()
+  public theme: string;
+  @Input()
+  public activeModal;
+
 
   constructor(
     private formBuilder: FormBuilder,
@@ -25,15 +35,19 @@ export class UserEditComponent implements OnInit {
 
   ngOnInit(): void {
 
+    this.userForm = this.formBuilder.group({
+      name: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
 
-    this.userId = this.route.snapshot.params['userId'];
     const query = getUserById(parseInt(this.userId));
     this.connection.postHttp(query, true).subscribe(req => {
 
-      this.serviceForm = this.formBuilder.group({
+      this.userForm = this.formBuilder.group({
         name: new FormControl(req.data.getUserById.data.name, [Validators.required]),
         lastName: new FormControl(req.data.getUserById.data.lastName, [Validators.required]),
-        email: new FormControl(req.data.getUserById.data.email, [Validators.required]),
         password: new FormControl('', [Validators.required]),
       });
     }, errr => {
@@ -41,23 +55,27 @@ export class UserEditComponent implements OnInit {
     });
   }
 
+  cancel(){
+    
+  }
+
   editUser() {
-    if (this.serviceForm.valid) {
+    if (this.userForm.valid) {
       const query = updateUser(parseInt(this.userId),
-        this.serviceForm.controls['name'].value,
-        this.serviceForm.controls['lastName'].value,
-        this.serviceForm.controls['email'].value);
-        this.connection.postHttp(query, true).subscribe(req => {
+        this.userForm.controls['name'].value,
+        this.userForm.controls['lastName'].value,
+        this.userForm.controls['password'].value);
+      this.connection.postHttp(query, true).subscribe(req => {
         this._snackBar.openFromComponent(AlertsComponent, {
           duration: 2 * 1000,
           data: { message: 'Información actualizada con exíto', type: 1 },
         });
-        }, errr => {
-          this._snackBar.openFromComponent(AlertsComponent, {
-            duration: 2 * 1000,
-            data: { message: 'Hubo un problema editando el usuario', type: 1 },
-          });
+      }, errr => {
+        this._snackBar.openFromComponent(AlertsComponent, {
+          duration: 2 * 1000,
+          data: { message: 'Hubo un problema editando el usuario', type: 1 },
         });
+      });
     }
 
   }
