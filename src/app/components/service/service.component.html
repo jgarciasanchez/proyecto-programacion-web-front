@@ -9,7 +9,7 @@
       </mat-card-title>
       <mat-card-subtitle>{{service.title}}</mat-card-subtitle>
       <span class="spacer"></span>
-      <button (click)="compare()" mat-stroked-button color="primary">
+      <button (click)="compare(service)" mat-stroked-button color="primary">
         <mat-icon>compare</mat-icon> Comparar Servicio
       </button>
       <button mat-icon-button [matMenuTriggerFor]="menu" *ngIf="authUser;">

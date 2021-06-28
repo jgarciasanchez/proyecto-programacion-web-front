@@ -23,6 +23,11 @@ class viewComment {
   state: string;
 }
 
+class outputService {
+  comments: viewComment[];
+  service: any;
+}
+
 @Component({
   selector: 'app-service',
   templateUrl: './service.component.html',
@@ -50,12 +55,8 @@ export class ServiceComponent implements OnInit {
 
   @Output()
   serviceToCompare = new EventEmitter<any>();
-
-  tiles: Tile[] = [
-    { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
-    { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 2, rows: 2, color: 'lightgreen' },
-    { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 2, rows: 2, color: 'lightpink' },
-  ];
+  @Output()
+  commentsToCompare = new EventEmitter<viewComment[]>();
 
   constructor(private breakpointObserver: BreakpointObserver,
     private connection: GraphqlConnectionService,
@@ -66,7 +67,7 @@ export class ServiceComponent implements OnInit {
 
 
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.authUser = this.auth.isLogged() == 'true';
     this.commentForm = this.formBuilder.group({
       comment: new FormControl('', [Validators.required]),
@@ -191,23 +192,26 @@ export class ServiceComponent implements OnInit {
     this.comments = [];
     this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);
-    try {
-      const reponse = await this.connection.post(query, true);
-      const { getServiceReviews }: any = reponse.data;
+    console.log(query);
+
+    this.connection.postHttp(query, true).subscribe(req => {
+      const { getServiceReviews }: any = req.data;
 
       getServiceReviews.data.forEach(comment => {
         this.comments.push({ comment: comment, state: "none" });
       });
-    } catch (e) {
-      this._snackBar.openFromComponent(AlertsComponent, {
-        duration: 2 * 1000,
-        data: { message: 'Error cargando los comentarios Error: ' + e, type: 1 },
-      });
-    }
+    }, err => {
+      console.log();
+
+    });
   }
 
-  compare(){
-    this.serviceToCompare.emit(this.service);
+  compare(service) {
+    this.loadComments(service.serviceId);
+    var serviceOutput = new outputService();
+    serviceOutput.comments = this.comments;
+    serviceOutput.service = service;
+    this.serviceToCompare.emit(service);
   }
 
   test(comment: HTMLElement) {

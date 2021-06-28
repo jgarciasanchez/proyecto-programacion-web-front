@@ -11,7 +11,7 @@ import { User } from 'src/app/conections/user/response';
 import { IsAuthOutput } from 'src/app/conections/auth/response';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AlertsComponent } from '../alerts/alerts.component';
-import { getServicesAndUser } from 'src/app/conections/services/resolvers';
+import { getServiceReviews, getServicesAndUser } from 'src/app/conections/services/resolvers';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import firebase from 'firebase';
 import { isAuth } from 'src/app/conections/auth/resolver';
@@ -19,6 +19,25 @@ export interface Tile {
   color: string;
   cols: number;
   rows: number;
+}
+
+
+class viewComment {
+  comment: any;
+  state: string;
+}
+
+class outputService {
+  comments: viewComment[];
+  service: any;
+}
+
+class serviceAux {
+  name: string;
+  title: string;
+  descripcion: string;
+  pondRating: number;
+  countComments: number;
 }
 
 
@@ -32,7 +51,8 @@ export class MainContentComponent implements OnInit {
   tiles: Tile[] = [];
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
-  servicesToCompare: UsersAndServicesData[] = [];
+  servicesToCompare: outputService[] = [];
+  arrayCompare: serviceAux[] = [];
   friends: User[] = [];
   searchForm: FormGroup;
   options: string[] = ['Música', 'Electrodomesticos', 'Cocina', 'Gaming', 'Limpieza', 'Viajes', 'Transporte', 'Entretenimiento', 'Mecánica'];
@@ -162,7 +182,38 @@ export class MainContentComponent implements OnInit {
   }
 
   addServiceToCompare(service: UsersAndServicesData) {
-    this.servicesToCompare.push(service);
+
+    const query = getServiceReviews(service.serviceId);
+    console.log(query);
+    var comments: viewComment[] = [];
+
+    this.connection.postHttp(query, true).subscribe(req => {
+      const { getServiceReviews }: any = req.data;
+
+      getServiceReviews.data.forEach(comment => {
+        comments.push({ comment: comment, state: "none" });
+      });
+      var serviceOutput = new outputService();
+      serviceOutput.comments = comments;
+      serviceOutput.service = service;
+
+      this.servicesToCompare.push(serviceOutput);
+      var aux = new serviceAux();
+      aux.name = serviceOutput.service.name + ' ' + serviceOutput.service.lastName;
+      aux.title = serviceOutput.service.title;
+      aux.descripcion = serviceOutput.service.description;
+      var pond = 0;
+      for (let i = 0; i < serviceOutput.comments.length; i++) {
+        pond += serviceOutput.comments[i].comment.rating;
+      }
+      aux.pondRating = pond / serviceOutput.comments.length;
+      aux.countComments = serviceOutput.comments.length;
+      this.arrayCompare.push(aux);
+
+    }, err => {
+      console.log();
+    });
+
   }
 
   friendProfile(friendId) {
