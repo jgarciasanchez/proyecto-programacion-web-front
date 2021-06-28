@@ -26,7 +26,7 @@ export function registerService(title: string, description: string, tags: string
   var result = `mutation{
     registerService(serviceData:{
       title:"${title}"
-      description:"${title}"
+      description:"${description}"
       likesList:[`;
   auxTags.forEach(tag => {
     result += `{tag:"` + tag.tag + `"}`, tag;

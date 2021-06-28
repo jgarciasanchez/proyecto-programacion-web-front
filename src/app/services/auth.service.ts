@@ -51,4 +51,12 @@ export class AuthService {
   public getCurrentUserRole() {
     return localStorage.getItem('currentUserRole');
   }
+
+  public setCurrentService(id: string){
+    localStorage.setItem('currentServiceId', id);
+  }
+  
+  public getCurrentService() {
+    return localStorage.getItem('currentServiceId');
+  }
 }

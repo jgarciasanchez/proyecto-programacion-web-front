@@ -72,6 +72,11 @@ export class LoginComponent {
           this.authService.setCurrentUserRole(data.role);
           this.authService.setCurrentUserName(data.name, data.lastName);
           this.authService.setCurrentId(data.id.toString());
+          if(data.serviceId == null){
+            this.authService.setCurrentService('null');
+          } else {
+            this.authService.setCurrentService(data.serviceId.toString());
+          }
         });
         this.router.navigate(['/', 'home']);
       } else {

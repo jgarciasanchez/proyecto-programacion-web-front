@@ -19,6 +19,7 @@ import { ServicesResolver } from './resolvers/services.resolver';
 import { ServiceInfoComponent } from './components/service-info/service-info.component';
 import { UserEditComponent } from './components/user-edit/user-edit.component';
 
+
 const routes: Routes = [
   { path: 'restricted', component: RestrictedComponent },
   {
@@ -28,7 +29,7 @@ const routes: Routes = [
   },
   {
     path: 'login', component: LoginComponent,
-    canActivate: [IsLoggedGuard]
+    // canActivate: [IsLoggedGuard]
   },
   {
     path: 'register', component: RegistrationComponent,

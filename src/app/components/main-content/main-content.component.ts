@@ -32,6 +32,7 @@ export class MainContentComponent implements OnInit {
   tiles: Tile[] = [];
   isWideScreen$: Observable<boolean>;
   authUser: boolean;
+  servicesToCompare: UsersAndServicesData[] = [];
   friends: User[] = [];
   searchForm: FormGroup;
   options: string[] = ['Música', 'Electrodomesticos', 'Cocina', 'Gaming', 'Limpieza', 'Viajes', 'Transporte', 'Entretenimiento', 'Mecánica'];
@@ -158,6 +159,10 @@ export class MainContentComponent implements OnInit {
     }, errr => {
       console.log(errr);
     });
+  }
+
+  addServiceToCompare(service: UsersAndServicesData) {
+    this.servicesToCompare.push(service);
   }
 
   friendProfile(friendId) {

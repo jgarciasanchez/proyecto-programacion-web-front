@@ -16,7 +16,8 @@ export class NavBarMainComponent implements OnInit {
 
   authUser: boolean;
   userName: string;
-  language: any;
+  haveService: boolean = false;
+  hasRole: boolean = false;
 
   @Output()
   readonly darkModeActived = new EventEmitter<boolean>();
@@ -29,6 +30,12 @@ export class NavBarMainComponent implements OnInit {
   ngOnInit(): void {
     this.authUser = this.auth.isLogged() == 'true';
     this.userName = this.auth.getCurrentUserName();
+    if (this.auth.getCurrentService() != 'null') {
+      this.haveService = true;
+    }
+    if (this.auth.getCurrentUserRole() == 'ADMIN') {
+      this.hasRole = true;
+    }
   }
 
   onLogout() {
@@ -37,6 +44,7 @@ export class NavBarMainComponent implements OnInit {
     this.auth.setCurrentId('');
     this.auth.setCurrentUserName('', '');
     this.auth.setCurrentUserRole('');
+    this.auth.setCurrentService('');
     this.router.navigate(['/', 'login']);
   }
 
@@ -63,6 +71,10 @@ export class NavBarMainComponent implements OnInit {
     }
     modalRef.componentInstance.activeModal = modalRef;
     modalRef.componentInstance.userId = userId;
+  }
+
+  addService() {
+    this.router.navigate(['registerService']);
   }
 
   home() {

@@ -46,6 +46,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import {MatRadioModule} from '@angular/material/radio';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { MaterialFileInputModule } from 'ngx-material-file-input';
 @NgModule({
   declarations: [
     AppComponent,
@@ -71,6 +72,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 
     FormsModule,
+    MaterialFileInputModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

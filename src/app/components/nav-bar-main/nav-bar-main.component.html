@@ -2,7 +2,9 @@
     <span class="decor"></span>
     <mat-toolbar color="#eeeef0">
         <mat-icon class="homeBadge" matBadge="15" matBadgeColor="warn">home</mat-icon>
-        <span class="navText" (click)="home()">Serbook</span>
+        <span class="navText" (click)="home()">
+            <h1>Serbook</h1>
+        </span>
         <span class="spacer"></span>
         <span [matMenuTriggerFor]="menu" class="navText" color="primary">{{userName}}</span>
 
@@ -11,11 +13,19 @@
                 <mat-icon>edit</mat-icon>
                 Editar Perfil
             </button>
+            <button mat-menu-item *ngIf="haveService" class="navText" (click)="addService()">
+                <mat-icon>edit</mat-icon>
+                Editar Servicio
+            </button>
+            <button mat-menu-item *ngIf="!haveService" class="navText" (click)="addService()">
+                <mat-icon>edit</mat-icon>
+                Crear servicio
+            </button>
             <button class="navText" mat-menu-item [matMenuTriggerFor]="theme">
                 <mat-icon>wb_sunny</mat-icon>
                 Modo Oscuro
             </button>
-            <button class="navText" mat-menu-item (click)="dashboard()">
+            <button *ngIf="hasRole" class="navText" mat-menu-item (click)="dashboard()">
                 <mat-icon>settings</mat-icon>
                 Dashboard
             </button>

@@ -10,6 +10,9 @@ import { finalize, map, startWith } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { MatAutocomplete, MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatChipInputEvent, MatChipList } from '@angular/material/chips';
+import { FileValidator } from 'ngx-material-file-input';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
   selector: 'app-register-service',
@@ -33,12 +36,14 @@ export class RegisterServiceComponent implements OnInit {
   @ViewChild('tagInput') tagInput: ElementRef<HTMLInputElement>;
   @ViewChild('auto') matAutocomplete: MatAutocomplete;
   @ViewChild('chipList') chipList: MatChipList;
+  readonly maxSize = 104857600;
 
 
-  constructor(
+  constructor(private router: Router,
     private connection: GraphqlConnectionService,
     private formBuilder: FormBuilder,
     private firebase: AngularFireStorage,
+    private auth: AuthService,
     private _snackBar: MatSnackBar,
   ) { }
 
@@ -51,6 +56,7 @@ export class RegisterServiceComponent implements OnInit {
       title: new FormControl('', [Validators.required]),
       description: new FormControl('', [Validators.required]),
       log_tags: new FormControl('', [Validators.required]),
+      requiredfile: new FormControl(undefined, [Validators.required, FileValidator.maxContentSize(this.maxSize)])
     });
     this.filteredTags = this.serviceForm.controls['log_tags'].valueChanges.pipe(
       startWith(null),
@@ -73,14 +79,16 @@ export class RegisterServiceComponent implements OnInit {
             this.serviceForm.controls['description'].value,
             this.tags,
             this.uploadedImgArray);
-            console.log(query);
-            
+          console.log(query);
+
           this.connection.postHttp(query, true).subscribe(req => {
             console.log("");
             this._snackBar.openFromComponent(AlertsComponent, {
               duration: 2 * 1000,
               data: { message: 'Servicio registrado correctamente', type: 1 },
             });
+            this.auth.setCurrentService("");
+            this.router.navigate(['/', 'home']);
           }, err => {
             this._snackBar.openFromComponent(AlertsComponent, {
               duration: 2 * 1000,
@@ -132,33 +140,25 @@ export class RegisterServiceComponent implements OnInit {
     return this.allTags.filter(tag => tag.toLowerCase().indexOf(filterValue) === 0);
   }
 
-  selectFile(event: any) {
-    var n = Date.now();
-    const file = event.target.files[0];
-    const filePath = `Images/${n}`;
-    const fileRef = this.firebase.ref(filePath);
-    const task = this.firebase.upload(`Images/${n}`, file);
-    task
-      .snapshotChanges()
-      .pipe(
-        finalize(() => {
-          this.downloadURL = fileRef.getDownloadURL();
-          this.downloadURL.subscribe(url => {
-            if (url) {
-              this.fb = url;
-              this.uploadedImgArray.push(this.fb);
-            }
-          }, erro => {
-            console.log(erro);
+  async selectFile(event: any) {
+    for (var indexFile = 0; indexFile < event.target.files.length; indexFile++) {
+      var n = Date.now();
+      var file = event.target.files[indexFile];
+      var filePath = `Images/${n}`;
+      var fileRef = this.firebase.ref(filePath);
 
-          });
-        })
-      )
-      .subscribe(url => {
-        if (url) {
-          console.log(url);
-        }
-      });
+      var uploadTaskSnapshot = await fileRef.put(file);
+
+      var downloadURL = await uploadTaskSnapshot.ref.getDownloadURL();
+
+      this.uploadedImgArray.push(downloadURL);
+    }
+    console.log(this.uploadedImgArray);
+    
+  }
+
+  deleteImg(imgIndex) {
+    this.uploadedImgArray.splice(imgIndex, 1);
   }
 
 }

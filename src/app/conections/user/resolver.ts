@@ -56,6 +56,7 @@ export function getCurrentUser() {
       name,
       id,
       lastName,
+      serviceId,
       email,
       createdAt,
       role,
@@ -78,6 +79,9 @@ export function getUserProfile(id) {
         serviceId,
         title,
         description,
+        images{
+          url
+        },
         reviews{
         description,
         rating,

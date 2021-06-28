@@ -1,5 +1,5 @@
 import { BreakpointObserver } from '@angular/cdk/layout';
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
@@ -47,6 +47,9 @@ export class ServiceComponent implements OnInit {
   colorComments: string = "rgb(255, 255, 255)";
   showResponse: string = 'none';
   authUser: boolean;
+
+  @Output()
+  serviceToCompare = new EventEmitter<any>();
 
   tiles: Tile[] = [
     { url: 'https://material.angular.io/assets/img/examples/shiba2.jpg', cols: 3, rows: 4, color: 'lightblue' },
@@ -185,8 +188,6 @@ export class ServiceComponent implements OnInit {
   }
 
   async loadComments(id: number) {
-    console.log(this.service);
-
     this.comments = [];
     this.colorComments = 'rgb(235, 235, 235)';
     const query = getServiceReviews(id);
@@ -203,6 +204,10 @@ export class ServiceComponent implements OnInit {
         data: { message: 'Error cargando los comentarios Error: ' + e, type: 1 },
       });
     }
+  }
+
+  compare(){
+    this.serviceToCompare.emit(this.service);
   }
 
   test(comment: HTMLElement) {

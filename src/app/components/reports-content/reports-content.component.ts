@@ -10,6 +10,7 @@ import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { ThemeService } from 'src/app/services/theme.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 @Component({
   selector: 'app-reports-content',
   templateUrl: './reports-content.component.html',
@@ -31,6 +32,7 @@ export class ReportsContentComponent implements OnInit {
   serviceCountByDate: number[] = [];
   userGroupByDate = new Map();
   serviceGroupByDate = new Map();
+  userForm: FormGroup;
   dates: string[] = [];
   allUsers: User[];
   reportedServices: Service[] = [];
@@ -42,16 +44,20 @@ export class ReportsContentComponent implements OnInit {
 
   constructor(private breakpointObserver: BreakpointObserver,
     private route: ActivatedRoute,
+    private formBuilder: FormBuilder,
     private _themeService: ThemeService) { }
 
   ngOnInit(): void {
+    this.userForm = this.formBuilder.group({
+      role: new FormControl('', [Validators.required]),
+    });
     this.loadAllData();
     this.loadDataServicesTable();
     this.loadDataGraph();
     this.loadDataUsersTable();
   }
 
-  loadAllData(){
+  loadAllData() {
     const dataGetAllServicesFromAsync = this.route.snapshot.data.allServices;
     const { getAllServices }: any = dataGetAllServicesFromAsync.data;
     let dataServices: Service[] = getAllServices;
@@ -63,7 +69,7 @@ export class ReportsContentComponent implements OnInit {
     this.allUsers = data;
   }
 
-  loadDataServicesTable(){
+  loadDataServicesTable() {
     this.reportedServices.sort(function (a, b) {
       if (a.reportCount < b.reportCount) {
         return 1;
@@ -214,7 +220,7 @@ export class ReportsContentComponent implements OnInit {
     this.dataSource.sort = this.sort;
   }
 
-  loadDataUsersTable(){
+  loadDataUsersTable() {
     this.usersDataSource = new MatTableDataSource(this.allUsers);
     console.log("");
   }

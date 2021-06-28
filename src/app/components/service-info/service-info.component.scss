@@ -1,3 +1,14 @@
 .mat-app-background{
     height: 100%;
 }
+
+.container-profile{
+    align-items: center;
+    align-content: center;
+    max-width: 80%;
+    margin: auto;
+}
+
+.container-profile .row .serviceList{
+    max-width: 100%;
+}

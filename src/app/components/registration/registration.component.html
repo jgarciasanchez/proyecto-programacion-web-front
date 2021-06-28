@@ -33,30 +33,36 @@
                                             placeholder="Apellidos">
                                     </mat-form-field>
                                 </div>
-                                <mat-form-field class="example-chip-list">
-                                    <mat-label>Correo Electronico</mat-label>
-                                    <input formControlName="log_email" type="email" matInput
-                                        placeholder="Ex. pat@example.com">
-                                </mat-form-field>
-                                <mat-form-field class="example-chip-list">
-                                    <mat-label>Intereses</mat-label>
-                                    <mat-chip-list #chipList aria-label="Seleccion de intereses">
-                                        <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
-                                            [removable]="removable" (removed)="remove(tag)">
-                                            {{tag}}
-                                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
-                                        </mat-chip>
-                                        <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags"
-                                            [matAutocomplete]="auto" [matChipInputFor]="chipList"
-                                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
-                                            (matChipInputTokenEnd)="add($event)">
-                                    </mat-chip-list>
-                                    <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
-                                        <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
-                                            {{tag}}
-                                        </mat-option>
-                                    </mat-autocomplete>
-                                </mat-form-field>
+                                <div class="row">
+                                    <mat-form-field class="col-sm-12">
+                                        <mat-label>Correo Electronico</mat-label>
+                                        <input formControlName="log_email" type="email" matInput
+                                            placeholder="Ex. pat@example.com">
+                                    </mat-form-field>
+                                </div>
+                                <div class="row">
+                                    <mat-form-field class="col-sm-12 example-chip-list">
+                                        <mat-label>Intereses</mat-label>
+                                        <mat-chip-list #chipList aria-label="Seleccion de intereses">
+                                            <mat-chip *ngFor="let tag of tags" [selectable]="selectable"
+                                                [removable]="removable" (removed)="remove(tag)">
+                                                {{tag}}
+                                                <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                                            </mat-chip>
+                                            <input placeholder="Nuevo interes..." #tagInput formControlName="log_tags"
+                                                [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                                                [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                                                (matChipInputTokenEnd)="add($event)">
+                                        </mat-chip-list>
+                                        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+                                            <mat-option *ngFor="let tag of filteredTags | async" [value]="tag">
+                                                {{tag}}
+                                            </mat-option>
+                                        </mat-autocomplete>
+                                    </mat-form-field>
+                                </div>
+
+
 
                                 <div class="custom-control custom-checkbox small">
                                     <div class="form-check"><input class="form-check-input custom-control-input"
